@@ -15,6 +15,16 @@ popd
 
 date
 
+pushd go/pythagorean_triples
+
+go build -o pyth.exe pyth.go
+
+time ./pyth.exe > pyth.out
+
+popd
+
+date
+
 pushd python/pythagorean_triples
 
 time python pyth.py > pyth.out
