@@ -52,6 +52,12 @@ Measure-Command {python pyth.py > pyth.out}
 
 popd
 
+pushd python\linear_congruential_gen
+
+Measure-Command {python gen.py > gen.out}
+
+popd
+
 date
 
 
