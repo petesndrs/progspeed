@@ -18,6 +18,14 @@ Measure-Command {.\pyth.exe > pyth.out}
 
 popd
 
+pushd c\linear_congruential_gen
+
+cc -std=c99 -o gen.exe gen.c
+
+Measure-Command {.\gen.exe > gen.out}
+
+popd
+
 date
 
 pushd go\pythagorean_triples
@@ -25,6 +33,14 @@ pushd go\pythagorean_triples
 go build -o pyth.exe pyth.go
 
 Measure-Command {.\pyth.exe > pyth.out}
+
+popd
+
+pushd go\linear_congruential_gen
+
+go build -o gen.exe gen.go
+
+Measure-Command {.\gen.exe > gen.out}
 
 popd
 
