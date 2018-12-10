@@ -2,6 +2,9 @@
 
 gcc --version
 python3 --version
+go version
+javac -version
+java -version
 
 date
 
@@ -20,6 +23,16 @@ pushd go/pythagorean_triples
 go build -o pyth.exe pyth.go
 
 time ./pyth.exe > pyth.out
+
+popd
+
+date
+
+pushd java/linear_congruential_gen
+
+javac gen.java
+
+time java gen > gen.out
 
 popd
 
