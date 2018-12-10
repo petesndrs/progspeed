@@ -11,41 +11,37 @@ go version
 javac -version
 java -version
 
-date
-
-pushd c\pythagorean_triples
-
-cc -std=c99 -o pyth.exe pyth.c
-
-Measure-Command {.\pyth.exe > pyth.out}
-
-popd
-
-pushd c\linear_congruential_gen
-
-cc -std=c99 -o gen.exe gen.c
-
-Measure-Command {.\gen.exe > gen.out}
-
-popd
+$DIR = @("pythagorean_triples","linear_congruential_gen")
+$BIN = @("pyth","gen")
 
 date
 
-pushd go\pythagorean_triples
+for($i=0; $i -le 1; $i++){
 
-go build -o pyth.exe pyth.go
+    pushd "c\$($DIR[$i])"
 
-Measure-Command {.\pyth.exe > pyth.out}
+    cc -std=c99 -o "$($BIN[$i]).exe" "$($BIN[$i]).c"
 
-popd
+    Measure-Command { Invoke-Expression ".\$($BIN[$i]).exe" > "$($BIN[$i]).out" }
 
-pushd go\linear_congruential_gen
+    popd
 
-go build -o gen.exe gen.go
+}
 
-Measure-Command {.\gen.exe > gen.out}
+date
 
-popd
+for($i=0; $i -le 1; $i++){
+
+    pushd "go\$($DIR[$i])"
+
+    go build -o "$($BIN[$i]).exe" "$($BIN[$i]).go"
+
+    Measure-Command  {Invoke-Expression ".\$($BIN[$i]).exe" > "$($BIN[$i]).out"}
+
+    popd
+
+}
+
 
 date
 
