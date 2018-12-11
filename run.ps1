@@ -32,7 +32,7 @@ for($i=0; $i -le 2; $i++){
 
 date
 
-for($i=0; $i -le 1; $i++){
+for($i=0; $i -le 2; $i++){
 
     echo "$($DIR[$i])"
 

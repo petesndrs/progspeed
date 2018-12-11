@@ -14,7 +14,6 @@ int main() {
         val ^= val << 13;
         val ^= val >> 17;
         val ^= val << 5;
-		//val = val & 0x7fffffff;
         if (val < 0x100){
             printf("period %"PRId64" state %x, val %x\n", period, state, val);
         }
