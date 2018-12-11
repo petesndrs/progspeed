@@ -11,12 +11,14 @@ go version
 javac -version
 java -version
 
-$DIR = @("pythagorean_triples","linear_congruential_gen")
-$BIN = @("pyth","gen")
+$DIR = @("pythagorean_triples","linear_congruential_gen","xor_shift_gen")
+$BIN = @("pyth","gen","xor")
 
 date
 
-for($i=0; $i -le 1; $i++){
+for($i=0; $i -le 2; $i++){
+
+    echo "$($DIR[$i])"
 
     pushd "c\$($DIR[$i])"
 
@@ -31,6 +33,8 @@ for($i=0; $i -le 1; $i++){
 date
 
 for($i=0; $i -le 1; $i++){
+
+    echo "$($DIR[$i])"
 
     pushd "go\$($DIR[$i])"
 
