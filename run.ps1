@@ -46,16 +46,21 @@ for($i=0; $i -le 2; $i++){
 
 }
 
-
 date
 
-pushd java\linear_congruential_gen
+for($i=0; $i -le 2; $i++){
 
-javac gen.java
+    echo "$($DIR[$i])"
 
-Measure-Command {java gen > gen.out}
+    pushd "java\$($DIR[$i])"
 
-popd
+    javac "$($BIN[$i]).java"
+
+    Measure-Command { java "$($BIN[$i])" > "$($BIN[$i]).out"}
+
+    popd
+
+}
 
 date
 
