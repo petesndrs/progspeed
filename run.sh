@@ -6,15 +6,25 @@ go version
 javac -version
 java -version
 
+DIR=("pythagorean_triples" "linear_congruential_gen" "xor_shift_gen")
+BIN=("pyth" "gen" "xor")
+
 date
 
-pushd c/pythagorean_triples
+for i in ${!DIR[@]};
+do
 
-gcc -std=c99 -o pyth.exe pyth.c
+  echo ${DIR[$i]}
 
-time ./pyth.exe > pyth.out
+  pushd c/${DIR[$i]} >> /dev/null
 
-popd
+  gcc -std=c99 -o ${BIN[$i]}.exe ${BIN[$i]}.c
+
+  time ./${BIN[$i]}.exe > ${BIN[$i]}.out
+
+  popd
+
+done
 
 date
 
