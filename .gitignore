@@ -1,11 +1,23 @@
 c/pythagorean_triples/pyth.exe
 c/pythagorean_triples/pyth.out
+c/linear_congruential_gen/gen.exe
+c/linear_congruential_gen/gen.out
+c/xor_shift_gen/xor.exe
+c/xor_shift_gen/xor.out
 
 go/pythagorean_triples/pyth.exe
 go/pythagorean_triples/pyth.out
+go/linear_congruential_gen/gen.exe
+go/linear_congruential_gen/gen.out
+go/xor_shift_gen/xor.exe
+go/xor_shift_gen/xor.out
 
 java/linear_congruential_gen/gen.class
 java/linear_congruential_gen/gen.out
+java/pythagorean_triples/pyth.class
+java/pythagorean_triples/pyth.out
+java/xor_shift_gen/xor.class
+java/xor_shift_gen/xor.out
 
+python/linear_congruential_gen/gen.out
 python/pythagorean_triples/pyth.out
-
