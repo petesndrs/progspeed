@@ -12,12 +12,12 @@ func main() {
     for val != SEED {
         val = ((state * 1103515245) + 12345) & 0x7fffffff
         if val < 0x100 {
-            fmt.Printf("period %d state %x, val %x\n", period, state, val)
+            fmt.Printf("Count %d, state %x, val %x\n", period, state, val)
         }
         period++
         state = val
     }
 
-    fmt.Printf("%d\n", period)
+    fmt.Printf("Period %d\n", period)
 
 }

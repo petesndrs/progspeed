@@ -10,12 +10,12 @@ class gen
         while (val != SEED){
             val = ((state * 1103515245) + 12345) & 0x7fffffff;
             if (val < 0x100){
-                System.out.printf("period %d state %x, val %x\n", period, state, val);
+                System.out.printf("Count %d, state %x, val %x\n", period, state, val);
             }
             period++;
             state = val;
         }
 
-        System.out.printf("%d\n", period);
+        System.out.printf("Period %d\n", period);
     }
 }
