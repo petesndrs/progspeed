@@ -26,6 +26,14 @@ for($i=0; $i -le 2; $i++){
 
     Measure-Command { Invoke-Expression ".\$($BIN[$i]).exe" > "$($BIN[$i]).out" }
 
+    if (Test-Path "..\..\samples\$($DIR[$i])\$($BIN[$i]).out" -PathType Leaf){
+
+        Compare-Object -ReferenceObject (Get-Content "$($BIN[$i]).out") -DifferenceObject (Get-Content "..\..\samples\$($DIR[$i])\$($BIN[$i]).out")
+
+    } else {
+        echo "No sample output file exists"
+    }
+
     popd
 
 }
@@ -41,6 +49,14 @@ for($i=0; $i -le 2; $i++){
     go build -o "$($BIN[$i]).exe" "$($BIN[$i]).go"
 
     Measure-Command  {Invoke-Expression ".\$($BIN[$i]).exe" > "$($BIN[$i]).out"}
+
+    if (Test-Path "..\..\samples\$($DIR[$i])\$($BIN[$i]).out" -PathType Leaf){
+
+        Compare-Object -ReferenceObject (Get-Content "$($BIN[$i]).out") -DifferenceObject (Get-Content "..\..\samples\$($DIR[$i])\$($BIN[$i]).out")
+
+    } else {
+        echo "No sample output file exists"
+    }
 
     popd
 
@@ -58,25 +74,38 @@ for($i=0; $i -le 2; $i++){
 
     Measure-Command { java "$($BIN[$i])" > "$($BIN[$i]).out"}
 
+    if (Test-Path "..\..\samples\$($DIR[$i])\$($BIN[$i]).out" -PathType Leaf){
+
+        Compare-Object -ReferenceObject (Get-Content "$($BIN[$i]).out") -DifferenceObject (Get-Content "..\..\samples\$($DIR[$i])\$($BIN[$i]).out")
+
+    } else {
+        echo "No sample output file exists"
+    }
+
     popd
 
 }
 
 date
 
-pushd python\pythagorean_triples
+for($i=0; $i -le 2; $i++){
 
-Measure-Command {python pyth.py > pyth.out}
+    echo "$($DIR[$i])"
 
-popd
+    pushd "python\$($DIR[$i])"
 
-pushd python\linear_congruential_gen
+    Measure-Command {python "$($BIN[$i]).py" > "$($BIN[$i]).out"}
 
-Measure-Command {python gen.py > gen.out}
+    if (Test-Path "..\..\samples\$($DIR[$i])\$($BIN[$i]).out" -PathType Leaf){
 
-popd
+        Compare-Object -ReferenceObject (Get-Content "$($BIN[$i]).out") -DifferenceObject (Get-Content "..\..\samples\$($DIR[$i])\$($BIN[$i]).out")
+
+    } else {
+        echo "No sample output file exists"
+    }
+
+    popd
+
+}
 
 date
-
-
-

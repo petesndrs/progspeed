@@ -56,7 +56,7 @@ int main(int argc, char* argv[]){
             c = search (a, b, b+1, MAX, 1);
             
             if (c) {
-                printf("%d, %d, %d, %d\n", found_triples, a, b, c);
+                //printf("%d, %d, %d, %d\n", found_triples, a, b, c);
                 found[found_triples].a = a;
                 found[found_triples].b = b;
                 found[found_triples].c = c;
@@ -66,15 +66,18 @@ int main(int argc, char* argv[]){
         }
     }
 
+    printf("Found %d\n", found_triples);
     remove_multiples(found, found_triples);
 
     int i;
+	int final_triples = 0;
     for (i = 0; i < found_triples; ++i){
         if (found[i].valid) {
             printf("%d, %d, %d, %d\n", i, found[i].a, found[i].b, found[i].c);
+            ++final_triples;
         }
     }
-
+    printf("Final %d\n", final_triples);
 
     return 0;
 }

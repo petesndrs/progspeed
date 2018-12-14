@@ -60,7 +60,7 @@ class pyth
 				int c = search (a, b, b+1, MAX, 1);
 				if (c > 0)
 				{
-					System.out.printf("%d, %d, %d, %d\n", found_triples, a, b, c);
+					//System.out.printf("%d, %d, %d, %d\n", found_triples, a, b, c);
 					found[found_triples] = new triple();
 					found[found_triples].a = a;
 					found[found_triples].b = b;
@@ -70,15 +70,20 @@ class pyth
 				}
 			}
 		}
+		
+		System.out.printf("Found %d\n", found_triples);
 		remove_multiples(found, found_triples);
-
+		
+		int final_triples = 0;
 		for (int i = 0; i < found_triples; ++i)
 		{
 			if (found[i].valid)
 			{
 				System.out.printf("%d, %d, %d, %d\n", i, found[i].a, found[i].b, found[i].c);
+				final_triples += 1;
 			}
 		}
+		System.out.printf("Final %d\n", final_triples);
 	}
 
 	public static void main(String args[])

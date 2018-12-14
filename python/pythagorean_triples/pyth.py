@@ -15,7 +15,6 @@ def search(a, b, start, end, inc):
 
     return 0;
 
-
 def remove_multiples(found, num):
 
     for i in range(0, num):
@@ -36,25 +35,29 @@ def main():
     MAX_TRIPLES = 4000
     found = [Triple() for i in range(MAX_TRIPLES)]
 
-    """ c**2 = a**2 + b**2 """
+    # c**2 = a**2 + b**2
 
-    found_triples = 0;
+    found_triples = 0
     for a in range(MIN, MAX):
         for b in range(a, MAX): 
             c = search (a, b, b+1, MAX, 1)
             if (c):
-                print('{}, {}, {}, {}'.format(found_triples, a, b, c))
+                #print('{}, {}, {}, {}'.format(found_triples, a, b, c))
                 found[found_triples].a = a
                 found[found_triples].b = b
                 found[found_triples].c = c
                 found_triples += 1
 
+    print('Found {}'.format(found_triples))
     remove_multiples(found, found_triples)
 
+    final_triples = 0
     for i in range(0, found_triples):
         if found[i].valid:
             print('{}, {}, {}, {}'.format(i, found[i].a, found[i].b, found[i].c))
+            final_triples += 1
 
+    print('Final {}'.format(final_triples))
 
 if __name__ == "__main__":
     main()
