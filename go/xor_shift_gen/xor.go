@@ -13,7 +13,7 @@ func main() {
         val ^= val << 13
         val ^= val >> 17
         val ^= val << 5
-        if val < 0x100 {
+        if (val & 0xffffff00) == 0 {
             fmt.Printf("period %d state %x, val %x\n", period, state, val)
         }
         period++
