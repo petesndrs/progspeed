@@ -12,9 +12,9 @@ javac -version
 java -version
 
 $FIRST=0
-$LAST=3
-$DIR = @("pythagorean_triples","linear_congruential_gen","xor_shift_gen","fibonacci_twoways")
-$BIN = @("pyth","gen","xor","fib")
+$LAST=4
+$DIR = @("pythagorean_triples","linear_congruential_gen","xor_shift_gen","fibonacci_twoways","kaprekars_process")
+$BIN = @("pyth","gen","xor","fib","kap")
 
 date
 
