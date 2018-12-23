@@ -38,14 +38,6 @@ for($i=$FIRST; $i -le $LAST; $i++){
 
     popd
 
-}
-
-date
-
-for($i=$FIRST; $i -le $LAST; $i++){
-
-    echo "$($DIR[$i])"
-
     pushd "go\$($DIR[$i])"
 
     go build -o "$($BIN[$i]).exe" "$($BIN[$i]).go"
@@ -62,14 +54,6 @@ for($i=$FIRST; $i -le $LAST; $i++){
 
     popd
 
-}
-
-date
-
-for($i=$FIRST; $i -le $LAST; $i++){
-
-    echo "$($DIR[$i])"
-
     pushd "java\$($DIR[$i])"
 
     javac "$($BIN[$i]).java"
@@ -85,14 +69,6 @@ for($i=$FIRST; $i -le $LAST; $i++){
     }
 
     popd
-
-}
-
-date
-
-for($i=$FIRST; $i -le $LAST; $i++){
-
-    echo "$($DIR[$i])"
 
     pushd "python\$($DIR[$i])"
 
