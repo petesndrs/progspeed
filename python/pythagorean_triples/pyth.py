@@ -9,7 +9,7 @@ class Triple:
 
 def search(a, b, start, end, inc):
 
-    for c in range(start, end, inc):
+    for c in range(start, end + 1, inc):
         if (c*c == a*a + b*b):
             return c
 
