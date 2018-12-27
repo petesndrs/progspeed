@@ -6,8 +6,8 @@ go version
 javac -version
 java -version
 
-DIR=("pythagorean_triples" "linear_congruential_gen" "xor_shift_gen")
-BIN=("pyth" "gen" "xor")
+DIR=("pythagorean_triples" "linear_congruential_gen" "xor_shift_gen" "fibonacci_twoways" "kaprekars_process")
+BIN=("pyth" "gen" "xor" "fib" "kap")
 
 date
 
@@ -20,39 +20,32 @@ do
 
   gcc -std=c99 -o ${BIN[$i]}.exe ${BIN[$i]}.c
 
-  time ./${BIN[$i]}.exe > ${BIN[$i]}.out
+  time -p ./${BIN[$i]}.exe > ${BIN[$i]}.out
 
-  popd
+  popd >> /dev/null
+
+  pushd go/${DIR[$i]} >> /dev/null
+
+  go build -o ${BIN[$i]}.exe ${BIN[$i]}.go
+
+  time -p ./${BIN[$i]}.exe > ${BIN[$i]}.out
+
+  popd >> /dev/null
+
+  pushd java/${DIR[$i]} >> /dev/null
+
+  javac ${BIN[$i]}.java
+
+  time -p java ${BIN[$i]} > ${BIN[$i]}.out
+
+  popd >> /dev/null
+
+  pushd python/${DIR[$i]} >> /dev/null
+
+  time -p python ${BIN[$i]}.py > ${BIN[$i]}.out
+
+  popd >> /dev/null
 
 done
 
 date
-
-pushd go/pythagorean_triples
-
-go build -o pyth.exe pyth.go
-
-time ./pyth.exe > pyth.out
-
-popd
-
-date
-
-pushd java/linear_congruential_gen
-
-javac gen.java
-
-time java gen > gen.out
-
-popd
-
-date
-
-pushd python/pythagorean_triples
-
-time python pyth.py > pyth.out
-
-popd
-
-date
-
