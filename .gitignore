@@ -29,6 +29,8 @@ java/xor_shift_gen/xor.class
 java/xor_shift_gen/xor.out
 java/fibonacci_twoways/fib.class
 java/fibonacci_twoways/fib.out
+java/kaprekars_process/kap.class
+java/kaprekars_process/kap.out
 
 
 python/linear_congruential_gen/gen.out
