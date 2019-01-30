@@ -8,6 +8,8 @@ c/fibonacci_twoways/fib.exe
 c/fibonacci_twoways/fib.out
 c/kaprekars_process/kap.exe
 c/kaprekars_process/kap.out
+c/naughts_crosses/nac.exe
+c/naughts_crosses/nac.out
 
 go/pythagorean_triples/pyth.exe
 go/pythagorean_triples/pyth.out
@@ -19,6 +21,8 @@ go/fibonacci_twoways/fib.exe
 go/fibonacci_twoways/fib.out
 go/kaprekars_process/kap.exe
 go/kaprekars_process/kap.out
+go/naughts_crosses/nac.exe
+go/naughts_crosses/nac.out
 
 java/linear_congruential_gen/gen.class
 java/linear_congruential_gen/gen.out
@@ -37,3 +41,4 @@ python/linear_congruential_gen/gen.out
 python/pythagorean_triples/pyth.out
 python/xor_shift_gen/xor.out
 python/fibonacci_twoways/fib.out
+python/kaprekars_process/kap.out
