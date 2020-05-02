@@ -13,12 +13,12 @@ def main():
         val ^= (val << 5) & 0xffffffff;
 
         if ( (val & 0xffffff00) == 0):
-            print('Count {}, state {:x}, val {:x}'.format(period, state, val));
+            print('period {} state {:x}, val {:x}'.format(period, state, val));
 
         period += 1;
         state = val;
 
-    print('Period {}'.format(period));
+    print('{}'.format(period));
 
 if __name__ == "__main__":
     main()
