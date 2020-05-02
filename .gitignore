@@ -35,6 +35,8 @@ java/fibonacci_twoways/fib.class
 java/fibonacci_twoways/fib.out
 java/kaprekars_process/kap.class
 java/kaprekars_process/kap.out
+java/naughts_crosses/nac.class
+java/naughts_crosses/nac.out
 
 
 python/linear_congruential_gen/gen.out
@@ -42,3 +44,4 @@ python/pythagorean_triples/pyth.out
 python/xor_shift_gen/xor.out
 python/fibonacci_twoways/fib.out
 python/kaprekars_process/kap.out
+python/naughts_crosses/nac.out
