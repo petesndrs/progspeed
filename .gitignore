@@ -1,14 +1,26 @@
 c/pythagorean_triples/pyth.exe
+c/pythagorean_triples/pyth.cc.exe
+c/pythagorean_triples/pyth.cl.exe
 c/pythagorean_triples/pyth.out
 c/linear_congruential_gen/gen.exe
+c/linear_congruential_gen/gen.cc.exe
+c/linear_congruential_gen/gen.cl.exe
 c/linear_congruential_gen/gen.out
 c/xor_shift_gen/xor.exe
+c/xor_shift_gen/xor.cc.exe
+c/xor_shift_gen/xor.cl.exe
 c/xor_shift_gen/xor.out
 c/fibonacci_twoways/fib.exe
+c/fibonacci_twoways/fib.cc.exe
+c/fibonacci_twoways/fib.cl.exe
 c/fibonacci_twoways/fib.out
 c/kaprekars_process/kap.exe
+c/kaprekars_process/kap.cc.exe
+c/kaprekars_process/kap.cl.exe
 c/kaprekars_process/kap.out
 c/naughts_crosses/nac.exe
+c/naughts_crosses/nac.cc.exe
+c/naughts_crosses/nac.cl.exe
 c/naughts_crosses/nac.out
 
 go/pythagorean_triples/pyth.exe

@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#define MAX_TRIPLES 4000
+
 struct triple {
     int a;
     int b;
@@ -44,7 +46,6 @@ int main(int argc, char* argv[]){
 
     const int MIN = 1;
     const int MAX = 2000;
-    const int MAX_TRIPLES = 4000;
     struct triple found[MAX_TRIPLES];
 
     // c**2 = a**2 + b**2
