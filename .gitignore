@@ -22,6 +22,10 @@ c/naughts_crosses/nac.exe
 c/naughts_crosses/nac.cc.exe
 c/naughts_crosses/nac.cl.exe
 c/naughts_crosses/nac.out
+c/triangle_enclosure/tri.exe
+c/triangle_enclosure/tri.cc.exe
+c/triangle_enclosure/tri.cl.exe
+c/triangle_enclosure/tri.out
 
 go/pythagorean_triples/pyth.exe
 go/pythagorean_triples/pyth.out
@@ -35,6 +39,8 @@ go/kaprekars_process/kap.exe
 go/kaprekars_process/kap.out
 go/naughts_crosses/nac.exe
 go/naughts_crosses/nac.out
+go/triangle_enclosure/tri.exe
+go/triangle_enclosure/tri.out
 
 java/linear_congruential_gen/gen.class
 java/linear_congruential_gen/gen.out
