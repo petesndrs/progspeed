@@ -1,22 +1,21 @@
 
 def main():
-
     SEED = 1;
-    state = SEED;
-    val = 0;
+    val = SEED;
     period = 0;
+    keepgoing = True
 
-    while (val != SEED):
-        val = state;
+    while (keepgoing):
         val ^= (val << 13) & 0xffffffff;
         val ^= val >> 17;
         val ^= (val << 5) & 0xffffffff;
 
         if ( (val & 0xffffff00) == 0):
-            print('period {} state {:x}, val {:x}'.format(period, state, val));
+            print('period {}, val {:x}'.format(period, val));
 
         period += 1;
-        state = val;
+        if (val == SEED):
+            keepgoing = False
 
     print('{}'.format(period));
 
