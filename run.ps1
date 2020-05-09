@@ -1,4 +1,5 @@
 
+git rev-parse HEAD
 
 $Env:path = $env:path + ";c:\MinGW\bin"
 #$Env:path = $env:path + ";c:\Python34\"
