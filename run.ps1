@@ -3,7 +3,8 @@ git rev-parse HEAD
 
 $Env:path = $env:path + ";c:\MinGW\bin"
 #$Env:path = $env:path + ";c:\Python34\"
-$Env:path = $env:path + ";c:\PyPy\pypy3.6-v7.1.1-win32\pypy3.6-v7.1.1-win32\"
+$Env:path = $env:path + ";c:\PyPy\pypy3.6-v7.3.1-win32\"
+#$Env:path = $env:path + ";c:\PyPy\pypy3.6-v7.1.1-win32\pypy3.6-v7.1.1-win32\"
 $Env:path = $env:path + ";c:\Go\bin\"
 $Env:path = $env:path + ";c:\Program Files\Java\jre1.8.0_161\bin;c:\Program Files\Java\jdk1.7.0_60"
 
