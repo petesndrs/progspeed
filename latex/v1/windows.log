@@ -1,0 +1,452 @@
+d222c8a66aa426f84fbf37cebf2fe909ca7c1bad
+cc.exe (GCC) 4.6.2
+Copyright (C) 2011 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Microsoft (R) C/C++ Optimizing Compiler Version 19.25.28614 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+usage: cl [ option... ] filename... [ /link linkoption... ]
+Python 3.6.9 (2ad108f17bdb, Apr 07 2020, 03:05:35)
+[PyPy 7.3.1 with MSC v.1912 32 bit]
+go version go1.11.2 windows/amd64
+javac 1.7.0_60-ea
+java version "1.8.0_161"
+Java(TM) SE Runtime Environment (build 1.8.0_161-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.161-b12, mixed mode)
+
+11 May 2020 21:11:01
+pythagorean_triples
+C/gcc
+
+Ticks             : 46845874
+Days              : 0
+Hours             : 0
+Milliseconds      : 684
+Minutes           : 0
+Seconds           : 4
+TotalDays         : 5.42197615740741E-05
+TotalHours        : 0.00130127427777778
+TotalMilliseconds : 4684.5874
+TotalMinutes      : 0.0780764566666667
+TotalSeconds      : 4.6845874
+
+C/MSVC
+pyth.c
+
+Ticks             : 60423814
+Days              : 0
+Hours             : 0
+Milliseconds      : 42
+Minutes           : 0
+Seconds           : 6
+TotalDays         : 6.99349699074074E-05
+TotalHours        : 0.00167843927777778
+TotalMilliseconds : 6042.3814
+TotalMinutes      : 0.100706356666667
+TotalSeconds      : 6.0423814
+
+go
+
+Ticks             : 26631874
+Days              : 0
+Hours             : 0
+Milliseconds      : 663
+Minutes           : 0
+Seconds           : 2
+TotalDays         : 3.08239282407407E-05
+TotalHours        : 0.000739774277777778
+TotalMilliseconds : 2663.1874
+TotalMinutes      : 0.0443864566666667
+TotalSeconds      : 2.6631874
+
+java
+
+Ticks             : 20467934
+Days              : 0
+Hours             : 0
+Milliseconds      : 46
+Minutes           : 0
+Seconds           : 2
+TotalDays         : 2.36897384259259E-05
+TotalHours        : 0.000568553722222222
+TotalMilliseconds : 2046.7934
+TotalMinutes      : 0.0341132233333333
+TotalSeconds      : 2.0467934
+
+python
+
+Ticks             : 33184958
+Days              : 0
+Hours             : 0
+Milliseconds      : 318
+Minutes           : 0
+Seconds           : 3
+TotalDays         : 3.84085162037037E-05
+TotalHours        : 0.000921804388888889
+TotalMilliseconds : 3318.4958
+TotalMinutes      : 0.0553082633333333
+TotalSeconds      : 3.3184958
+
+linear_congruential_gen
+C/gcc
+
+Ticks             : 240372492
+Days              : 0
+Hours             : 0
+Milliseconds      : 37
+Minutes           : 0
+Seconds           : 24
+TotalDays         : 0.000278208902777778
+TotalHours        : 0.00667701366666667
+TotalMilliseconds : 24037.2492
+TotalMinutes      : 0.40062082
+TotalSeconds      : 24.0372492
+
+C/MSVC
+gen.c
+
+Ticks             : 135624920
+Days              : 0
+Hours             : 0
+Milliseconds      : 562
+Minutes           : 0
+Seconds           : 13
+TotalDays         : 0.000156973287037037
+TotalHours        : 0.00376735888888889
+TotalMilliseconds : 13562.492
+TotalMinutes      : 0.226041533333333
+TotalSeconds      : 13.562492
+
+go
+
+Ticks             : 50723249
+Days              : 0
+Hours             : 0
+Milliseconds      : 72
+Minutes           : 0
+Seconds           : 5
+TotalDays         : 5.87074641203704E-05
+TotalHours        : 0.00140897913888889
+TotalMilliseconds : 5072.3249
+TotalMinutes      : 0.0845387483333333
+TotalSeconds      : 5.0723249
+
+java
+
+Ticks             : 48825792
+Days              : 0
+Hours             : 0
+Milliseconds      : 882
+Minutes           : 0
+Seconds           : 4
+TotalDays         : 5.65113333333333E-05
+TotalHours        : 0.001356272
+TotalMilliseconds : 4882.5792
+TotalMinutes      : 0.08137632
+TotalSeconds      : 4.8825792
+
+python
+
+Ticks             : 1940023814
+Days              : 0
+Hours             : 0
+Milliseconds      : 2
+Minutes           : 3
+Seconds           : 14
+TotalDays         : 0.00224539793287037
+TotalHours        : 0.0538895503888889
+TotalMilliseconds : 194002.3814
+TotalMinutes      : 3.23337302333333
+TotalSeconds      : 194.0023814
+
+xor_shift_gen
+C/gcc
+
+Ticks             : 356098508
+Days              : 0
+Hours             : 0
+Milliseconds      : 609
+Minutes           : 0
+Seconds           : 35
+TotalDays         : 0.000412151050925926
+TotalHours        : 0.00989162522222222
+TotalMilliseconds : 35609.8508
+TotalMinutes      : 0.593497513333333
+TotalSeconds      : 35.6098508
+
+C/MSVC
+xor.c
+
+Ticks             : 387825104
+Days              : 0
+Hours             : 0
+Milliseconds      : 782
+Minutes           : 0
+Seconds           : 38
+TotalDays         : 0.000448871648148148
+TotalHours        : 0.0107729195555556
+TotalMilliseconds : 38782.5104
+TotalMinutes      : 0.646375173333333
+TotalSeconds      : 38.7825104
+
+go
+
+Ticks             : 134790478
+Days              : 0
+Hours             : 0
+Milliseconds      : 479
+Minutes           : 0
+Seconds           : 13
+TotalDays         : 0.000156007497685185
+TotalHours        : 0.00374417994444444
+TotalMilliseconds : 13479.0478
+TotalMinutes      : 0.224650796666667
+TotalSeconds      : 13.4790478
+
+java
+
+Ticks             : 138701465
+Days              : 0
+Hours             : 0
+Milliseconds      : 870
+Minutes           : 0
+Seconds           : 13
+TotalDays         : 0.000160534103009259
+TotalHours        : 0.00385281847222222
+TotalMilliseconds : 13870.1465
+TotalMinutes      : 0.231169108333333
+TotalSeconds      : 13.8701465
+
+python
+
+Ticks             : 16218591644
+Days              : 0
+Hours             : 0
+Milliseconds      : 859
+Minutes           : 27
+Seconds           : 1
+TotalDays         : 0.0187715181064815
+TotalHours        : 0.450516434555556
+TotalMilliseconds : 1621859.1644
+TotalMinutes      : 27.0309860733333
+TotalSeconds      : 1621.8591644
+
+fibonacci_twoways
+C/gcc
+
+Ticks             : 77939543
+Days              : 0
+Hours             : 0
+Milliseconds      : 793
+Minutes           : 0
+Seconds           : 7
+TotalDays         : 9.02078043981481E-05
+TotalHours        : 0.00216498730555556
+TotalMilliseconds : 7793.9543
+TotalMinutes      : 0.129899238333333
+TotalSeconds      : 7.7939543
+
+C/MSVC
+fib.c
+
+Ticks             : 44294988
+Days              : 0
+Hours             : 0
+Milliseconds      : 429
+Minutes           : 0
+Seconds           : 4
+TotalDays         : 5.12673472222222E-05
+TotalHours        : 0.00123041633333333
+TotalMilliseconds : 4429.4988
+TotalMinutes      : 0.07382498
+TotalSeconds      : 4.4294988
+
+go
+
+Ticks             : 47869933
+Days              : 0
+Hours             : 0
+Milliseconds      : 786
+Minutes           : 0
+Seconds           : 4
+TotalDays         : 5.54050150462963E-05
+TotalHours        : 0.00132972036111111
+TotalMilliseconds : 4786.9933
+TotalMinutes      : 0.0797832216666667
+TotalSeconds      : 4.7869933
+
+java
+
+Ticks             : 25817020
+Days              : 0
+Hours             : 0
+Milliseconds      : 581
+Minutes           : 0
+Seconds           : 2
+TotalDays         : 2.98808101851852E-05
+TotalHours        : 0.000717139444444444
+TotalMilliseconds : 2581.702
+TotalMinutes      : 0.0430283666666667
+TotalSeconds      : 2.581702
+
+python
+
+Ticks             : 124401521
+Days              : 0
+Hours             : 0
+Milliseconds      : 440
+Minutes           : 0
+Seconds           : 12
+TotalDays         : 0.000143983241898148
+TotalHours        : 0.00345559780555556
+TotalMilliseconds : 12440.1521
+TotalMinutes      : 0.207335868333333
+TotalSeconds      : 12.4401521
+
+kaprekars_process
+C/gcc
+
+Ticks             : 2243475
+Days              : 0
+Hours             : 0
+Milliseconds      : 224
+Minutes           : 0
+Seconds           : 0
+TotalDays         : 2.59661458333333E-06
+TotalHours        : 6.231875E-05
+TotalMilliseconds : 224.3475
+TotalMinutes      : 0.003739125
+TotalSeconds      : 0.2243475
+
+C/MSVC
+kap.c
+
+Ticks             : 2384455
+Days              : 0
+Hours             : 0
+Milliseconds      : 238
+Minutes           : 0
+Seconds           : 0
+TotalDays         : 2.75978587962963E-06
+TotalHours        : 6.62348611111111E-05
+TotalMilliseconds : 238.4455
+TotalMinutes      : 0.00397409166666667
+TotalSeconds      : 0.2384455
+
+go
+
+Ticks             : 3558493
+Days              : 0
+Hours             : 0
+Milliseconds      : 355
+Minutes           : 0
+Seconds           : 0
+TotalDays         : 4.11862615740741E-06
+TotalHours        : 9.88470277777778E-05
+TotalMilliseconds : 355.8493
+TotalMinutes      : 0.00593082166666667
+TotalSeconds      : 0.3558493
+
+java
+
+Ticks             : 1814483
+Days              : 0
+Hours             : 0
+Milliseconds      : 181
+Minutes           : 0
+Seconds           : 0
+TotalDays         : 2.10009606481481E-06
+TotalHours        : 5.04023055555556E-05
+TotalMilliseconds : 181.4483
+TotalMinutes      : 0.00302413833333333
+TotalSeconds      : 0.1814483
+
+python
+
+Ticks             : 4939432
+Days              : 0
+Hours             : 0
+Milliseconds      : 493
+Minutes           : 0
+Seconds           : 0
+TotalDays         : 5.71693518518518E-06
+TotalHours        : 0.000137206444444444
+TotalMilliseconds : 493.9432
+TotalMinutes      : 0.00823238666666667
+TotalSeconds      : 0.4939432
+
+naughts_crosses
+C/gcc
+
+Ticks             : 3945519
+Days              : 0
+Hours             : 0
+Milliseconds      : 394
+Minutes           : 0
+Seconds           : 0
+TotalDays         : 4.56657291666667E-06
+TotalHours        : 0.00010959775
+TotalMilliseconds : 394.5519
+TotalMinutes      : 0.006575865
+TotalSeconds      : 0.3945519
+
+C/MSVC
+nac.c
+
+Ticks             : 4927157
+Days              : 0
+Hours             : 0
+Milliseconds      : 492
+Minutes           : 0
+Seconds           : 0
+TotalDays         : 5.70272800925926E-06
+TotalHours        : 0.000136865472222222
+TotalMilliseconds : 492.7157
+TotalMinutes      : 0.00821192833333333
+TotalSeconds      : 0.4927157
+
+go
+
+Ticks             : 4172062
+Days              : 0
+Hours             : 0
+Milliseconds      : 417
+Minutes           : 0
+Seconds           : 0
+TotalDays         : 4.82877546296296E-06
+TotalHours        : 0.000115890611111111
+TotalMilliseconds : 417.2062
+TotalMinutes      : 0.00695343666666667
+TotalSeconds      : 0.4172062
+
+java
+
+Ticks             : 2059120
+Days              : 0
+Hours             : 0
+Milliseconds      : 205
+Minutes           : 0
+Seconds           : 0
+TotalDays         : 2.38324074074074E-06
+TotalHours        : 5.71977777777778E-05
+TotalMilliseconds : 205.912
+TotalMinutes      : 0.00343186666666667
+TotalSeconds      : 0.205912
+
+python
+
+Ticks             : 25389286
+Days              : 0
+Hours             : 0
+Milliseconds      : 538
+Minutes           : 0
+Seconds           : 2
+TotalDays         : 2.93857476851852E-05
+TotalHours        : 0.000705257944444444
+TotalMilliseconds : 2538.9286
+TotalMinutes      : 0.0423154766666667
+TotalSeconds      : 2.5389286
+
+11 May 2020 21:46:07
