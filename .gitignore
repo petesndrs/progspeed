@@ -55,7 +55,10 @@ java/kaprekars_process/kap.class
 java/kaprekars_process/kap.out
 java/naughts_crosses/nac.class
 java/naughts_crosses/nac.out
-
+java/triangle_enclosure/tri$point.class
+java/triangle_enclosure/tri$vector.class
+java/triangle_enclosure/tri.class
+java/triangle_enclosure/tri.out
 
 python/linear_congruential_gen/gen.out
 python/pythagorean_triples/pyth.out
@@ -63,3 +66,4 @@ python/xor_shift_gen/xor.out
 python/fibonacci_twoways/fib.out
 python/kaprekars_process/kap.out
 python/naughts_crosses/nac.out
+python/triangle_enclosure/tri.out
