@@ -35,7 +35,7 @@ for($i=$FIRST; $i -le $LAST; $i++){
     echo "C/gcc"
     cc -std=c99 -o "$($BIN[$i]).cc.exe" "$($BIN[$i]).c"
 
-    Measure-Command { Invoke-Expression ".\$($BIN[$i]).cc.exe" > "$($BIN[$i]).out" }
+    Measure-Command { Invoke-Expression ".\$($BIN[$i]).cc.exe" | Out-File -Encoding ASCII -FilePath "$($BIN[$i]).out" }
 
     if (Test-Path "..\..\samples\$($DIR[$i])\$($BIN[$i]).out" -PathType Leaf){
 
@@ -48,7 +48,7 @@ for($i=$FIRST; $i -le $LAST; $i++){
     echo "C/MSVC"
     cl /nologo /Fe:"$($BIN[$i]).cl.exe" "$($BIN[$i]).c"
 
-    Measure-Command { Invoke-Expression ".\$($BIN[$i]).cl.exe" > "$($BIN[$i]).out" }
+    Measure-Command { Invoke-Expression ".\$($BIN[$i]).cl.exe" | Out-File -Encoding ASCII -FilePath "$($BIN[$i]).out" }
 
     if (Test-Path "..\..\samples\$($DIR[$i])\$($BIN[$i]).out" -PathType Leaf){
 
@@ -66,7 +66,7 @@ for($i=$FIRST; $i -le $LAST; $i++){
     echo "go"
     go build -o "$($BIN[$i]).exe" "$($BIN[$i]).go"
 
-    Measure-Command  {Invoke-Expression ".\$($BIN[$i]).exe" > "$($BIN[$i]).out"}
+    Measure-Command  {Invoke-Expression ".\$($BIN[$i]).exe" | Out-File -Encoding ASCII -FilePath "$($BIN[$i]).out"}
 
     if (Test-Path "..\..\samples\$($DIR[$i])\$($BIN[$i]).out" -PathType Leaf){
 
@@ -83,7 +83,7 @@ for($i=$FIRST; $i -le $LAST; $i++){
     echo "java"
     javac "$($BIN[$i]).java"
 
-    Measure-Command { java "$($BIN[$i])" > "$($BIN[$i]).out"}
+    Measure-Command { java "$($BIN[$i])" | Out-File -Encoding ASCII -FilePath "$($BIN[$i]).out"}
 
     if (Test-Path "..\..\samples\$($DIR[$i])\$($BIN[$i]).out" -PathType Leaf){
 
@@ -99,7 +99,7 @@ for($i=$FIRST; $i -le $LAST; $i++){
     pushd "python\$($DIR[$i])"
 
 #    Measure-Command {python "$($BIN[$i]).py" > "$($BIN[$i]).out"}
-    Measure-Command {pypy3.exe "$($BIN[$i]).py" > "$($BIN[$i]).out"}
+    Measure-Command {pypy3.exe "$($BIN[$i]).py" | Out-File -Encoding ASCII -FilePath "$($BIN[$i]).out"}
 	
     if (Test-Path "..\..\samples\$($DIR[$i])\$($BIN[$i]).out" -PathType Leaf){
 
