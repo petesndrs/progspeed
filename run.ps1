@@ -21,8 +21,8 @@ java -version
 
 $FIRST=0
 $LAST=5
-$DIR = @("pythagorean_triples","linear_congruential_gen","xor_shift_gen","fibonacci_twoways","kaprekars_process","naughts_crosses","triangle_enclosure")
-$BIN = @("pyth","gen","xor","fib","kap","nac","tri")
+$DIR = @("pythagorean_triples","linear_congruential_gen","xor_shift_gen","fibonacci_twoways","kaprekars_process","naughts_crosses","triangle_enclosure","unique_anagram")
+$BIN = @("pyth","gen","xor","fib","kap","nac","tri","ana")
 
 date
 
