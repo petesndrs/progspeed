@@ -17,6 +17,7 @@ do
   echo ${DIR[$i]}
 
   pushd c/${DIR[$i]} >> /dev/null
+  echo "C"
 
   gcc -std=c99 -o ${BIN[$i]}.exe ${BIN[$i]}.c
 
@@ -26,6 +27,7 @@ do
   popd >> /dev/null
 
   pushd go/${DIR[$i]} >> /dev/null
+  echo "go"
 
   go build -o ${BIN[$i]}.exe ${BIN[$i]}.go
 
@@ -35,6 +37,7 @@ do
   popd >> /dev/null
 
   pushd java/${DIR[$i]} >> /dev/null
+  echo "java"
 
   javac ${BIN[$i]}.java
 
@@ -44,6 +47,7 @@ do
   popd >> /dev/null
 
   pushd python/${DIR[$i]} >> /dev/null
+  echo "python"
 
   time pypy3 ${BIN[$i]}.py > ${BIN[$i]}.out
   diff ${BIN[$i]}.out ../../samples/${DIR[$i]}/${BIN[$i]}.out
