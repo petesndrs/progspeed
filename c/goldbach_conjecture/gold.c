@@ -101,8 +101,6 @@ int main() {
 	create_tree(primes, start, -1, nodes);
 	dump_tree(nodes);
 
-	int max = primes[NUMBER_PRIMES - 1] + primes[0];
-
 	int i = 4;
 	int end = 0;
 	while (end == 0){
@@ -112,7 +110,9 @@ int main() {
 			int diff = i - primes[p];
 			if (diff > 0){
 				if (find_value(diff, nodes, start)) {
-					printf("%d = %d + %d\n",i ,primes[p], diff);
+					if ( (i&0xff) == 0) {
+						printf("%d = %d + %d\n",i ,primes[p], diff);
+					}
 					end = 0;
 					break;
 				}
