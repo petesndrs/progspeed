@@ -1,0 +1,17 @@
+Gap 1, Primes(2,3)
+Gap 2, Primes(3,5)
+Gap 4, Primes(7,11)
+Gap 6, Primes(23,29)
+Gap 8, Primes(89,97)
+Gap 14, Primes(113,127)
+Gap 18, Primes(523,541)
+Gap 20, Primes(887,907)
+Gap 22, Primes(1129,1151)
+Gap 34, Primes(1327,1361)
+Gap 36, Primes(9551,9587)
+Gap 44, Primes(15683,15727)
+Gap 52, Primes(19609,19661)
+Gap 72, Primes(31397,31469)
+Gap 86, Primes(155921,156007)
+Num primes = 17984
+Last prime = 199999
