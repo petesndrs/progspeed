@@ -25,7 +25,7 @@ class pirn
 		do {
 			val1 = next_xor(val1);
 			val2 = next_lincong(val2);
-			long val1long = 0xffffffffl & (long)val1;
+			long val1long = val1 & 0xffffffffl;
 			float f1 = (float)val1long/0xffffffffl;
 			float f2 = (float)val2/0x7fffffff;
 			if ( (number&0xfffff) == 0 ){
