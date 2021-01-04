@@ -29,7 +29,7 @@ int main() {
         if ( (number&0xfffff) == 0 ){
             printf("number %d, val1 %x, val2 %x, f1 %f, f2 %f\n", number, val1, val2, f1, f2);
         }
-		if ((f1*f1 + f2*f2) <= 1){
+		if ((f1*f1 + f2*f2) < 1){
 		    inside++;
 		}
         number++;
