@@ -17,6 +17,7 @@ struct node {
     int numEdges;
     struct edge* edges;
     int subtree;
+    int used;
 };
 
 struct graph {
@@ -24,18 +25,6 @@ struct graph {
     struct node* nodes;
     int numSubTrees;
 };
-
-/*
-struct node* findNodeByName(struct node* nodes, int numNodes, char* search){
-    int i;
-    for ( i = 0; i < numNodes; ++i){
-        if (strcmp(nodes[i].name, search) == 0){
-            return &nodes[i];
-        }
-    }
-    return NULL;
-} 
-*/
 
 int findNodeIndexByName(struct node* nodes, int numNodes, char* search){
     int i; 
@@ -46,12 +35,6 @@ int findNodeIndexByName(struct node* nodes, int numNodes, char* search){
     }
     return -1;
 } 
-
-/*
-ptrdiff_t nodeIndex(struct node* nodes, struct node* node){
-    return node-nodes;
-}
-*/
 
 void dumpDotGraph(struct node* nodes, int numNodes, int withSubTree){
     puts("digraph G {");
@@ -91,44 +74,56 @@ void dumpGraph(struct graph g){
 
 struct graph createNodes(struct edge* edges, int numberOfEdges){
 
-    int nodeStorage = 10;
-    int nodeNumber = 0;
+    int nodeStorage = 2;
+    int numNodes = 0;
     struct node* nodes = malloc(sizeof(struct node) * nodeStorage);    
   
     int i;
     for ( i = 0; i < numberOfEdges; ++i){
-        int ni = findNodeIndexByName(nodes, nodeNumber, edges[i].origin);
+        int ni = findNodeIndexByName(nodes, numNodes, edges[i].origin);
         if (ni == -1) {
-            nodes[nodeNumber].name = edges[i].origin;
-            nodes[nodeNumber].numEdges = 1;
-            nodes[nodeNumber].edges = NULL;
-            nodeNumber++;
+            if (numNodes == nodeStorage) {
+                nodeStorage *= 2;
+                nodes = realloc(nodes, sizeof(struct node) * nodeStorage);
+            }
+            nodes[numNodes].name = edges[i].origin;
+            nodes[numNodes].numEdges = 1;
+            nodes[numNodes].edges = NULL;
+            nodes[numNodes].used = 0;
+            nodes[numNodes].subtree = 0;
+            numNodes++;
         } else {
             nodes[ni].numEdges++;
         }
 
-        ni = findNodeIndexByName(nodes, nodeNumber, edges[i].destination);
+        ni = findNodeIndexByName(nodes, numNodes, edges[i].destination);
         if (ni == -1) {
-            nodes[nodeNumber].name = edges[i].destination;
-            nodes[nodeNumber].numEdges = 1;
-            nodes[nodeNumber].edges = NULL;
-            nodeNumber++;
+            if (numNodes == nodeStorage) {
+                nodeStorage *= 2;
+                nodes = realloc(nodes, sizeof(struct node) * nodeStorage);
+            }
+            nodes[numNodes].name = edges[i].destination;
+            nodes[numNodes].numEdges = 1;
+            nodes[numNodes].edges = NULL;
+            nodes[numNodes].used = 0;
+            nodes[numNodes].subtree = 0;
+            numNodes++;
         } else {
             nodes[ni].numEdges++;
         }
 
     }
 
-    for ( i = 0; i < nodeNumber; ++i){
+    for ( i = 0; i < numNodes; ++i){
         nodes[i].edges = malloc(sizeof(struct edge) * nodes[i].numEdges);
     }
 
-    int* filledEdges = malloc(sizeof(struct node) * nodeNumber);
-    memset(filledEdges, 0, sizeof(int) * nodeNumber);
+    int* filledEdges = malloc(sizeof(struct node) * numNodes);
+    memset(filledEdges, 0, sizeof(int) * numNodes);
 
     for ( i = 0; i < numberOfEdges; ++i){
-        int originIndex = findNodeIndexByName(nodes, nodeNumber, edges[i].origin);
-        int destinationIndex = findNodeIndexByName(nodes, nodeNumber, edges[i].destination);
+        int originIndex = findNodeIndexByName(nodes, numNodes, edges[i].origin);
+        int destinationIndex = findNodeIndexByName(nodes, numNodes, edges[i].destination);
 
         memcpy(&(nodes[originIndex].edges[filledEdges[originIndex]]), &edges[i], sizeof(struct edge));
         nodes[originIndex].edges[filledEdges[originIndex]].originIndex = originIndex;
@@ -142,12 +137,9 @@ struct graph createNodes(struct edge* edges, int numberOfEdges){
     }
     free(filledEdges);
 
-    dumpDotGraph(nodes, nodeNumber, 1);
-
-    struct graph g = {.numNodes=nodeNumber, .nodes=nodes, .numSubTrees=0};
+    struct graph g = {.numNodes=numNodes, .nodes=nodes, .numSubTrees=0};
     return g;
 }
-
 
 void setEdgeAndPartnerUsed(struct node* nodes, int node, int edge){
 
@@ -170,8 +162,6 @@ void setEdgeAndPartnerUsed(struct node* nodes, int node, int edge){
     }
 
 }
-
-
 
 void joinShortestEdgePerNode(struct node* nodes, int numNodes){
 
@@ -229,6 +219,12 @@ void assignSubTrees(struct graph* g){
     g->numSubTrees = currentSubtree-1;
 }
 
+int edgeConnectsDifferentSubtrees(struct node* nodes, struct edge e){
+    if (nodes[e.originIndex].subtree != nodes[e.destinationIndex].subtree){
+        return 1;
+    }
+    return 0;
+}
 
 void joinShortestEdgePerSubTrees(struct graph g){
     for (int tree = 1; tree <= g.numSubTrees; ++tree){
@@ -240,17 +236,19 @@ void joinShortestEdgePerSubTrees(struct graph g){
             if (g.nodes[i].subtree == tree){
                 for (int j = 0; j < g.nodes[i].numEdges; ++j){
                     if (g.nodes[i].edges[j].used == 0) {
-                       if (gotFirst == 0) {
-                           minimumLength = g.nodes[i].edges[j].length;
-                           minimumEdgeIndex = j;
-                           minimumNodeIndex = i;
-                           gotFirst = 1;
-                       }
-                       if (g.nodes[i].edges[j].length < minimumLength) {
-                           minimumLength = g.nodes[i].edges[j].length;
-                           minimumEdgeIndex = j;
-                           minimumNodeIndex = i;
-                       }
+                        if (edgeConnectsDifferentSubtrees(g.nodes, g.nodes[i].edges[j])){
+                            if (gotFirst == 0) {
+                                minimumLength = g.nodes[i].edges[j].length;
+                                minimumEdgeIndex = j;
+                                minimumNodeIndex = i;
+                                gotFirst = 1;
+                            }
+                            if (g.nodes[i].edges[j].length < minimumLength) {
+                                minimumLength = g.nodes[i].edges[j].length;
+                                minimumEdgeIndex = j;
+                                minimumNodeIndex = i;
+                            }
+                        }
                     }
                 }
             }
@@ -267,25 +265,91 @@ void joinShortestEdgePerSubTrees(struct graph g){
     }
 }
 
-void doAlgorithm1(struct graph g){
+int edgeConnectsUnusedNode(struct node* nodes, struct edge e){
+    if (nodes[e.originIndex].used == 0 || nodes[e.destinationIndex].used == 0){
+        return 1;
+    }
+    return 0;
+}
 
+void doBoruvkaAlgorithm(struct graph g){
+
+    dumpDotGraph(g.nodes, g.numNodes, 0);
 
     joinShortestEdgePerNode(g.nodes, g.numNodes);
-
-    dumpDotGraph(g.nodes, g.numNodes, 1);
 
     while (1) {
         assignSubTrees(&g);
 
-        dumpDotGraph(g.nodes, g.numNodes, 1);
+        printf("Number of subtrees = %d\n", g.numSubTrees);
 
         if (g.numSubTrees == 1) {
+            dumpDotGraph(g.nodes, g.numNodes, 0);
             return;
         }
 
         joinShortestEdgePerSubTrees(g);
-
     }
+}
+
+void doPrimAlgorithm(struct graph g){
+
+    dumpDotGraph(g.nodes, g.numNodes, 0);
+
+    g.nodes[0].used = 1;
+
+    int keepgoing = 1;
+
+    while (keepgoing == 1) {
+
+        int gotFirst = 0;
+        float minimumLength;
+        int minimumNodeIndex;
+        int minimumEdgeIndex;
+        for (int i = 0; i < g.numNodes; ++i){
+            if (g.nodes[i].used == 1){
+                for (int j = 0; j < g.nodes[i].numEdges; ++j){
+                    if (g.nodes[i].edges[j].used == 0 && edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j])) {
+                        if (gotFirst == 0) {
+                            minimumLength = g.nodes[i].edges[j].length;
+                            minimumNodeIndex = i;
+                            minimumEdgeIndex = j;
+                            gotFirst = 1;
+                        }
+                        if (g.nodes[i].edges[j].length < minimumLength) {
+                            minimumLength = g.nodes[i].edges[j].length;
+                            minimumNodeIndex = i;
+                            minimumEdgeIndex = j;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (gotFirst == 1) {
+            printf("Node \"%s\", Edge length %f\n", g.nodes[minimumNodeIndex].name, minimumLength);
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1;
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1;
+            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex);
+
+        } else {
+            keepgoing = 0;
+        }
+    }
+
+    dumpDotGraph(g.nodes, g.numNodes, 0);
+
+}
+
+void clearGraph(struct graph g){
+    for (int i = 0; i < g.numNodes; ++i){
+        g.nodes[i].used = 0;
+        g.nodes[i].subtree = 0;
+        for (int j = 0; j < g.nodes[i].numEdges; ++j){
+            g.nodes[i].edges[j].used = 0;
+        }
+    }
+
 }
 
 
@@ -300,13 +364,21 @@ int main() {
         {"stop","end",100.1},
         {"stop","begin",40.0},
         {"A","B",77.7},
-        {"B","C",3.3}
+        {"B","C",3.3},
+        {"A","stop",25.0},
+        {"C","D",17.0},
+        {"D","E",18.8},
+        {"E","F",19.9}
         };
 
     int numberOfEdges = sizeof(allEdges)/sizeof(struct edge);
 
     struct graph g = createNodes(allEdges, numberOfEdges);
 
-    doAlgorithm1(g);
+    doBoruvkaAlgorithm(g);
+
+    clearGraph(g);
+
+    doPrimAlgorithm(g);
 }
 
