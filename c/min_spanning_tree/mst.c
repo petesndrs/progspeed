@@ -141,22 +141,22 @@ struct graph createNodes(struct edge* edges, int numberOfEdges){
     return g;
 }
 
-void setEdgeAndPartnerUsed(struct node* nodes, int node, int edge){
+void setEdgeAndPartnerUsed(struct node* nodes, int node, int edge, int used){
 
-    nodes[node].edges[edge].used = 1;
+    nodes[node].edges[edge].used = used;
 
     if (node == nodes[node].edges[edge].originIndex) {
         int otherNode = nodes[node].edges[edge].destinationIndex;
         for (int j = 0; j < nodes[otherNode].numEdges; ++j){
             if (nodes[otherNode].edges[j].originIndex == node){
-                nodes[otherNode].edges[j].used = 1;
+                nodes[otherNode].edges[j].used = used;
             }
         }
     } else {
         int otherNode = nodes[node].edges[edge].originIndex;
         for (int j = 0; j < nodes[otherNode].numEdges; ++j){
             if (nodes[otherNode].edges[j].destinationIndex == node){
-                nodes[otherNode].edges[j].used = 1;
+                nodes[otherNode].edges[j].used = used;
             }
         }
     }
@@ -174,7 +174,7 @@ void joinShortestEdgePerNode(struct node* nodes, int numNodes){
                 minimumIndex = j;
             }
         }
-        setEdgeAndPartnerUsed(nodes,i,minimumIndex);
+        setEdgeAndPartnerUsed(nodes,i,minimumIndex,1);
     }
 
 }
@@ -259,7 +259,7 @@ void joinShortestEdgePerSubTrees(struct graph g){
     for (int i = 0; i < g.numNodes; ++i){
         for (int j = 0; j < g.nodes[i].numEdges; ++j){
             if (g.nodes[i].edges[j].used == 2){
-                setEdgeAndPartnerUsed(g.nodes,i,j);
+                setEdgeAndPartnerUsed(g.nodes,i,j,1);
             }
         }
     }
@@ -330,7 +330,7 @@ void doPrimAlgorithm(struct graph g){
             printf("Node \"%s\", Edge length %f\n", g.nodes[minimumNodeIndex].name, minimumLength);
             g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1;
             g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1;
-            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex);
+            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex,1);
 
         } else {
             keepgoing = 0;
@@ -339,6 +339,113 @@ void doPrimAlgorithm(struct graph g){
 
     dumpDotGraph(g.nodes, g.numNodes, 0);
 
+}
+
+int isCyclic(struct graph g){
+    int keepgoing = 1;
+    int nodesLeft = 0;
+    while (keepgoing == 1) {
+		int removed = 0;
+		nodesLeft = 0;
+        for (int i = 0; i < g.numNodes; ++i){
+			if (g.nodes[i].used == 1){
+				nodesLeft++;
+		        int numberEdgesInUse = 0;
+                for (int j = 0; j < g.nodes[i].numEdges; ++j){
+				    if (g.nodes[i].edges[j].used == 1) {
+						numberEdgesInUse++;
+					}
+				}
+				if (numberEdgesInUse == 1) {
+					removed = 1;
+					g.nodes[i].used = 2;
+					for (int j = 0; j < g.nodes[i].numEdges; ++j){
+						if (g.nodes[i].edges[j].used == 1) {
+							setEdgeAndPartnerUsed(g.nodes, i, j, 2);
+						}
+					}
+				}
+				if (numberEdgesInUse == 0) {
+					removed = 1;
+					g.nodes[i].used = 2;
+				}
+			}
+		}
+		if (removed == 0) {
+		    keepgoing = 0;
+	    }
+    }
+
+	for (int i = 0; i < g.numNodes; ++i){
+		if (g.nodes[i].used == 2){
+			g.nodes[i].used = 1;
+		}
+		for (int j = 0; j < g.nodes[i].numEdges; ++j){
+			if (g.nodes[i].edges[j].used == 2) {
+				g.nodes[i].edges[j].used = 1;
+			}
+		}
+	}
+
+    if (nodesLeft > 0) {
+		return 1;
+	}
+	return 0;
+}
+
+void doKruskalAlgorithm(struct graph g){
+
+    dumpDotGraph(g.nodes, g.numNodes, 0);
+
+    int keepgoing = 1;
+
+    while (keepgoing == 1) {
+        int gotFirst = 0;
+        float minimumLength;
+        int minimumNodeIndex;
+        int minimumEdgeIndex;
+        for (int i = 0; i < g.numNodes; ++i){
+            for (int j = 0; j < g.nodes[i].numEdges; ++j){
+				if (g.nodes[i].edges[j].used == 0) {
+					int allowed = 0;
+					if (edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j])) {
+						allowed = 1;
+					} else {
+						setEdgeAndPartnerUsed(g.nodes, i, j, 1);
+						if (isCyclic(g) == 0){
+							allowed = 1;
+						}
+						setEdgeAndPartnerUsed(g.nodes, i, j, 0);
+					}
+					if (allowed == 1) {
+                        if (gotFirst == 0) {
+                            minimumLength = g.nodes[i].edges[j].length;
+                            minimumNodeIndex = i;
+                            minimumEdgeIndex = j;
+                            gotFirst = 1;
+                        }
+                        if (g.nodes[i].edges[j].length < minimumLength) {
+                            minimumLength = g.nodes[i].edges[j].length;
+                            minimumNodeIndex = i;
+                            minimumEdgeIndex = j;
+                        }
+                    }
+                }
+			}
+        }
+
+        if (gotFirst == 1) {
+            printf("Add edge length %f\n", minimumLength);
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1;
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1;
+            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex, 1);
+
+        } else {
+            keepgoing = 0;
+        }
+    }
+
+    dumpDotGraph(g.nodes, g.numNodes, 0);
 }
 
 void clearGraph(struct graph g){
@@ -380,5 +487,9 @@ int main() {
     clearGraph(g);
 
     doPrimAlgorithm(g);
+
+    clearGraph(g);
+
+    doKruskalAlgorithm(g);
 }
 
