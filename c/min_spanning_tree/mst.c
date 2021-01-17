@@ -40,7 +40,11 @@ int findNodeIndexByName(struct node* nodes, int numNodes, char* search){
 void dumpDotGraph(struct node* nodes, int numNodes, int withSubTree){
     puts("digraph G {");
     for (int i = 0; i < numNodes; ++i){
+        int usedEdgeCount = 0;
         for (int j = 0; j < nodes[i].numEdges; ++j){
+            if (nodes[i].edges[j].used == 1){
+                usedEdgeCount++;
+            }
             if (strcmp(nodes[i].name, nodes[i].edges[j].origin) == 0){
                 char* linestyle;
                 if (nodes[i].edges[j].used == 0){
@@ -56,6 +60,9 @@ void dumpDotGraph(struct node* nodes, int numNodes, int withSubTree){
                     printf("\"%s\" -> \"%s\" [dir=none, label=\"%0.1f\", style=%s]\n",nodes[i].edges[j].origin,nodes[i].edges[j].destination,nodes[i].edges[j].length,linestyle);
                 }
             }
+        }
+        if (usedEdgeCount == 1){
+            printf("\"%s\" [style=filled, fillcolor = green]\n",nodes[i].name);
         }
     }
     puts("}");
