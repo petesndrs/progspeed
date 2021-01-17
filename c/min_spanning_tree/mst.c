@@ -8,6 +8,7 @@ struct edge {
     char* destination;
     float length;
     int used;
+    int flag;
     int originIndex;
     int destinationIndex;
 };
@@ -163,6 +164,27 @@ void setEdgeAndPartnerUsed(struct node* nodes, int node, int edge, int used){
 
 }
 
+void flagEdges(struct node* nodes, int node, int edge, int flag){
+
+    nodes[node].edges[edge].flag = flag;
+
+    if (node == nodes[node].edges[edge].originIndex) {
+        int otherNode = nodes[node].edges[edge].destinationIndex;
+        for (int j = 0; j < nodes[otherNode].numEdges; ++j){
+            if (nodes[otherNode].edges[j].originIndex == node){
+                nodes[otherNode].edges[j].flag = flag;
+            }
+        }
+    } else {
+        int otherNode = nodes[node].edges[edge].originIndex;
+        for (int j = 0; j < nodes[otherNode].numEdges; ++j){
+            if (nodes[otherNode].edges[j].destinationIndex == node){
+                nodes[otherNode].edges[j].flag = flag;
+            }
+        }
+    }
+}
+
 void joinShortestEdgePerNode(struct node* nodes, int numNodes){
 
     for (int i = 0; i < numNodes; ++i){
@@ -175,8 +197,8 @@ void joinShortestEdgePerNode(struct node* nodes, int numNodes){
             }
         }
         setEdgeAndPartnerUsed(nodes,i,minimumIndex,1);
+        printf("Add node length %0.1f\n", minimumLength);
     }
-
 }
 
 void assignSubTrees(struct graph* g){
@@ -260,6 +282,7 @@ void joinShortestEdgePerSubTrees(struct graph g){
         for (int j = 0; j < g.nodes[i].numEdges; ++j){
             if (g.nodes[i].edges[j].used == 2){
                 setEdgeAndPartnerUsed(g.nodes,i,j,1);
+                printf("Add node length %0.1f\n", g.nodes[i].edges[j].length);
             }
         }
     }
@@ -439,7 +462,6 @@ void doKruskalAlgorithm(struct graph g){
             g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1;
             g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1;
             setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex, 1);
-
         } else {
             keepgoing = 0;
         }
@@ -448,17 +470,91 @@ void doKruskalAlgorithm(struct graph g){
     dumpDotGraph(g.nodes, g.numNodes, 0);
 }
 
-void clearGraph(struct graph g){
+void doReverseDeleteAlgorithm(struct graph g){
+
+    dumpDotGraph(g.nodes, g.numNodes, 0);
+
+    int keepgoing = 1;
+
+    while (keepgoing == 1) {
+        int gotFirst = 0;
+        float maximumLength;
+        int maximumNodeIndex;
+        int maximumEdgeIndex;
+        for (int i = 0; i < g.numNodes; ++i){
+            for (int j = 0; j < g.nodes[i].numEdges; ++j){
+                if (g.nodes[i].edges[j].used == 1 && g.nodes[i].edges[j].flag == 0) {
+                    if (gotFirst == 0) {
+                        maximumLength = g.nodes[i].edges[j].length;
+                        maximumNodeIndex = i;
+                        maximumEdgeIndex = j;
+                        gotFirst = 1;
+                    }
+                    if (g.nodes[i].edges[j].length > maximumLength) {
+                        maximumLength = g.nodes[i].edges[j].length;
+                        maximumNodeIndex = i;
+                        maximumEdgeIndex = j;
+                    }
+                }
+            }
+        }
+        setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, 0);
+        assignSubTrees(&g);
+        if (g.numSubTrees == 1) {
+            printf("Removed edge length %f\n", maximumLength);
+        } else {
+            setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, 1);
+            flagEdges(g.nodes, maximumNodeIndex, maximumEdgeIndex, 1);
+        }
+        if (isCyclic(g) == 0){
+            keepgoing = 0;
+        }
+    }
+
+    for (int i = 0; i < g.numNodes; ++i){
+        for (int j = 0; j < g.nodes[i].numEdges; ++j){
+            if (g.nodes[i].edges[j].used == 2) {
+                g.nodes[i].edges[j].used = 1;
+			}
+        }
+    }
+    dumpDotGraph(g.nodes, g.numNodes, 0);
+}
+
+void connectGraph(struct graph g){
+    for (int i = 0; i < g.numNodes; ++i){
+        g.nodes[i].used = 1;
+        g.nodes[i].subtree = 1;
+        for (int j = 0; j < g.nodes[i].numEdges; ++j){
+            g.nodes[i].edges[j].used = 1;
+            g.nodes[i].edges[j].flag = 0;
+        }
+    }
+}
+
+void disconnectGraph(struct graph g){
     for (int i = 0; i < g.numNodes; ++i){
         g.nodes[i].used = 0;
         g.nodes[i].subtree = 0;
         for (int j = 0; j < g.nodes[i].numEdges; ++j){
             g.nodes[i].edges[j].used = 0;
+            g.nodes[i].edges[j].flag = 0;
         }
     }
-
 }
 
+float CalculateTotalEdgeLength(struct graph g){
+    float total = 0.0;
+    for (int i = 0; i < g.numNodes; ++i){
+        for (int j = 0; j < g.nodes[i].numEdges; ++j){
+            if (g.nodes[i].edges[j].used == 1) {
+                total += g.nodes[i].edges[j].length;
+            }
+        }
+    }
+    printf("Total length = %0.1f\n", total/2.0);
+    return total/2.0;
+}
 
 int main() {
 
@@ -483,13 +579,26 @@ int main() {
     struct graph g = createNodes(allEdges, numberOfEdges);
 
     doBoruvkaAlgorithm(g);
+    float Blength = CalculateTotalEdgeLength(g);
 
-    clearGraph(g);
-
+    disconnectGraph(g);
     doPrimAlgorithm(g);
+    float Plength = CalculateTotalEdgeLength(g);
 
-    clearGraph(g);
-
+    disconnectGraph(g);
     doKruskalAlgorithm(g);
+    float Klength = CalculateTotalEdgeLength(g);
+
+    connectGraph(g);
+    doReverseDeleteAlgorithm(g);
+    float Rlength = CalculateTotalEdgeLength(g);
+
+    if (abs(Blength - Plength) < 1.0 &&
+	    abs(Plength - Klength) < 1.0 &&
+        abs(Klength - Rlength) < 1.0) {
+        puts("Passed");
+	} else {
+        puts("Failed");
+    }
 }
 
