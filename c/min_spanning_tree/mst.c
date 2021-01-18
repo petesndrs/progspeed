@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
+#include <math.h>
 
 struct edge {
     char* origin;
@@ -630,14 +631,12 @@ int main() {
         {"London","Portsmouth",74.7,0,0,0,0},
         {"Birmingham","Oxford",78.5,0,0,0,0},
         {"London","Southampton",79.2,0,0,0,0},
-        {"London","Swindon",80.4,0,0,0,0},
         {"Bristol","Exeter",80.7,0,0,0,0},
         {"Ipswich","London",81.9,0,0,0,0},
         {"London","Peterborough",85.4,0,0,0,0},
         {"Carlisle","Preston",88.3,0,0,0,0},
         {"Exeter","Salisbury",91.6,0,0,0,0},
         {"Carlisle","Glasgow",96.8,0,0,0,0},
-        {"Leicester","London",102.0,0,0,0,0},
         {"Edinburgh","Newcastle",104.0,0,0,0,0},
         {"Canterbury","Dover",17.1,0,0,0,0},
         {"Canterbury","London",61.9,0,0,0,0},
@@ -675,6 +674,18 @@ int main() {
         {"Aberystwyth","Cardigan",38.3,0,0,0,0},
         {"Cardigan","Carmarthen",26.1,0,0,0,0},
         {"Carmarthen","Swansea",28.0,0,0,0,0},
+        {"Carlisle","Kendal",46.1,0,0,0,0},
+        {"Kendal","Preston",42.7,0,0,0,0},
+        {"Darlington","Kendal",63.3,0,0,0,0},
+        {"Barrow","Kendal",34.7,0,0,0,0},
+        {"Cambridge","Luton",41.0,0,0,0,0},
+        {"Leicester","Luton",69.5,0,0,0,0},
+        {"London","Luton",34.3,0,0,0,0},
+        {"Luton","Oxford",43.5,0,0,0,0},
+        {"London","Newbury",60.8,0,0,0,0},
+        {"Newbury","Oxford",27.2,0,0,0,0},
+        {"Newbury","Southampton",38.1,0,0,0,0},
+        {"Swindon","Newbury",26.0,0,0,0,0},\
     };
 
     int numberOfEdges = sizeof(allEdges)/sizeof(struct edge);
@@ -696,11 +707,11 @@ int main() {
     doReverseDeleteAlgorithm(g);
     float Rlength = CalculateTotalEdgeLength(g);
 
-    if (abs(Blength - Plength) < 1.0 &&
-	    abs(Plength - Klength) < 1.0 &&
-        abs(Klength - Rlength) < 1.0) {
+    if (fabs(Blength - Plength) < 1.0 &&
+        fabs(Plength - Klength) < 1.0 &&
+        fabs(Klength - Rlength) < 1.0) {
         puts("Passed");
-	} else {
+    } else {
         puts("Failed");
     }
 }
