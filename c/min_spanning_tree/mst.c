@@ -39,6 +39,7 @@ int findNodeIndexByName(struct node* nodes, int numNodes, char* search){
 
 void dumpDotGraph(struct node* nodes, int numNodes, int withSubTree){
     puts("digraph G {");
+    int maximumEdgeCount = 0;
     for (int i = 0; i < numNodes; ++i){
         int usedEdgeCount = 0;
         for (int j = 0; j < nodes[i].numEdges; ++j){
@@ -61,8 +62,22 @@ void dumpDotGraph(struct node* nodes, int numNodes, int withSubTree){
                 }
             }
         }
+        if (usedEdgeCount > maximumEdgeCount){
+            maximumEdgeCount = usedEdgeCount;
+        }
+    }
+    for (int i = 0; i < numNodes; ++i){
+        int usedEdgeCount = 0;
+        for (int j = 0; j < nodes[i].numEdges; ++j){
+            if (nodes[i].edges[j].used == 1){
+                usedEdgeCount++;
+            }
+        }
         if (usedEdgeCount == 1){
             printf("\"%s\" [style=filled, fillcolor = green]\n",nodes[i].name);
+        }
+        if (usedEdgeCount == maximumEdgeCount){
+            printf("\"%s\" [style=filled, fillcolor = pink]\n",nodes[i].name);
         }
     }
     puts("}");
@@ -622,7 +637,6 @@ int main() {
         {"Carlisle","Preston",88.3,0,0,0,0},
         {"Exeter","Salisbury",91.6,0,0,0,0},
         {"Carlisle","Glasgow",96.8,0,0,0,0},
-        {"Leeds","Newcastle",97.6,0,0,0,0},
         {"Leicester","London",102.0,0,0,0,0},
         {"Edinburgh","Newcastle",104.0,0,0,0,0},
         {"Canterbury","Dover",17.1,0,0,0,0},
@@ -645,6 +659,22 @@ int main() {
         {"Gloucester","Worcester",30.2,0,0,0,0},
         {"Bournemouth","Exeter",84.6,0,0,0,0},
         {"Bournemouth","Southampton",33.2,0,0,0,0},
+        {"Darlington","Leeds",61.3,0,0,0,0},
+        {"Darlington","Newcastle",37.3,0,0,0,0},
+        {"Darlington","Middlesbrough",16.4,0,0,0,0},
+        {"Burnley","Leeds",35.7,0,0,0,0},
+        {"Burnley","Manchester",29.0,0,0,0,0},
+        {"Burnley","Preston",21.5,0,0,0,0},
+        {"Cambridge","Kings Lynn",45.1,0,0,0,0},
+        {"Norwich","Kings Lynn",43.6,0,0,0,0},
+        {"Peterborough","Kings Lynn",36.4,0,0,0,0},
+        {"Scarborough","York",41.2,0,0,0,0},
+        {"Middlesbrough","Scarborough",48.9,0,0,0,0},
+        {"Hull","Scarborough",42.5,0,0,0,0},
+        {"Aberystwyth","Shrewsbury",76.0,0,0,0,0},
+        {"Aberystwyth","Cardigan",38.3,0,0,0,0},
+        {"Cardigan","Carmarthen",26.1,0,0,0,0},
+        {"Carmarthen","Swansea",28.0,0,0,0,0},
     };
 
     int numberOfEdges = sizeof(allEdges)/sizeof(struct edge);
