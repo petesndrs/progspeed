@@ -234,10 +234,14 @@ void assignSubTrees(struct graph* g){
                 if (g->nodes[i].subtree == currentSubtree){
                     for (int j = 0; j < g->nodes[i].numEdges; ++j){
                         if (g->nodes[i].edges[j].used == 1) {
-                            if (g->nodes[g->nodes[i].edges[j].destinationIndex].subtree == 0 ||
-                                g->nodes[g->nodes[i].edges[j].destinationIndex].subtree == 0) newnode = 1;
-                            g->nodes[g->nodes[i].edges[j].destinationIndex].subtree = currentSubtree;
-                            g->nodes[g->nodes[i].edges[j].originIndex].subtree = currentSubtree;
+                            if (g->nodes[g->nodes[i].edges[j].destinationIndex].subtree == 0){
+                                g->nodes[g->nodes[i].edges[j].destinationIndex].subtree = currentSubtree;
+                                newnode = 1;
+                            }
+                            if (g->nodes[g->nodes[i].edges[j].originIndex].subtree == 0){ 
+                                g->nodes[g->nodes[i].edges[j].originIndex].subtree = currentSubtree;
+                                newnode = 1;
+                            }
                         }
                     }
                 }
@@ -603,7 +607,6 @@ int main() {
         {"Edinburgh","Glasgow",47.5,0,0,0,0},
         {"Brighton","Portsmouth",50.0,0,0,0,0},
         {"Brighton","London",53.3,0,0,0,0},
-        {"Birmingham","Gloucester",54.8,0,0,0,0},
         {"London","Oxford",55.9,0,0,0,0},
         {"Carlisle","Newcastle",59.1,0,0,0,0},
         {"Cambridge","Norwich",63.9,0,0,0,0},
@@ -630,6 +633,18 @@ int main() {
         {"Lincoln","Peterborough",51.9,0,0,0,0},
         {"Bangor","Chester",60.9,0,0,0,0},
         {"Blackpool","Preston",16.0,0,0,0,0},
+        {"Edinburgh","Perth",43.4,0,0,0,0},
+        {"Dundee","Perth",22.4,0,0,0,0},
+        {"Inverness","Perth",112.0,0,0,0,0},
+        {"Aberdeen","Dundee",66.0,0,0,0,0},
+        {"Aberdeen","Inverness",104.0,0,0,0,0},
+        {"Chester","Wrexham",13.4,0,0,0,0},
+        {"Birmingham","Shrewsbury",47.2,0,0,0,0},
+        {"Shrewsbury","Wrexham",31.7,0,0,0,0},
+        {"Birmingham","Worcester",40.6,0,0,0,0},
+        {"Gloucester","Worcester",30.2,0,0,0,0},
+        {"Bournemouth","Exeter",84.6,0,0,0,0},
+        {"Bournemouth","Southampton",33.2,0,0,0,0},
     };
 
     int numberOfEdges = sizeof(allEdges)/sizeof(struct edge);
