@@ -366,7 +366,7 @@ func doPrimAlgorithm(g graph){
         }
 
         if gotFirst {
-            fmt.Printf("Node \"%s\", Edge length %f\n", g.nodes[minimumNodeIndex].name, minimumLength);
+            fmt.Printf("Node \"%s\", Edge length %0.1f\n", g.nodes[minimumNodeIndex].name, minimumLength);
             g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1;
             g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1;
             setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex,1);
@@ -474,7 +474,7 @@ func doKruskalAlgorithm(g graph){
         }
 
         if gotFirst {
-            fmt.Printf("Add edge length %f\n", minimumLength);
+            fmt.Printf("Add edge length %0.1f\n", minimumLength);
             g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1;
             g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1;
             setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex, 1);
@@ -517,7 +517,7 @@ func doReverseDeleteAlgorithm(g graph){
         setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, 0);
         assignSubTrees(&g);
         if (g.numSubTrees == 1) {
-            fmt.Printf("Removed edge length %f\n", maximumLength);
+            fmt.Printf("Removed edge length %0.1f\n", maximumLength);
         } else {
             setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, 1);
             flagEdges(g.nodes, maximumNodeIndex, maximumEdgeIndex, 1);
