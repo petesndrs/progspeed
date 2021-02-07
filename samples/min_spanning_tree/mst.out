@@ -1,0 +1,896 @@
+digraph G {
+"Bath" -> "Bristol" [dir=none, label="12.9", style=dashed]
+"Bath" -> "Salisbury" [dir=none, label="39.4", style=dashed]
+"Bristol" -> "Gloucester" [dir=none, label="39.6", style=dashed]
+"Bristol" -> "Swindon" [dir=none, label="40.2", style=dashed]
+"Bristol" -> "Cardiff" [dir=none, label="44.1", style=dashed]
+"Bristol" -> "Exeter" [dir=none, label="80.7", style=dashed]
+"Derby" -> "Nottingham" [dir=none, label="14.9", style=dashed]
+"Derby" -> "Leicester" [dir=none, label="32.2", style=dashed]
+"Derby" -> "Stoke" [dir=none, label="36.2", style=dashed]
+"Derby" -> "Sheffield" [dir=none, label="41.5", style=dashed]
+"Nottingham" -> "Sheffield" [dir=none, label="37.8", style=dashed]
+"Liverpool" -> "Warrington" [dir=none, label="18.4", style=dashed]
+"Chester" -> "Liverpool" [dir=none, label="18.8", style=dashed]
+"Chester" -> "Warrington" [dir=none, label="22.6", style=dashed]
+"Chester" -> "Stoke" [dir=none, label="37.7", style=dashed]
+"Chester" -> "Wrexham" [dir=none, label="13.4", style=dashed]
+"Portsmouth" -> "Southampton" [dir=none, label="19.5", style=dashed]
+"Manchester" -> "Warrington" [dir=none, label="21.0", style=dashed]
+"Manchester" -> "Sheffield" [dir=none, label="40.9", style=dashed]
+"Salisbury" -> "Southampton" [dir=none, label="23.6", style=dashed]
+"Leicester" -> "Nottingham" [dir=none, label="27.9", style=dashed]
+"Leicester" -> "Peterborough" [dir=none, label="42.1", style=dashed]
+"Leicester" -> "Luton" [dir=none, label="69.5", style=dashed]
+"Leeds" -> "York" [dir=none, label="28.2", style=dashed]
+"Leeds" -> "Sheffield" [dir=none, label="35.5", style=dashed]
+"Leeds" -> "Manchester" [dir=none, label="44.7", style=dashed]
+"Preston" -> "Warrington" [dir=none, label="30.5", style=dashed]
+"Oxford" -> "Swindon" [dir=none, label="30.6", style=dashed]
+"Swindon" -> "Newbury" [dir=none, label="26.0", style=dashed]
+"Stoke" -> "Warrington" [dir=none, label="39.1", style=dashed]
+"Hull" -> "York" [dir=none, label="37.6", style=dashed]
+"Hull" -> "Leeds" [dir=none, label="64.4", style=dashed]
+"Hull" -> "Lincoln" [dir=none, label="48.2", style=dashed]
+"Hull" -> "Scarborough" [dir=none, label="42.5", style=dashed]
+"Gloucester" -> "Worcester" [dir=none, label="30.2", style=dashed]
+"Cardiff" -> "Swansea" [dir=none, label="41.6", style=dashed]
+"Birmingham" -> "Derby" [dir=none, label="41.8", style=dashed]
+"Birmingham" -> "Leicester" [dir=none, label="42.7", style=dashed]
+"Birmingham" -> "Stoke" [dir=none, label="44.9", style=dashed]
+"Birmingham" -> "Oxford" [dir=none, label="78.5", style=dashed]
+"Birmingham" -> "Shrewsbury" [dir=none, label="47.2", style=dashed]
+"Birmingham" -> "Worcester" [dir=none, label="40.6", style=dashed]
+"Peterborough" -> "Kings Lynn" [dir=none, label="36.4", style=dashed]
+"Cambridge" -> "Peterborough" [dir=none, label="43.1", style=dashed]
+"Cambridge" -> "Norwich" [dir=none, label="63.9", style=dashed]
+"Cambridge" -> "London" [dir=none, label="64.0", style=dashed]
+"Cambridge" -> "Kings Lynn" [dir=none, label="45.1", style=dashed]
+"Cambridge" -> "Luton" [dir=none, label="41.0", style=dashed]
+"Exeter" -> "Plymouth" [dir=none, label="44.8", style=dashed]
+"Exeter" -> "Salisbury" [dir=none, label="91.6", style=dashed]
+"Ipswich" -> "Norwich" [dir=none, label="45.0", style=dashed]
+"Ipswich" -> "London" [dir=none, label="81.9", style=dashed]
+"Norwich" -> "Kings Lynn" [dir=none, label="43.6", style=dashed]
+"Edinburgh" -> "Glasgow" [dir=none, label="47.5", style=dashed]
+"Edinburgh" -> "Newcastle" [dir=none, label="104.0", style=dashed]
+"Edinburgh" -> "Perth" [dir=none, label="43.4", style=dashed]
+"Brighton" -> "Portsmouth" [dir=none, label="50.0", style=dashed]
+"Brighton" -> "London" [dir=none, label="53.3", style=dashed]
+"London" -> "Oxford" [dir=none, label="55.9", style=dashed]
+"London" -> "Portsmouth" [dir=none, label="74.7", style=dashed]
+"London" -> "Southampton" [dir=none, label="79.2", style=dashed]
+"London" -> "Peterborough" [dir=none, label="85.4", style=dashed]
+"London" -> "Luton" [dir=none, label="34.3", style=dashed]
+"London" -> "Newbury" [dir=none, label="60.8", style=dashed]
+"Carlisle" -> "Newcastle" [dir=none, label="59.1", style=dashed]
+"Carlisle" -> "Preston" [dir=none, label="88.3", style=dashed]
+"Carlisle" -> "Glasgow" [dir=none, label="96.8", style=dashed]
+"Carlisle" -> "Kendal" [dir=none, label="46.1", style=dashed]
+"Canterbury" -> "Dover" [dir=none, label="17.1", style=dashed]
+"Canterbury" -> "London" [dir=none, label="61.9", style=dashed]
+"Lincoln" -> "Nottingham" [dir=none, label="39.5", style=dashed]
+"Lincoln" -> "Sheffield" [dir=none, label="46.8", style=dashed]
+"Lincoln" -> "Peterborough" [dir=none, label="51.9", style=dashed]
+"Bangor" -> "Chester" [dir=none, label="60.9", style=dashed]
+"Blackpool" -> "Preston" [dir=none, label="16.0", style=dashed]
+"Dundee" -> "Perth" [dir=none, label="22.4", style=dashed]
+"Inverness" -> "Perth" [dir=none, label="112.0", style=dashed]
+"Aberdeen" -> "Dundee" [dir=none, label="66.0", style=dashed]
+"Aberdeen" -> "Inverness" [dir=none, label="104.0", style=dashed]
+"Shrewsbury" -> "Wrexham" [dir=none, label="31.7", style=dashed]
+"Bournemouth" -> "Exeter" [dir=none, label="84.6", style=dashed]
+"Bournemouth" -> "Southampton" [dir=none, label="33.2", style=dashed]
+"Darlington" -> "Leeds" [dir=none, label="61.3", style=dashed]
+"Darlington" -> "Newcastle" [dir=none, label="37.3", style=dashed]
+"Darlington" -> "Middlesbrough" [dir=none, label="16.4", style=dashed]
+"Darlington" -> "Kendal" [dir=none, label="63.3", style=dashed]
+"Middlesbrough" -> "Scarborough" [dir=none, label="48.9", style=dashed]
+"Burnley" -> "Leeds" [dir=none, label="35.7", style=dashed]
+"Burnley" -> "Manchester" [dir=none, label="29.0", style=dashed]
+"Burnley" -> "Preston" [dir=none, label="21.5", style=dashed]
+"Scarborough" -> "York" [dir=none, label="41.2", style=dashed]
+"Aberystwyth" -> "Shrewsbury" [dir=none, label="76.0", style=dashed]
+"Aberystwyth" -> "Cardigan" [dir=none, label="38.3", style=dashed]
+"Cardigan" -> "Carmarthen" [dir=none, label="26.1", style=dashed]
+"Carmarthen" -> "Swansea" [dir=none, label="28.0", style=dashed]
+"Kendal" -> "Preston" [dir=none, label="42.7", style=dashed]
+"Barrow" -> "Kendal" [dir=none, label="34.7", style=dashed]
+"Luton" -> "Oxford" [dir=none, label="43.5", style=dashed]
+"Newbury" -> "Oxford" [dir=none, label="27.2", style=dashed]
+"Newbury" -> "Southampton" [dir=none, label="38.1", style=dashed]
+"Bath" [style=filled, fillcolor = pink]
+"Bristol" [style=filled, fillcolor = pink]
+"Derby" [style=filled, fillcolor = pink]
+"Nottingham" [style=filled, fillcolor = pink]
+"Liverpool" [style=filled, fillcolor = pink]
+"Warrington" [style=filled, fillcolor = pink]
+"Chester" [style=filled, fillcolor = pink]
+"Portsmouth" [style=filled, fillcolor = pink]
+"Southampton" [style=filled, fillcolor = pink]
+"Manchester" [style=filled, fillcolor = pink]
+"Salisbury" [style=filled, fillcolor = pink]
+"Leicester" [style=filled, fillcolor = pink]
+"Leeds" [style=filled, fillcolor = pink]
+"York" [style=filled, fillcolor = pink]
+"Preston" [style=filled, fillcolor = pink]
+"Oxford" [style=filled, fillcolor = pink]
+"Swindon" [style=filled, fillcolor = pink]
+"Sheffield" [style=filled, fillcolor = pink]
+"Stoke" [style=filled, fillcolor = pink]
+"Hull" [style=filled, fillcolor = pink]
+"Gloucester" [style=filled, fillcolor = pink]
+"Cardiff" [style=filled, fillcolor = pink]
+"Swansea" [style=filled, fillcolor = pink]
+"Birmingham" [style=filled, fillcolor = pink]
+"Peterborough" [style=filled, fillcolor = pink]
+"Cambridge" [style=filled, fillcolor = pink]
+"Exeter" [style=filled, fillcolor = pink]
+"Plymouth" [style=filled, fillcolor = pink]
+"Ipswich" [style=filled, fillcolor = pink]
+"Norwich" [style=filled, fillcolor = pink]
+"Edinburgh" [style=filled, fillcolor = pink]
+"Glasgow" [style=filled, fillcolor = pink]
+"Brighton" [style=filled, fillcolor = pink]
+"London" [style=filled, fillcolor = pink]
+"Carlisle" [style=filled, fillcolor = pink]
+"Newcastle" [style=filled, fillcolor = pink]
+"Canterbury" [style=filled, fillcolor = pink]
+"Dover" [style=filled, fillcolor = pink]
+"Lincoln" [style=filled, fillcolor = pink]
+"Bangor" [style=filled, fillcolor = pink]
+"Blackpool" [style=filled, fillcolor = pink]
+"Perth" [style=filled, fillcolor = pink]
+"Dundee" [style=filled, fillcolor = pink]
+"Inverness" [style=filled, fillcolor = pink]
+"Aberdeen" [style=filled, fillcolor = pink]
+"Wrexham" [style=filled, fillcolor = pink]
+"Shrewsbury" [style=filled, fillcolor = pink]
+"Worcester" [style=filled, fillcolor = pink]
+"Bournemouth" [style=filled, fillcolor = pink]
+"Darlington" [style=filled, fillcolor = pink]
+"Middlesbrough" [style=filled, fillcolor = pink]
+"Burnley" [style=filled, fillcolor = pink]
+"Kings Lynn" [style=filled, fillcolor = pink]
+"Scarborough" [style=filled, fillcolor = pink]
+"Aberystwyth" [style=filled, fillcolor = pink]
+"Cardigan" [style=filled, fillcolor = pink]
+"Carmarthen" [style=filled, fillcolor = pink]
+"Kendal" [style=filled, fillcolor = pink]
+"Barrow" [style=filled, fillcolor = pink]
+"Luton" [style=filled, fillcolor = pink]
+"Newbury" [style=filled, fillcolor = pink]
+}
+Add node length 12.9
+Add node length 12.9
+Add node length 14.9
+Add node length 14.9
+Add node length 18.4
+Add node length 18.4
+Add node length 13.4
+Add node length 19.5
+Add node length 19.5
+Add node length 21.0
+Add node length 23.6
+Add node length 27.9
+Add node length 28.2
+Add node length 28.2
+Add node length 16.0
+Add node length 27.2
+Add node length 26.0
+Add node length 35.5
+Add node length 36.2
+Add node length 37.6
+Add node length 30.2
+Add node length 41.6
+Add node length 28.0
+Add node length 40.6
+Add node length 36.4
+Add node length 41.0
+Add node length 44.8
+Add node length 44.8
+Add node length 45.0
+Add node length 43.6
+Add node length 43.4
+Add node length 47.5
+Add node length 50.0
+Add node length 34.3
+Add node length 46.1
+Add node length 37.3
+Add node length 17.1
+Add node length 17.1
+Add node length 39.5
+Add node length 60.9
+Add node length 16.0
+Add node length 22.4
+Add node length 22.4
+Add node length 104.0
+Add node length 66.0
+Add node length 13.4
+Add node length 31.7
+Add node length 30.2
+Add node length 33.2
+Add node length 16.4
+Add node length 16.4
+Add node length 21.5
+Add node length 36.4
+Add node length 41.2
+Add node length 38.3
+Add node length 26.1
+Add node length 26.1
+Add node length 34.7
+Add node length 34.7
+Add node length 34.3
+Add node length 26.0
+Number of subtrees = 17
+Add node length 39.4
+Add node length 18.8
+Add node length 38.1
+Add node length 35.7
+Add node length 37.7
+Add node length 39.6
+Add node length 44.1
+Add node length 42.1
+Add node length 43.1
+Add node length 80.7
+Add node length 96.8
+Add node length 61.9
+Add node length 48.9
+Add node length 29.0
+Add node length 42.7
+Number of subtrees = 2
+Add node length 41.8
+Number of subtrees = 1
+digraph G {
+"Bath" -> "Bristol" [dir=none, label="12.9", style=bold]
+"Bath" -> "Salisbury" [dir=none, label="39.4", style=bold]
+"Bristol" -> "Gloucester" [dir=none, label="39.6", style=bold]
+"Bristol" -> "Swindon" [dir=none, label="40.2", style=dashed]
+"Bristol" -> "Cardiff" [dir=none, label="44.1", style=bold]
+"Bristol" -> "Exeter" [dir=none, label="80.7", style=bold]
+"Derby" -> "Nottingham" [dir=none, label="14.9", style=bold]
+"Derby" -> "Leicester" [dir=none, label="32.2", style=dashed]
+"Derby" -> "Stoke" [dir=none, label="36.2", style=bold]
+"Derby" -> "Sheffield" [dir=none, label="41.5", style=dashed]
+"Nottingham" -> "Sheffield" [dir=none, label="37.8", style=dashed]
+"Liverpool" -> "Warrington" [dir=none, label="18.4", style=bold]
+"Chester" -> "Liverpool" [dir=none, label="18.8", style=bold]
+"Chester" -> "Warrington" [dir=none, label="22.6", style=dashed]
+"Chester" -> "Stoke" [dir=none, label="37.7", style=bold]
+"Chester" -> "Wrexham" [dir=none, label="13.4", style=bold]
+"Portsmouth" -> "Southampton" [dir=none, label="19.5", style=bold]
+"Manchester" -> "Warrington" [dir=none, label="21.0", style=bold]
+"Manchester" -> "Sheffield" [dir=none, label="40.9", style=dashed]
+"Salisbury" -> "Southampton" [dir=none, label="23.6", style=bold]
+"Leicester" -> "Nottingham" [dir=none, label="27.9", style=bold]
+"Leicester" -> "Peterborough" [dir=none, label="42.1", style=bold]
+"Leicester" -> "Luton" [dir=none, label="69.5", style=dashed]
+"Leeds" -> "York" [dir=none, label="28.2", style=bold]
+"Leeds" -> "Sheffield" [dir=none, label="35.5", style=bold]
+"Leeds" -> "Manchester" [dir=none, label="44.7", style=dashed]
+"Preston" -> "Warrington" [dir=none, label="30.5", style=dashed]
+"Oxford" -> "Swindon" [dir=none, label="30.6", style=dashed]
+"Swindon" -> "Newbury" [dir=none, label="26.0", style=bold]
+"Stoke" -> "Warrington" [dir=none, label="39.1", style=dashed]
+"Hull" -> "York" [dir=none, label="37.6", style=bold]
+"Hull" -> "Leeds" [dir=none, label="64.4", style=dashed]
+"Hull" -> "Lincoln" [dir=none, label="48.2", style=dashed]
+"Hull" -> "Scarborough" [dir=none, label="42.5", style=dashed]
+"Gloucester" -> "Worcester" [dir=none, label="30.2", style=bold]
+"Cardiff" -> "Swansea" [dir=none, label="41.6", style=bold]
+"Birmingham" -> "Derby" [dir=none, label="41.8", style=bold]
+"Birmingham" -> "Leicester" [dir=none, label="42.7", style=dashed]
+"Birmingham" -> "Stoke" [dir=none, label="44.9", style=dashed]
+"Birmingham" -> "Oxford" [dir=none, label="78.5", style=dashed]
+"Birmingham" -> "Shrewsbury" [dir=none, label="47.2", style=dashed]
+"Birmingham" -> "Worcester" [dir=none, label="40.6", style=bold]
+"Peterborough" -> "Kings Lynn" [dir=none, label="36.4", style=bold]
+"Cambridge" -> "Peterborough" [dir=none, label="43.1", style=bold]
+"Cambridge" -> "Norwich" [dir=none, label="63.9", style=dashed]
+"Cambridge" -> "London" [dir=none, label="64.0", style=dashed]
+"Cambridge" -> "Kings Lynn" [dir=none, label="45.1", style=dashed]
+"Cambridge" -> "Luton" [dir=none, label="41.0", style=bold]
+"Exeter" -> "Plymouth" [dir=none, label="44.8", style=bold]
+"Exeter" -> "Salisbury" [dir=none, label="91.6", style=dashed]
+"Ipswich" -> "Norwich" [dir=none, label="45.0", style=bold]
+"Ipswich" -> "London" [dir=none, label="81.9", style=dashed]
+"Norwich" -> "Kings Lynn" [dir=none, label="43.6", style=bold]
+"Edinburgh" -> "Glasgow" [dir=none, label="47.5", style=bold]
+"Edinburgh" -> "Newcastle" [dir=none, label="104.0", style=dashed]
+"Edinburgh" -> "Perth" [dir=none, label="43.4", style=bold]
+"Brighton" -> "Portsmouth" [dir=none, label="50.0", style=bold]
+"Brighton" -> "London" [dir=none, label="53.3", style=dashed]
+"London" -> "Oxford" [dir=none, label="55.9", style=dashed]
+"London" -> "Portsmouth" [dir=none, label="74.7", style=dashed]
+"London" -> "Southampton" [dir=none, label="79.2", style=dashed]
+"London" -> "Peterborough" [dir=none, label="85.4", style=dashed]
+"London" -> "Luton" [dir=none, label="34.3", style=bold]
+"London" -> "Newbury" [dir=none, label="60.8", style=dashed]
+"Carlisle" -> "Newcastle" [dir=none, label="59.1", style=dashed]
+"Carlisle" -> "Preston" [dir=none, label="88.3", style=dashed]
+"Carlisle" -> "Glasgow" [dir=none, label="96.8", style=bold]
+"Carlisle" -> "Kendal" [dir=none, label="46.1", style=bold]
+"Canterbury" -> "Dover" [dir=none, label="17.1", style=bold]
+"Canterbury" -> "London" [dir=none, label="61.9", style=bold]
+"Lincoln" -> "Nottingham" [dir=none, label="39.5", style=bold]
+"Lincoln" -> "Sheffield" [dir=none, label="46.8", style=dashed]
+"Lincoln" -> "Peterborough" [dir=none, label="51.9", style=dashed]
+"Bangor" -> "Chester" [dir=none, label="60.9", style=bold]
+"Blackpool" -> "Preston" [dir=none, label="16.0", style=bold]
+"Dundee" -> "Perth" [dir=none, label="22.4", style=bold]
+"Inverness" -> "Perth" [dir=none, label="112.0", style=dashed]
+"Aberdeen" -> "Dundee" [dir=none, label="66.0", style=bold]
+"Aberdeen" -> "Inverness" [dir=none, label="104.0", style=bold]
+"Shrewsbury" -> "Wrexham" [dir=none, label="31.7", style=bold]
+"Bournemouth" -> "Exeter" [dir=none, label="84.6", style=dashed]
+"Bournemouth" -> "Southampton" [dir=none, label="33.2", style=bold]
+"Darlington" -> "Leeds" [dir=none, label="61.3", style=dashed]
+"Darlington" -> "Newcastle" [dir=none, label="37.3", style=bold]
+"Darlington" -> "Middlesbrough" [dir=none, label="16.4", style=bold]
+"Darlington" -> "Kendal" [dir=none, label="63.3", style=dashed]
+"Middlesbrough" -> "Scarborough" [dir=none, label="48.9", style=bold]
+"Burnley" -> "Leeds" [dir=none, label="35.7", style=bold]
+"Burnley" -> "Manchester" [dir=none, label="29.0", style=bold]
+"Burnley" -> "Preston" [dir=none, label="21.5", style=bold]
+"Scarborough" -> "York" [dir=none, label="41.2", style=bold]
+"Aberystwyth" -> "Shrewsbury" [dir=none, label="76.0", style=dashed]
+"Aberystwyth" -> "Cardigan" [dir=none, label="38.3", style=bold]
+"Cardigan" -> "Carmarthen" [dir=none, label="26.1", style=bold]
+"Carmarthen" -> "Swansea" [dir=none, label="28.0", style=bold]
+"Kendal" -> "Preston" [dir=none, label="42.7", style=bold]
+"Barrow" -> "Kendal" [dir=none, label="34.7", style=bold]
+"Luton" -> "Oxford" [dir=none, label="43.5", style=dashed]
+"Newbury" -> "Oxford" [dir=none, label="27.2", style=bold]
+"Newbury" -> "Southampton" [dir=none, label="38.1", style=bold]
+"Bristol" [style=filled, fillcolor = pink]
+"Chester" [style=filled, fillcolor = pink]
+"Southampton" [style=filled, fillcolor = pink]
+"Oxford" [style=filled, fillcolor = green]
+"Swindon" [style=filled, fillcolor = green]
+"Sheffield" [style=filled, fillcolor = green]
+"Hull" [style=filled, fillcolor = green]
+"Plymouth" [style=filled, fillcolor = green]
+"Ipswich" [style=filled, fillcolor = green]
+"Brighton" [style=filled, fillcolor = green]
+"Newcastle" [style=filled, fillcolor = green]
+"Dover" [style=filled, fillcolor = green]
+"Lincoln" [style=filled, fillcolor = green]
+"Bangor" [style=filled, fillcolor = green]
+"Blackpool" [style=filled, fillcolor = green]
+"Inverness" [style=filled, fillcolor = green]
+"Shrewsbury" [style=filled, fillcolor = green]
+"Bournemouth" [style=filled, fillcolor = green]
+"Aberystwyth" [style=filled, fillcolor = green]
+"Barrow" [style=filled, fillcolor = green]
+}
+Total length = 2261.5
+Node "Bath", Edge length 12.9
+Node "Bath", Edge length 39.4
+Node "Salisbury", Edge length 23.6
+Node "Southampton", Edge length 19.5
+Node "Southampton", Edge length 33.2
+Node "Southampton", Edge length 38.1
+Node "Newbury", Edge length 26.0
+Node "Newbury", Edge length 27.2
+Node "Bristol", Edge length 39.6
+Node "Gloucester", Edge length 30.2
+Node "Worcester", Edge length 40.6
+Node "Birmingham", Edge length 41.8
+Node "Derby", Edge length 14.9
+Node "Nottingham", Edge length 27.9
+Node "Derby", Edge length 36.2
+Node "Stoke", Edge length 37.7
+Node "Chester", Edge length 13.4
+Node "Chester", Edge length 18.8
+Node "Liverpool", Edge length 18.4
+Node "Warrington", Edge length 21.0
+Node "Manchester", Edge length 29.0
+Node "Burnley", Edge length 21.5
+Node "Preston", Edge length 16.0
+Node "Wrexham", Edge length 31.7
+Node "Burnley", Edge length 35.7
+Node "Leeds", Edge length 28.2
+Node "Leeds", Edge length 35.5
+Node "York", Edge length 37.6
+Node "Nottingham", Edge length 39.5
+Node "York", Edge length 41.2
+Node "Leicester", Edge length 42.1
+Node "Peterborough", Edge length 36.4
+Node "Preston", Edge length 42.7
+Node "Kendal", Edge length 34.7
+Node "Peterborough", Edge length 43.1
+Node "Cambridge", Edge length 41.0
+Node "Luton", Edge length 34.3
+Node "Kings Lynn", Edge length 43.6
+Node "Bristol", Edge length 44.1
+Node "Cardiff", Edge length 41.6
+Node "Swansea", Edge length 28.0
+Node "Carmarthen", Edge length 26.1
+Node "Cardigan", Edge length 38.3
+Node "Norwich", Edge length 45.0
+Node "Kendal", Edge length 46.1
+Node "Scarborough", Edge length 48.9
+Node "Middlesbrough", Edge length 16.4
+Node "Darlington", Edge length 37.3
+Node "Portsmouth", Edge length 50.0
+Node "Chester", Edge length 60.9
+Node "London", Edge length 61.9
+Node "Canterbury", Edge length 17.1
+Node "Bristol", Edge length 80.7
+Node "Exeter", Edge length 44.8
+Node "Carlisle", Edge length 96.8
+Node "Glasgow", Edge length 47.5
+Node "Edinburgh", Edge length 43.4
+Node "Perth", Edge length 22.4
+Node "Dundee", Edge length 66.0
+Node "Aberdeen", Edge length 104.0
+digraph G {
+"Bath" -> "Bristol" [dir=none, label="12.9", style=bold]
+"Bath" -> "Salisbury" [dir=none, label="39.4", style=bold]
+"Bristol" -> "Gloucester" [dir=none, label="39.6", style=bold]
+"Bristol" -> "Swindon" [dir=none, label="40.2", style=dashed]
+"Bristol" -> "Cardiff" [dir=none, label="44.1", style=bold]
+"Bristol" -> "Exeter" [dir=none, label="80.7", style=bold]
+"Derby" -> "Nottingham" [dir=none, label="14.9", style=bold]
+"Derby" -> "Leicester" [dir=none, label="32.2", style=dashed]
+"Derby" -> "Stoke" [dir=none, label="36.2", style=bold]
+"Derby" -> "Sheffield" [dir=none, label="41.5", style=dashed]
+"Nottingham" -> "Sheffield" [dir=none, label="37.8", style=dashed]
+"Liverpool" -> "Warrington" [dir=none, label="18.4", style=bold]
+"Chester" -> "Liverpool" [dir=none, label="18.8", style=bold]
+"Chester" -> "Warrington" [dir=none, label="22.6", style=dashed]
+"Chester" -> "Stoke" [dir=none, label="37.7", style=bold]
+"Chester" -> "Wrexham" [dir=none, label="13.4", style=bold]
+"Portsmouth" -> "Southampton" [dir=none, label="19.5", style=bold]
+"Manchester" -> "Warrington" [dir=none, label="21.0", style=bold]
+"Manchester" -> "Sheffield" [dir=none, label="40.9", style=dashed]
+"Salisbury" -> "Southampton" [dir=none, label="23.6", style=bold]
+"Leicester" -> "Nottingham" [dir=none, label="27.9", style=bold]
+"Leicester" -> "Peterborough" [dir=none, label="42.1", style=bold]
+"Leicester" -> "Luton" [dir=none, label="69.5", style=dashed]
+"Leeds" -> "York" [dir=none, label="28.2", style=bold]
+"Leeds" -> "Sheffield" [dir=none, label="35.5", style=bold]
+"Leeds" -> "Manchester" [dir=none, label="44.7", style=dashed]
+"Preston" -> "Warrington" [dir=none, label="30.5", style=dashed]
+"Oxford" -> "Swindon" [dir=none, label="30.6", style=dashed]
+"Swindon" -> "Newbury" [dir=none, label="26.0", style=bold]
+"Stoke" -> "Warrington" [dir=none, label="39.1", style=dashed]
+"Hull" -> "York" [dir=none, label="37.6", style=bold]
+"Hull" -> "Leeds" [dir=none, label="64.4", style=dashed]
+"Hull" -> "Lincoln" [dir=none, label="48.2", style=dashed]
+"Hull" -> "Scarborough" [dir=none, label="42.5", style=dashed]
+"Gloucester" -> "Worcester" [dir=none, label="30.2", style=bold]
+"Cardiff" -> "Swansea" [dir=none, label="41.6", style=bold]
+"Birmingham" -> "Derby" [dir=none, label="41.8", style=bold]
+"Birmingham" -> "Leicester" [dir=none, label="42.7", style=dashed]
+"Birmingham" -> "Stoke" [dir=none, label="44.9", style=dashed]
+"Birmingham" -> "Oxford" [dir=none, label="78.5", style=dashed]
+"Birmingham" -> "Shrewsbury" [dir=none, label="47.2", style=dashed]
+"Birmingham" -> "Worcester" [dir=none, label="40.6", style=bold]
+"Peterborough" -> "Kings Lynn" [dir=none, label="36.4", style=bold]
+"Cambridge" -> "Peterborough" [dir=none, label="43.1", style=bold]
+"Cambridge" -> "Norwich" [dir=none, label="63.9", style=dashed]
+"Cambridge" -> "London" [dir=none, label="64.0", style=dashed]
+"Cambridge" -> "Kings Lynn" [dir=none, label="45.1", style=dashed]
+"Cambridge" -> "Luton" [dir=none, label="41.0", style=bold]
+"Exeter" -> "Plymouth" [dir=none, label="44.8", style=bold]
+"Exeter" -> "Salisbury" [dir=none, label="91.6", style=dashed]
+"Ipswich" -> "Norwich" [dir=none, label="45.0", style=bold]
+"Ipswich" -> "London" [dir=none, label="81.9", style=dashed]
+"Norwich" -> "Kings Lynn" [dir=none, label="43.6", style=bold]
+"Edinburgh" -> "Glasgow" [dir=none, label="47.5", style=bold]
+"Edinburgh" -> "Newcastle" [dir=none, label="104.0", style=dashed]
+"Edinburgh" -> "Perth" [dir=none, label="43.4", style=bold]
+"Brighton" -> "Portsmouth" [dir=none, label="50.0", style=bold]
+"Brighton" -> "London" [dir=none, label="53.3", style=dashed]
+"London" -> "Oxford" [dir=none, label="55.9", style=dashed]
+"London" -> "Portsmouth" [dir=none, label="74.7", style=dashed]
+"London" -> "Southampton" [dir=none, label="79.2", style=dashed]
+"London" -> "Peterborough" [dir=none, label="85.4", style=dashed]
+"London" -> "Luton" [dir=none, label="34.3", style=bold]
+"London" -> "Newbury" [dir=none, label="60.8", style=dashed]
+"Carlisle" -> "Newcastle" [dir=none, label="59.1", style=dashed]
+"Carlisle" -> "Preston" [dir=none, label="88.3", style=dashed]
+"Carlisle" -> "Glasgow" [dir=none, label="96.8", style=bold]
+"Carlisle" -> "Kendal" [dir=none, label="46.1", style=bold]
+"Canterbury" -> "Dover" [dir=none, label="17.1", style=bold]
+"Canterbury" -> "London" [dir=none, label="61.9", style=bold]
+"Lincoln" -> "Nottingham" [dir=none, label="39.5", style=bold]
+"Lincoln" -> "Sheffield" [dir=none, label="46.8", style=dashed]
+"Lincoln" -> "Peterborough" [dir=none, label="51.9", style=dashed]
+"Bangor" -> "Chester" [dir=none, label="60.9", style=bold]
+"Blackpool" -> "Preston" [dir=none, label="16.0", style=bold]
+"Dundee" -> "Perth" [dir=none, label="22.4", style=bold]
+"Inverness" -> "Perth" [dir=none, label="112.0", style=dashed]
+"Aberdeen" -> "Dundee" [dir=none, label="66.0", style=bold]
+"Aberdeen" -> "Inverness" [dir=none, label="104.0", style=bold]
+"Shrewsbury" -> "Wrexham" [dir=none, label="31.7", style=bold]
+"Bournemouth" -> "Exeter" [dir=none, label="84.6", style=dashed]
+"Bournemouth" -> "Southampton" [dir=none, label="33.2", style=bold]
+"Darlington" -> "Leeds" [dir=none, label="61.3", style=dashed]
+"Darlington" -> "Newcastle" [dir=none, label="37.3", style=bold]
+"Darlington" -> "Middlesbrough" [dir=none, label="16.4", style=bold]
+"Darlington" -> "Kendal" [dir=none, label="63.3", style=dashed]
+"Middlesbrough" -> "Scarborough" [dir=none, label="48.9", style=bold]
+"Burnley" -> "Leeds" [dir=none, label="35.7", style=bold]
+"Burnley" -> "Manchester" [dir=none, label="29.0", style=bold]
+"Burnley" -> "Preston" [dir=none, label="21.5", style=bold]
+"Scarborough" -> "York" [dir=none, label="41.2", style=bold]
+"Aberystwyth" -> "Shrewsbury" [dir=none, label="76.0", style=dashed]
+"Aberystwyth" -> "Cardigan" [dir=none, label="38.3", style=bold]
+"Cardigan" -> "Carmarthen" [dir=none, label="26.1", style=bold]
+"Carmarthen" -> "Swansea" [dir=none, label="28.0", style=bold]
+"Kendal" -> "Preston" [dir=none, label="42.7", style=bold]
+"Barrow" -> "Kendal" [dir=none, label="34.7", style=bold]
+"Luton" -> "Oxford" [dir=none, label="43.5", style=dashed]
+"Newbury" -> "Oxford" [dir=none, label="27.2", style=bold]
+"Newbury" -> "Southampton" [dir=none, label="38.1", style=bold]
+"Bristol" [style=filled, fillcolor = pink]
+"Chester" [style=filled, fillcolor = pink]
+"Southampton" [style=filled, fillcolor = pink]
+"Oxford" [style=filled, fillcolor = green]
+"Swindon" [style=filled, fillcolor = green]
+"Sheffield" [style=filled, fillcolor = green]
+"Hull" [style=filled, fillcolor = green]
+"Plymouth" [style=filled, fillcolor = green]
+"Ipswich" [style=filled, fillcolor = green]
+"Brighton" [style=filled, fillcolor = green]
+"Newcastle" [style=filled, fillcolor = green]
+"Dover" [style=filled, fillcolor = green]
+"Lincoln" [style=filled, fillcolor = green]
+"Bangor" [style=filled, fillcolor = green]
+"Blackpool" [style=filled, fillcolor = green]
+"Inverness" [style=filled, fillcolor = green]
+"Shrewsbury" [style=filled, fillcolor = green]
+"Bournemouth" [style=filled, fillcolor = green]
+"Aberystwyth" [style=filled, fillcolor = green]
+"Barrow" [style=filled, fillcolor = green]
+}
+Total length = 2261.5
+Add edge length 12.9
+Add edge length 13.4
+Add edge length 14.9
+Add edge length 16.0
+Add edge length 16.4
+Add edge length 17.1
+Add edge length 18.4
+Add edge length 18.8
+Add edge length 19.5
+Add edge length 21.0
+Add edge length 21.5
+Add edge length 22.4
+Add edge length 23.6
+Add edge length 26.0
+Add edge length 26.1
+Add edge length 27.2
+Add edge length 27.9
+Add edge length 28.0
+Add edge length 28.2
+Add edge length 29.0
+Add edge length 30.2
+Add edge length 31.7
+Add edge length 33.2
+Add edge length 34.3
+Add edge length 34.7
+Add edge length 35.5
+Add edge length 35.7
+Add edge length 36.2
+Add edge length 36.4
+Add edge length 37.3
+Add edge length 37.6
+Add edge length 37.7
+Add edge length 38.1
+Add edge length 38.3
+Add edge length 39.4
+Add edge length 39.5
+Add edge length 39.6
+Add edge length 40.6
+Add edge length 41.0
+Add edge length 41.2
+Add edge length 41.6
+Add edge length 41.8
+Add edge length 42.1
+Add edge length 42.7
+Add edge length 43.1
+Add edge length 43.4
+Add edge length 43.6
+Add edge length 44.1
+Add edge length 44.8
+Add edge length 45.0
+Add edge length 46.1
+Add edge length 47.5
+Add edge length 48.9
+Add edge length 50.0
+Add edge length 60.9
+Add edge length 61.9
+Add edge length 66.0
+Add edge length 80.7
+Add edge length 96.8
+Add edge length 104.0
+digraph G {
+"Bath" -> "Bristol" [dir=none, label="12.9", style=bold]
+"Bath" -> "Salisbury" [dir=none, label="39.4", style=bold]
+"Bristol" -> "Gloucester" [dir=none, label="39.6", style=bold]
+"Bristol" -> "Swindon" [dir=none, label="40.2", style=dashed]
+"Bristol" -> "Cardiff" [dir=none, label="44.1", style=bold]
+"Bristol" -> "Exeter" [dir=none, label="80.7", style=bold]
+"Derby" -> "Nottingham" [dir=none, label="14.9", style=bold]
+"Derby" -> "Leicester" [dir=none, label="32.2", style=dashed]
+"Derby" -> "Stoke" [dir=none, label="36.2", style=bold]
+"Derby" -> "Sheffield" [dir=none, label="41.5", style=dashed]
+"Nottingham" -> "Sheffield" [dir=none, label="37.8", style=dashed]
+"Liverpool" -> "Warrington" [dir=none, label="18.4", style=bold]
+"Chester" -> "Liverpool" [dir=none, label="18.8", style=bold]
+"Chester" -> "Warrington" [dir=none, label="22.6", style=dashed]
+"Chester" -> "Stoke" [dir=none, label="37.7", style=bold]
+"Chester" -> "Wrexham" [dir=none, label="13.4", style=bold]
+"Portsmouth" -> "Southampton" [dir=none, label="19.5", style=bold]
+"Manchester" -> "Warrington" [dir=none, label="21.0", style=bold]
+"Manchester" -> "Sheffield" [dir=none, label="40.9", style=dashed]
+"Salisbury" -> "Southampton" [dir=none, label="23.6", style=bold]
+"Leicester" -> "Nottingham" [dir=none, label="27.9", style=bold]
+"Leicester" -> "Peterborough" [dir=none, label="42.1", style=bold]
+"Leicester" -> "Luton" [dir=none, label="69.5", style=dashed]
+"Leeds" -> "York" [dir=none, label="28.2", style=bold]
+"Leeds" -> "Sheffield" [dir=none, label="35.5", style=bold]
+"Leeds" -> "Manchester" [dir=none, label="44.7", style=dashed]
+"Preston" -> "Warrington" [dir=none, label="30.5", style=dashed]
+"Oxford" -> "Swindon" [dir=none, label="30.6", style=dashed]
+"Swindon" -> "Newbury" [dir=none, label="26.0", style=bold]
+"Stoke" -> "Warrington" [dir=none, label="39.1", style=dashed]
+"Hull" -> "York" [dir=none, label="37.6", style=bold]
+"Hull" -> "Leeds" [dir=none, label="64.4", style=dashed]
+"Hull" -> "Lincoln" [dir=none, label="48.2", style=dashed]
+"Hull" -> "Scarborough" [dir=none, label="42.5", style=dashed]
+"Gloucester" -> "Worcester" [dir=none, label="30.2", style=bold]
+"Cardiff" -> "Swansea" [dir=none, label="41.6", style=bold]
+"Birmingham" -> "Derby" [dir=none, label="41.8", style=bold]
+"Birmingham" -> "Leicester" [dir=none, label="42.7", style=dashed]
+"Birmingham" -> "Stoke" [dir=none, label="44.9", style=dashed]
+"Birmingham" -> "Oxford" [dir=none, label="78.5", style=dashed]
+"Birmingham" -> "Shrewsbury" [dir=none, label="47.2", style=dashed]
+"Birmingham" -> "Worcester" [dir=none, label="40.6", style=bold]
+"Peterborough" -> "Kings Lynn" [dir=none, label="36.4", style=bold]
+"Cambridge" -> "Peterborough" [dir=none, label="43.1", style=bold]
+"Cambridge" -> "Norwich" [dir=none, label="63.9", style=dashed]
+"Cambridge" -> "London" [dir=none, label="64.0", style=dashed]
+"Cambridge" -> "Kings Lynn" [dir=none, label="45.1", style=dashed]
+"Cambridge" -> "Luton" [dir=none, label="41.0", style=bold]
+"Exeter" -> "Plymouth" [dir=none, label="44.8", style=bold]
+"Exeter" -> "Salisbury" [dir=none, label="91.6", style=dashed]
+"Ipswich" -> "Norwich" [dir=none, label="45.0", style=bold]
+"Ipswich" -> "London" [dir=none, label="81.9", style=dashed]
+"Norwich" -> "Kings Lynn" [dir=none, label="43.6", style=bold]
+"Edinburgh" -> "Glasgow" [dir=none, label="47.5", style=bold]
+"Edinburgh" -> "Newcastle" [dir=none, label="104.0", style=dashed]
+"Edinburgh" -> "Perth" [dir=none, label="43.4", style=bold]
+"Brighton" -> "Portsmouth" [dir=none, label="50.0", style=bold]
+"Brighton" -> "London" [dir=none, label="53.3", style=dashed]
+"London" -> "Oxford" [dir=none, label="55.9", style=dashed]
+"London" -> "Portsmouth" [dir=none, label="74.7", style=dashed]
+"London" -> "Southampton" [dir=none, label="79.2", style=dashed]
+"London" -> "Peterborough" [dir=none, label="85.4", style=dashed]
+"London" -> "Luton" [dir=none, label="34.3", style=bold]
+"London" -> "Newbury" [dir=none, label="60.8", style=dashed]
+"Carlisle" -> "Newcastle" [dir=none, label="59.1", style=dashed]
+"Carlisle" -> "Preston" [dir=none, label="88.3", style=dashed]
+"Carlisle" -> "Glasgow" [dir=none, label="96.8", style=bold]
+"Carlisle" -> "Kendal" [dir=none, label="46.1", style=bold]
+"Canterbury" -> "Dover" [dir=none, label="17.1", style=bold]
+"Canterbury" -> "London" [dir=none, label="61.9", style=bold]
+"Lincoln" -> "Nottingham" [dir=none, label="39.5", style=bold]
+"Lincoln" -> "Sheffield" [dir=none, label="46.8", style=dashed]
+"Lincoln" -> "Peterborough" [dir=none, label="51.9", style=dashed]
+"Bangor" -> "Chester" [dir=none, label="60.9", style=bold]
+"Blackpool" -> "Preston" [dir=none, label="16.0", style=bold]
+"Dundee" -> "Perth" [dir=none, label="22.4", style=bold]
+"Inverness" -> "Perth" [dir=none, label="112.0", style=dashed]
+"Aberdeen" -> "Dundee" [dir=none, label="66.0", style=bold]
+"Aberdeen" -> "Inverness" [dir=none, label="104.0", style=bold]
+"Shrewsbury" -> "Wrexham" [dir=none, label="31.7", style=bold]
+"Bournemouth" -> "Exeter" [dir=none, label="84.6", style=dashed]
+"Bournemouth" -> "Southampton" [dir=none, label="33.2", style=bold]
+"Darlington" -> "Leeds" [dir=none, label="61.3", style=dashed]
+"Darlington" -> "Newcastle" [dir=none, label="37.3", style=bold]
+"Darlington" -> "Middlesbrough" [dir=none, label="16.4", style=bold]
+"Darlington" -> "Kendal" [dir=none, label="63.3", style=dashed]
+"Middlesbrough" -> "Scarborough" [dir=none, label="48.9", style=bold]
+"Burnley" -> "Leeds" [dir=none, label="35.7", style=bold]
+"Burnley" -> "Manchester" [dir=none, label="29.0", style=bold]
+"Burnley" -> "Preston" [dir=none, label="21.5", style=bold]
+"Scarborough" -> "York" [dir=none, label="41.2", style=bold]
+"Aberystwyth" -> "Shrewsbury" [dir=none, label="76.0", style=dashed]
+"Aberystwyth" -> "Cardigan" [dir=none, label="38.3", style=bold]
+"Cardigan" -> "Carmarthen" [dir=none, label="26.1", style=bold]
+"Carmarthen" -> "Swansea" [dir=none, label="28.0", style=bold]
+"Kendal" -> "Preston" [dir=none, label="42.7", style=bold]
+"Barrow" -> "Kendal" [dir=none, label="34.7", style=bold]
+"Luton" -> "Oxford" [dir=none, label="43.5", style=dashed]
+"Newbury" -> "Oxford" [dir=none, label="27.2", style=bold]
+"Newbury" -> "Southampton" [dir=none, label="38.1", style=bold]
+"Bristol" [style=filled, fillcolor = pink]
+"Chester" [style=filled, fillcolor = pink]
+"Southampton" [style=filled, fillcolor = pink]
+"Oxford" [style=filled, fillcolor = green]
+"Swindon" [style=filled, fillcolor = green]
+"Sheffield" [style=filled, fillcolor = green]
+"Hull" [style=filled, fillcolor = green]
+"Plymouth" [style=filled, fillcolor = green]
+"Ipswich" [style=filled, fillcolor = green]
+"Brighton" [style=filled, fillcolor = green]
+"Newcastle" [style=filled, fillcolor = green]
+"Dover" [style=filled, fillcolor = green]
+"Lincoln" [style=filled, fillcolor = green]
+"Bangor" [style=filled, fillcolor = green]
+"Blackpool" [style=filled, fillcolor = green]
+"Inverness" [style=filled, fillcolor = green]
+"Shrewsbury" [style=filled, fillcolor = green]
+"Bournemouth" [style=filled, fillcolor = green]
+"Aberystwyth" [style=filled, fillcolor = green]
+"Barrow" [style=filled, fillcolor = green]
+}
+Total length = 2261.5
+Removed edge length 112.0
+Removed edge length 104.0
+Removed edge length 91.6
+Removed edge length 88.3
+Removed edge length 85.4
+Removed edge length 84.6
+Removed edge length 81.9
+Removed edge length 79.2
+Removed edge length 78.5
+Removed edge length 76.0
+Removed edge length 74.7
+Removed edge length 69.5
+Removed edge length 64.4
+Removed edge length 64.0
+Removed edge length 63.9
+Removed edge length 63.3
+Removed edge length 61.3
+Removed edge length 60.8
+Removed edge length 59.1
+Removed edge length 55.9
+Removed edge length 53.3
+Removed edge length 51.9
+Removed edge length 48.2
+Removed edge length 47.2
+Removed edge length 46.8
+Removed edge length 45.1
+Removed edge length 44.9
+Removed edge length 44.7
+Removed edge length 43.5
+Removed edge length 42.7
+Removed edge length 42.5
+Removed edge length 41.5
+Removed edge length 40.9
+Removed edge length 40.2
+Removed edge length 39.1
+Removed edge length 37.8
+Removed edge length 32.2
+Removed edge length 30.6
+Removed edge length 30.5
+Removed edge length 22.6
+digraph G {
+"Bath" -> "Bristol" [dir=none, label="12.9", style=bold]
+"Bath" -> "Salisbury" [dir=none, label="39.4", style=bold]
+"Bristol" -> "Gloucester" [dir=none, label="39.6", style=bold]
+"Bristol" -> "Swindon" [dir=none, label="40.2", style=dashed]
+"Bristol" -> "Cardiff" [dir=none, label="44.1", style=bold]
+"Bristol" -> "Exeter" [dir=none, label="80.7", style=bold]
+"Derby" -> "Nottingham" [dir=none, label="14.9", style=bold]
+"Derby" -> "Leicester" [dir=none, label="32.2", style=dashed]
+"Derby" -> "Stoke" [dir=none, label="36.2", style=bold]
+"Derby" -> "Sheffield" [dir=none, label="41.5", style=dashed]
+"Nottingham" -> "Sheffield" [dir=none, label="37.8", style=dashed]
+"Liverpool" -> "Warrington" [dir=none, label="18.4", style=bold]
+"Chester" -> "Liverpool" [dir=none, label="18.8", style=bold]
+"Chester" -> "Warrington" [dir=none, label="22.6", style=dashed]
+"Chester" -> "Stoke" [dir=none, label="37.7", style=bold]
+"Chester" -> "Wrexham" [dir=none, label="13.4", style=bold]
+"Portsmouth" -> "Southampton" [dir=none, label="19.5", style=bold]
+"Manchester" -> "Warrington" [dir=none, label="21.0", style=bold]
+"Manchester" -> "Sheffield" [dir=none, label="40.9", style=dashed]
+"Salisbury" -> "Southampton" [dir=none, label="23.6", style=bold]
+"Leicester" -> "Nottingham" [dir=none, label="27.9", style=bold]
+"Leicester" -> "Peterborough" [dir=none, label="42.1", style=bold]
+"Leicester" -> "Luton" [dir=none, label="69.5", style=dashed]
+"Leeds" -> "York" [dir=none, label="28.2", style=bold]
+"Leeds" -> "Sheffield" [dir=none, label="35.5", style=bold]
+"Leeds" -> "Manchester" [dir=none, label="44.7", style=dashed]
+"Preston" -> "Warrington" [dir=none, label="30.5", style=dashed]
+"Oxford" -> "Swindon" [dir=none, label="30.6", style=dashed]
+"Swindon" -> "Newbury" [dir=none, label="26.0", style=bold]
+"Stoke" -> "Warrington" [dir=none, label="39.1", style=dashed]
+"Hull" -> "York" [dir=none, label="37.6", style=bold]
+"Hull" -> "Leeds" [dir=none, label="64.4", style=dashed]
+"Hull" -> "Lincoln" [dir=none, label="48.2", style=dashed]
+"Hull" -> "Scarborough" [dir=none, label="42.5", style=dashed]
+"Gloucester" -> "Worcester" [dir=none, label="30.2", style=bold]
+"Cardiff" -> "Swansea" [dir=none, label="41.6", style=bold]
+"Birmingham" -> "Derby" [dir=none, label="41.8", style=bold]
+"Birmingham" -> "Leicester" [dir=none, label="42.7", style=dashed]
+"Birmingham" -> "Stoke" [dir=none, label="44.9", style=dashed]
+"Birmingham" -> "Oxford" [dir=none, label="78.5", style=dashed]
+"Birmingham" -> "Shrewsbury" [dir=none, label="47.2", style=dashed]
+"Birmingham" -> "Worcester" [dir=none, label="40.6", style=bold]
+"Peterborough" -> "Kings Lynn" [dir=none, label="36.4", style=bold]
+"Cambridge" -> "Peterborough" [dir=none, label="43.1", style=bold]
+"Cambridge" -> "Norwich" [dir=none, label="63.9", style=dashed]
+"Cambridge" -> "London" [dir=none, label="64.0", style=dashed]
+"Cambridge" -> "Kings Lynn" [dir=none, label="45.1", style=dashed]
+"Cambridge" -> "Luton" [dir=none, label="41.0", style=bold]
+"Exeter" -> "Plymouth" [dir=none, label="44.8", style=bold]
+"Exeter" -> "Salisbury" [dir=none, label="91.6", style=dashed]
+"Ipswich" -> "Norwich" [dir=none, label="45.0", style=bold]
+"Ipswich" -> "London" [dir=none, label="81.9", style=dashed]
+"Norwich" -> "Kings Lynn" [dir=none, label="43.6", style=bold]
+"Edinburgh" -> "Glasgow" [dir=none, label="47.5", style=bold]
+"Edinburgh" -> "Newcastle" [dir=none, label="104.0", style=dashed]
+"Edinburgh" -> "Perth" [dir=none, label="43.4", style=bold]
+"Brighton" -> "Portsmouth" [dir=none, label="50.0", style=bold]
+"Brighton" -> "London" [dir=none, label="53.3", style=dashed]
+"London" -> "Oxford" [dir=none, label="55.9", style=dashed]
+"London" -> "Portsmouth" [dir=none, label="74.7", style=dashed]
+"London" -> "Southampton" [dir=none, label="79.2", style=dashed]
+"London" -> "Peterborough" [dir=none, label="85.4", style=dashed]
+"London" -> "Luton" [dir=none, label="34.3", style=bold]
+"London" -> "Newbury" [dir=none, label="60.8", style=dashed]
+"Carlisle" -> "Newcastle" [dir=none, label="59.1", style=dashed]
+"Carlisle" -> "Preston" [dir=none, label="88.3", style=dashed]
+"Carlisle" -> "Glasgow" [dir=none, label="96.8", style=bold]
+"Carlisle" -> "Kendal" [dir=none, label="46.1", style=bold]
+"Canterbury" -> "Dover" [dir=none, label="17.1", style=bold]
+"Canterbury" -> "London" [dir=none, label="61.9", style=bold]
+"Lincoln" -> "Nottingham" [dir=none, label="39.5", style=bold]
+"Lincoln" -> "Sheffield" [dir=none, label="46.8", style=dashed]
+"Lincoln" -> "Peterborough" [dir=none, label="51.9", style=dashed]
+"Bangor" -> "Chester" [dir=none, label="60.9", style=bold]
+"Blackpool" -> "Preston" [dir=none, label="16.0", style=bold]
+"Dundee" -> "Perth" [dir=none, label="22.4", style=bold]
+"Inverness" -> "Perth" [dir=none, label="112.0", style=dashed]
+"Aberdeen" -> "Dundee" [dir=none, label="66.0", style=bold]
+"Aberdeen" -> "Inverness" [dir=none, label="104.0", style=bold]
+"Shrewsbury" -> "Wrexham" [dir=none, label="31.7", style=bold]
+"Bournemouth" -> "Exeter" [dir=none, label="84.6", style=dashed]
+"Bournemouth" -> "Southampton" [dir=none, label="33.2", style=bold]
+"Darlington" -> "Leeds" [dir=none, label="61.3", style=dashed]
+"Darlington" -> "Newcastle" [dir=none, label="37.3", style=bold]
+"Darlington" -> "Middlesbrough" [dir=none, label="16.4", style=bold]
+"Darlington" -> "Kendal" [dir=none, label="63.3", style=dashed]
+"Middlesbrough" -> "Scarborough" [dir=none, label="48.9", style=bold]
+"Burnley" -> "Leeds" [dir=none, label="35.7", style=bold]
+"Burnley" -> "Manchester" [dir=none, label="29.0", style=bold]
+"Burnley" -> "Preston" [dir=none, label="21.5", style=bold]
+"Scarborough" -> "York" [dir=none, label="41.2", style=bold]
+"Aberystwyth" -> "Shrewsbury" [dir=none, label="76.0", style=dashed]
+"Aberystwyth" -> "Cardigan" [dir=none, label="38.3", style=bold]
+"Cardigan" -> "Carmarthen" [dir=none, label="26.1", style=bold]
+"Carmarthen" -> "Swansea" [dir=none, label="28.0", style=bold]
+"Kendal" -> "Preston" [dir=none, label="42.7", style=bold]
+"Barrow" -> "Kendal" [dir=none, label="34.7", style=bold]
+"Luton" -> "Oxford" [dir=none, label="43.5", style=dashed]
+"Newbury" -> "Oxford" [dir=none, label="27.2", style=bold]
+"Newbury" -> "Southampton" [dir=none, label="38.1", style=bold]
+"Bristol" [style=filled, fillcolor = pink]
+"Chester" [style=filled, fillcolor = pink]
+"Southampton" [style=filled, fillcolor = pink]
+"Oxford" [style=filled, fillcolor = green]
+"Swindon" [style=filled, fillcolor = green]
+"Sheffield" [style=filled, fillcolor = green]
+"Hull" [style=filled, fillcolor = green]
+"Plymouth" [style=filled, fillcolor = green]
+"Ipswich" [style=filled, fillcolor = green]
+"Brighton" [style=filled, fillcolor = green]
+"Newcastle" [style=filled, fillcolor = green]
+"Dover" [style=filled, fillcolor = green]
+"Lincoln" [style=filled, fillcolor = green]
+"Bangor" [style=filled, fillcolor = green]
+"Blackpool" [style=filled, fillcolor = green]
+"Inverness" [style=filled, fillcolor = green]
+"Shrewsbury" [style=filled, fillcolor = green]
+"Bournemouth" [style=filled, fillcolor = green]
+"Aberystwyth" [style=filled, fillcolor = green]
+"Barrow" [style=filled, fillcolor = green]
+}
+Total length = 2261.5
+Passed

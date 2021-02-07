@@ -32,7 +32,7 @@ def findNodeIndexByName(nodes, numNodes, search):
             return i
 
     return -1
- 
+
 
 def dumpDotGraph(nodes, numNodes, withSubTree):
     print("digraph G {")
@@ -65,14 +65,14 @@ def dumpDotGraph(nodes, numNodes, withSubTree):
         for j in range(len(nodes[i].edges)):
             if (nodes[i].edges[j].used == 1):
                 usedEdgeCount+=1
-            
-        
+
+
         if (usedEdgeCount == 1):
             print("\"{}\" [style=filled, fillcolor = green]".format(nodes[i].name))
-    
+
         if (usedEdgeCount == maximumEdgeCount):
             print("\"{}\" [style=filled, fillcolor = pink]".format(nodes[i].name))
-            
+
     print("}")
 
 def dumpGraph(g):
@@ -88,8 +88,8 @@ def createNodes(edges):
 
     nodeStorage = 2
     numNodes = 0
-    nodes = []    
-  
+    nodes = []
+
     for i in range(len(edges)):
         ni = findNodeIndexByName(nodes, numNodes, edges[i].origin)
         if (ni == -1):
@@ -127,7 +127,7 @@ def createNodes(edges):
         filledEdges[destinationIndex]+=1
 
     g = graph(numNodes, nodes, 0)
-    
+
     return g
 
 def setEdgeAndPartnerUsed(nodes, node, edge, used):
@@ -187,10 +187,10 @@ def assignSubTrees(g):
             if (g.nodes[i].subtree == 0):
                 g.nodes[i].subtree = currentSubtree
                 break
-            
+
             if ( i == g.numNodes-1):
                 finished = True
-                
+
         newnode = 1
         while (newnode == 1):
             newnode = 0
@@ -201,8 +201,8 @@ def assignSubTrees(g):
                             if (g.nodes[g.nodes[i].edges[j].destinationIndex].subtree == 0):
                                 g.nodes[g.nodes[i].edges[j].destinationIndex].subtree = currentSubtree
                                 newnode = 1
-                            
-                            if (g.nodes[g.nodes[i].edges[j].originIndex].subtree == 0): 
+
+                            if (g.nodes[g.nodes[i].edges[j].originIndex].subtree == 0):
                                 g.nodes[g.nodes[i].edges[j].originIndex].subtree = currentSubtree
                                 newnode = 1
 
@@ -253,8 +253,6 @@ def edgeConnectsUnusedNode(nodes, e):
 
 def doBoruvkaAlgorithm(g):
 
-    dumpDotGraph(g.nodes, g.numNodes, 0)
-
     joinShortestEdgePerNode(g.nodes)
 
     while (1):
@@ -263,14 +261,11 @@ def doBoruvkaAlgorithm(g):
         print('Number of subtrees = {}'.format(g.numSubTrees))
 
         if (g.numSubTrees == 1):
-            dumpDotGraph(g.nodes, g.numNodes, 0)
             return
 
         joinShortestEdgePerSubTrees(g)
 
 def doPrimAlgorithm(g):
-
-    dumpDotGraph(g.nodes, g.numNodes, 0)
 
     g.nodes[0].used = 1
 
@@ -304,8 +299,6 @@ def doPrimAlgorithm(g):
             setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex,1)
         else:
             keepgoing = 0
-
-    dumpDotGraph(g.nodes, g.numNodes, 0)
 
 def isCyclic(g):
     keepgoing = 1
@@ -350,8 +343,6 @@ def isCyclic(g):
 
 def doKruskalAlgorithm(g):
 
-    dumpDotGraph(g.nodes, g.numNodes, 0)
-
     keepgoing = 1
 
     while (keepgoing == 1):
@@ -391,11 +382,7 @@ def doKruskalAlgorithm(g):
         else:
             keepgoing = 0
 
-    dumpDotGraph(g.nodes, g.numNodes, 0)
-
 def doReverseDeleteAlgorithm(g):
-
-    dumpDotGraph(g.nodes, g.numNodes, 0)
 
     keepgoing = 1
 
@@ -433,8 +420,7 @@ def doReverseDeleteAlgorithm(g):
         for j in range(len(g.nodes[i].edges)):
             if (g.nodes[i].edges[j].used == 2):
                 g.nodes[i].edges[j].used = 1
-                
-    dumpDotGraph(g.nodes, g.numNodes, 0)
+
 
 def connectGraph(g):
     for i in range(len(g.nodes)):
@@ -568,20 +554,25 @@ def main():
     ]
 
     g = createNodes(allEdges)
+    dumpDotGraph(g.nodes, g.numNodes, 0)
 
     doBoruvkaAlgorithm(g)
+    dumpDotGraph(g.nodes, g.numNodes, 0)
     Blength = CalculateTotalEdgeLength(g)
 
     disconnectGraph(g)
     doPrimAlgorithm(g)
+    dumpDotGraph(g.nodes, g.numNodes, 0)
     Plength = CalculateTotalEdgeLength(g)
 
     disconnectGraph(g)
     doKruskalAlgorithm(g)
+    dumpDotGraph(g.nodes, g.numNodes, 0)
     Klength = CalculateTotalEdgeLength(g)
 
     connectGraph(g)
     doReverseDeleteAlgorithm(g)
+    dumpDotGraph(g.nodes, g.numNodes, 0)
     Rlength = CalculateTotalEdgeLength(g)
 
     if (math.fabs(Blength - Plength) < 1.0 and

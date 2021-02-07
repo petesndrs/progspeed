@@ -438,8 +438,6 @@ class mst
 	private void doBoruvkaAlgorithm(graph g)
 	{
 
-		dumpDotGraph(g.nodes, 0);
-
 		joinShortestEdgePerNode(g.nodes, g.nodes.length);
 
 		while (true)
@@ -450,7 +448,6 @@ class mst
 
 			if (g.numSubTrees == 1)
 			{
-				dumpDotGraph(g.nodes, 0);
 				return;
 			}
 
@@ -460,8 +457,6 @@ class mst
 
 	private void doPrimAlgorithm(graph g)
 	{
-
-		dumpDotGraph(g.nodes, 0);
 
 		g.nodes[0].used = 1;
 
@@ -513,7 +508,6 @@ class mst
 			}
 		}
 
-		dumpDotGraph(g.nodes, 0);
 	}
 
 	private boolean isCyclic(graph g)
@@ -587,8 +581,6 @@ class mst
 	private void doKruskalAlgorithm(graph g)
 	{
 
-		dumpDotGraph(g.nodes, 0);
-
 		boolean keepgoing = true;
 
 		while (keepgoing)
@@ -650,13 +642,10 @@ class mst
 			}
 		}
 
-		dumpDotGraph(g.nodes, 0);
 	}
 
 	public void doReverseDeleteAlgorithm(graph g)
 	{
-
-		dumpDotGraph(g.nodes, 0);
 
 		boolean keepgoing = true;
 
@@ -715,7 +704,6 @@ class mst
 				}
 			}
 		}
-		dumpDotGraph(g.nodes, 0);
 	}
 
 	private void connectGraph(graph g)
@@ -870,20 +858,25 @@ class mst
 		allEdges[i++] = new edge ("Swindon","Newbury",26.0f,0,0,0,0);
 
 		final graph g = createNodes(allEdges, i);
+		dumpDotGraph(g.nodes, 0);
 
 		doBoruvkaAlgorithm(g);
+		dumpDotGraph(g.nodes, 0);
 		float Blength = CalculateTotalEdgeLength(g);
 
 		disconnectGraph(g);
 		doPrimAlgorithm(g);
+		dumpDotGraph(g.nodes, 0);
 		float Plength = CalculateTotalEdgeLength(g);
 
 		disconnectGraph(g);
 		doKruskalAlgorithm(g);
+		dumpDotGraph(g.nodes, 0);
 		float Klength = CalculateTotalEdgeLength(g);
 
 		connectGraph(g);
 		doReverseDeleteAlgorithm(g);
+		dumpDotGraph(g.nodes, 0);
 		float Rlength = CalculateTotalEdgeLength(g);
 
 		if (Math.abs(Blength - Plength) < 1.0f &&

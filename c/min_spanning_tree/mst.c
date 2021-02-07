@@ -29,14 +29,14 @@ struct graph {
 };
 
 int findNodeIndexByName(struct node* nodes, int numNodes, char* search){
-    int i; 
+    int i;
     for ( i = 0; i < numNodes; ++i){
         if (strcmp(nodes[i].name, search) == 0){
             return i;
         }
     }
     return -1;
-} 
+}
 
 void dumpDotGraph(struct node* nodes, int numNodes, int withSubTree){
     puts("digraph G {");
@@ -100,8 +100,8 @@ struct graph createNodes(struct edge* edges, int numberOfEdges){
 
     int nodeStorage = 2;
     int numNodes = 0;
-    struct node* nodes = malloc(sizeof(struct node) * nodeStorage);    
-  
+    struct node* nodes = malloc(sizeof(struct node) * nodeStorage);
+
     int i;
     for ( i = 0; i < numberOfEdges; ++i){
         int ni = findNodeIndexByName(nodes, numNodes, edges[i].origin);
@@ -254,7 +254,7 @@ void assignSubTrees(struct graph* g){
                                 g->nodes[g->nodes[i].edges[j].destinationIndex].subtree = currentSubtree;
                                 newnode = 1;
                             }
-                            if (g->nodes[g->nodes[i].edges[j].originIndex].subtree == 0){ 
+                            if (g->nodes[g->nodes[i].edges[j].originIndex].subtree == 0){
                                 g->nodes[g->nodes[i].edges[j].originIndex].subtree = currentSubtree;
                                 newnode = 1;
                             }
@@ -324,8 +324,6 @@ int edgeConnectsUnusedNode(struct node* nodes, struct edge e){
 
 void doBoruvkaAlgorithm(struct graph g){
 
-    dumpDotGraph(g.nodes, g.numNodes, 0);
-
     joinShortestEdgePerNode(g.nodes, g.numNodes);
 
     while (1) {
@@ -334,7 +332,6 @@ void doBoruvkaAlgorithm(struct graph g){
         printf("Number of subtrees = %d\n", g.numSubTrees);
 
         if (g.numSubTrees == 1) {
-            dumpDotGraph(g.nodes, g.numNodes, 0);
             return;
         }
 
@@ -343,8 +340,6 @@ void doBoruvkaAlgorithm(struct graph g){
 }
 
 void doPrimAlgorithm(struct graph g){
-
-    dumpDotGraph(g.nodes, g.numNodes, 0);
 
     g.nodes[0].used = 1;
 
@@ -386,8 +381,6 @@ void doPrimAlgorithm(struct graph g){
             keepgoing = 0;
         }
     }
-
-    dumpDotGraph(g.nodes, g.numNodes, 0);
 
 }
 
@@ -445,8 +438,6 @@ int isCyclic(struct graph g){
 
 void doKruskalAlgorithm(struct graph g){
 
-    dumpDotGraph(g.nodes, g.numNodes, 0);
-
     int keepgoing = 1;
 
     while (keepgoing == 1) {
@@ -494,12 +485,9 @@ void doKruskalAlgorithm(struct graph g){
         }
     }
 
-    dumpDotGraph(g.nodes, g.numNodes, 0);
 }
 
 void doReverseDeleteAlgorithm(struct graph g){
-
-    dumpDotGraph(g.nodes, g.numNodes, 0);
 
     int keepgoing = 1;
 
@@ -545,7 +533,7 @@ void doReverseDeleteAlgorithm(struct graph g){
 			}
         }
     }
-    dumpDotGraph(g.nodes, g.numNodes, 0);
+
 }
 
 void connectGraph(struct graph g){
@@ -691,20 +679,25 @@ int main() {
     int numberOfEdges = sizeof(allEdges)/sizeof(struct edge);
 
     struct graph g = createNodes(allEdges, numberOfEdges);
+    dumpDotGraph(g.nodes, g.numNodes, 0);
 
     doBoruvkaAlgorithm(g);
+    dumpDotGraph(g.nodes, g.numNodes, 0);
     float Blength = CalculateTotalEdgeLength(g);
 
     disconnectGraph(g);
     doPrimAlgorithm(g);
+    dumpDotGraph(g.nodes, g.numNodes, 0);
     float Plength = CalculateTotalEdgeLength(g);
 
     disconnectGraph(g);
     doKruskalAlgorithm(g);
+    dumpDotGraph(g.nodes, g.numNodes, 0);
     float Klength = CalculateTotalEdgeLength(g);
 
     connectGraph(g);
     doReverseDeleteAlgorithm(g);
+    dumpDotGraph(g.nodes, g.numNodes, 0);
     float Rlength = CalculateTotalEdgeLength(g);
 
     if (fabs(Blength - Plength) < 1.0 &&
@@ -715,4 +708,3 @@ int main() {
         puts("Failed");
     }
 }
-

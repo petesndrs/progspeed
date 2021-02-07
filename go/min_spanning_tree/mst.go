@@ -16,7 +16,7 @@ type edge struct{
 type node struct{
     name string
     numEdges int
-	edges []edge
+    edges []edge
     subtree int
     used int
 }
@@ -34,7 +34,7 @@ func findNodeIndexByName(nodes []node, search string) int {
         }
     }
     return -1
-} 
+}
 
 func dumpDotGraph(nodes []node, withSubTree int){
     fmt.Println("digraph G {");
@@ -98,7 +98,7 @@ func createNodes(edges []edge, numberOfEdges int) graph {
 
     var numNodes int = 0;
     var nodes []node
-  
+
     for i := 0; i < numberOfEdges; i++ {
         ni := findNodeIndexByName(nodes, edges[i].origin);
         if (ni == -1) {
@@ -243,7 +243,7 @@ func assignSubTrees(g *graph){
                                 g.nodes[g.nodes[i].edges[j].destinationIndex].subtree = currentSubtree;
                                 newnode = true;
                             }
-                            if (g.nodes[g.nodes[i].edges[j].originIndex].subtree == 0){ 
+                            if (g.nodes[g.nodes[i].edges[j].originIndex].subtree == 0){
                                 g.nodes[g.nodes[i].edges[j].originIndex].subtree = currentSubtree;
                                 newnode = true;
                             }
@@ -313,8 +313,6 @@ func edgeConnectsUnusedNode(nodes []node, e edge) bool {
 
 func doBoruvkaAlgorithm(g graph){
 
-    dumpDotGraph(g.nodes, 0);
-
     joinShortestEdgePerNode(g.nodes);
 
     for true {
@@ -323,7 +321,6 @@ func doBoruvkaAlgorithm(g graph){
         fmt.Printf("Number of subtrees = %d\n", g.numSubTrees);
 
         if (g.numSubTrees == 1) {
-            dumpDotGraph(g.nodes, 0);
             return;
         }
 
@@ -332,8 +329,6 @@ func doBoruvkaAlgorithm(g graph){
 }
 
 func doPrimAlgorithm(g graph){
-
-    dumpDotGraph(g.nodes, 0);
 
     g.nodes[0].used = 1
 
@@ -375,8 +370,6 @@ func doPrimAlgorithm(g graph){
             keepgoing = false
         }
     }
-
-    dumpDotGraph(g.nodes, 0)
 
 }
 
@@ -434,8 +427,6 @@ func isCyclic(g graph) bool {
 
 func doKruskalAlgorithm(g graph){
 
-    dumpDotGraph(g.nodes, 0);
-
     var keepgoing bool = true
 
     for keepgoing {
@@ -483,12 +474,9 @@ func doKruskalAlgorithm(g graph){
         }
     }
 
-    dumpDotGraph(g.nodes, 0);
 }
 
 func doReverseDeleteAlgorithm(g graph){
-
-    dumpDotGraph(g.nodes, 0);
 
     var keepgoing bool = true;
 
@@ -534,7 +522,7 @@ func doReverseDeleteAlgorithm(g graph){
 			}
         }
     }
-    dumpDotGraph(g.nodes, 0);
+
 }
 
 func connectGraph(g graph){
@@ -680,28 +668,32 @@ func main() {
     numberOfEdges := len(allEdges)
 
     g := createNodes(allEdges, numberOfEdges);
+    dumpDotGraph(g.nodes, 0)
 
     doBoruvkaAlgorithm(g);
+    dumpDotGraph(g.nodes, 0)
     Blength := CalculateTotalEdgeLength(g);
 
     disconnectGraph(g);
     doPrimAlgorithm(g);
+    dumpDotGraph(g.nodes, 0)
     Plength := CalculateTotalEdgeLength(g);
 
     disconnectGraph(g);
     doKruskalAlgorithm(g);
+    dumpDotGraph(g.nodes, 0)
     Klength := CalculateTotalEdgeLength(g);
 
     connectGraph(g);
     doReverseDeleteAlgorithm(g);
+    dumpDotGraph(g.nodes, 0)
     Rlength := CalculateTotalEdgeLength(g);
 
     if (math.Abs(float64(Blength - Plength)) < 1.0 &&
-	    math.Abs(float64(Plength - Klength)) < 1.0 &&
+        math.Abs(float64(Plength - Klength)) < 1.0 &&
         math.Abs(float64(Klength - Rlength)) < 1.0	) {
         fmt.Println("Passed");
 	} else {
         fmt.Println("Failed");
     }
 }
-
