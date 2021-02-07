@@ -8,10 +8,11 @@ java -version
 
 DIR=("pythagorean_triples" "linear_congruential_gen" "xor_shift_gen" "fibonacci_twoways"
      "kaprekars_process" "naughts_crosses" "triangle_enclosure" "unique_anagram"
-     "goldbach_conjecture" "sieve_eratosthenes" "pi_from_random" "min_spanning_tree")
+     "goldbach_conjecture" "sieve_eratosthenes" "pi_from_random" "min_spanning_tree"
+     "armstrong_number")
 
 BIN=("pyth" "gen" "xor" "fib" "kap" "nac" "tri" "ana"
-     "gold" "erat" "pirn" "mst")
+     "gold" "erat" "pirn" "mst" "arm")
 
 date
 
