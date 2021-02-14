@@ -180,8 +180,8 @@ def assignSubTrees(g):
         g.nodes[i].subtree = 0
 
     currentSubtree = 0
-    finished = False
-    while (not finished):
+    keepgoing = True
+    while (keepgoing):
         currentSubtree+=1
         for i in range(len(g.nodes)):
             if (g.nodes[i].subtree == 0):
@@ -189,22 +189,22 @@ def assignSubTrees(g):
                 break
 
             if ( i == g.numNodes-1):
-                finished = True
+                keepgoing = False
 
-        newnode = 1
-        while (newnode == 1):
-            newnode = 0
+        newnode = True
+        while (newnode):
+            newnode = False
             for i in range(len(g.nodes)):
                 if (g.nodes[i].subtree == currentSubtree):
                     for j in range(len(g.nodes[i].edges)):
                         if (g.nodes[i].edges[j].used == 1):
                             if (g.nodes[g.nodes[i].edges[j].destinationIndex].subtree == 0):
                                 g.nodes[g.nodes[i].edges[j].destinationIndex].subtree = currentSubtree
-                                newnode = 1
+                                newnode = True
 
                             if (g.nodes[g.nodes[i].edges[j].originIndex].subtree == 0):
                                 g.nodes[g.nodes[i].edges[j].originIndex].subtree = currentSubtree
-                                newnode = 1
+                                newnode = True
 
     g.numSubTrees = currentSubtree-1
 
@@ -220,17 +220,17 @@ def joinShortestEdgePerSubTrees(g):
         minimumLength = 0.0
         minimumEdgeIndex = 0
         minimumNodeIndex = 0
-        gotFirst = 0
+        gotFirst = False
         for i in range(len(g.nodes)):
             if (g.nodes[i].subtree == tree):
                 for j in range(len(g.nodes[i].edges)):
                     if (g.nodes[i].edges[j].used == 0):
                         if (edgeConnectsDifferentSubtrees(g.nodes, g.nodes[i].edges[j])):
-                            if (gotFirst == 0):
+                            if (not gotFirst):
                                 minimumLength = g.nodes[i].edges[j].length
                                 minimumEdgeIndex = j
                                 minimumNodeIndex = i
-                                gotFirst = 1
+                                gotFirst = True
 
                             if (g.nodes[i].edges[j].length < minimumLength):
                                 minimumLength = g.nodes[i].edges[j].length
@@ -255,7 +255,7 @@ def doBoruvkaAlgorithm(g):
 
     joinShortestEdgePerNode(g.nodes)
 
-    while (1):
+    while (True):
         assignSubTrees(g)
 
         print('Number of subtrees = {}'.format(g.numSubTrees))
@@ -269,11 +269,11 @@ def doPrimAlgorithm(g):
 
     g.nodes[0].used = 1
 
-    keepgoing = 1
+    keepgoing = True
 
-    while (keepgoing == 1):
+    while (keepgoing):
 
-        gotFirst = 0
+        gotFirst = False
         minimumLength = 0.0
         minimumNodeIndex = 0
         minimumEdgeIndex = 0
@@ -281,52 +281,52 @@ def doPrimAlgorithm(g):
             if (g.nodes[i].used == 1):
                 for j in range(len(g.nodes[i].edges)):
                     if (g.nodes[i].edges[j].used == 0 and edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j])):
-                        if (gotFirst == 0):
+                        if (not gotFirst):
                             minimumLength = g.nodes[i].edges[j].length
                             minimumNodeIndex = i
                             minimumEdgeIndex = j
-                            gotFirst = 1
+                            gotFirst = True
 
                         if (g.nodes[i].edges[j].length < minimumLength):
                             minimumLength = g.nodes[i].edges[j].length
                             minimumNodeIndex = i
                             minimumEdgeIndex = j
 
-        if (gotFirst == 1):
+        if (gotFirst):
             print('Node \"{}\", Edge length {:0.1f}'.format(g.nodes[minimumNodeIndex].name, minimumLength))
             g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1
             g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1
             setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex,1)
         else:
-            keepgoing = 0
+            keepgoing = False
 
 def isCyclic(g):
-    keepgoing = 1
-    nodesLeft = 0
-    while (keepgoing == 1):
-        removed = 0
-        nodesLeft = 0
+    keepgoing = True
+    nodesLeft = False
+    while (keepgoing):
+        removed = False
+        nodesLeft = False
         for i in range(len(g.nodes)):
             if (g.nodes[i].used == 1):
-                nodesLeft+=1
+                nodesLeft = True
                 numberEdgesInUse = 0
                 for j in range(len(g.nodes[i].edges)):
                     if (g.nodes[i].edges[j].used == 1):
                         numberEdgesInUse+=1
 
                 if (numberEdgesInUse == 1):
-                    removed = 1
+                    removed = True
                     g.nodes[i].used = 2
                     for j in range(len(g.nodes[i].edges)):
                         if (g.nodes[i].edges[j].used == 1):
                             setEdgeAndPartnerUsed(g.nodes, i, j, 2)
 
                 if (numberEdgesInUse == 0):
-                    removed = 1
+                    removed = True
                     g.nodes[i].used = 2
 
-        if (removed == 0):
-            keepgoing = 0
+        if (not removed):
+            keepgoing = False
 
     for i in range(len(g.nodes)):
         if (g.nodes[i].used == 2):
@@ -336,69 +336,69 @@ def isCyclic(g):
             if (g.nodes[i].edges[j].used == 2):
                 g.nodes[i].edges[j].used = 1
 
-    if (nodesLeft > 0):
-        return 1
+    if (nodesLeft):
+        return True
 
-    return 0
+    return False
 
 def doKruskalAlgorithm(g):
 
-    keepgoing = 1
+    keepgoing = True
 
-    while (keepgoing == 1):
-        gotFirst = 0
+    while (keepgoing):
+        gotFirst = False
         minimumLength = 0.0
         minimumNodeIndex = 0
         minimumEdgeIndex = 0
         for i in range(len(g.nodes)):
             for j in range(len(g.nodes[i].edges)):
                 if (g.nodes[i].edges[j].used == 0):
-                    allowed = 0
+                    allowed = False
                     if (edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j])):
-                        allowed = 1
+                        allowed = True
                     else:
                         setEdgeAndPartnerUsed(g.nodes, i, j, 1)
-                        if (isCyclic(g) == 0):
-                            allowed = 1
+                        if (not isCyclic(g)):
+                            allowed = True
                         setEdgeAndPartnerUsed(g.nodes, i, j, 0)
 
-                    if (allowed == 1):
-                        if (gotFirst == 0):
+                    if (allowed):
+                        if (not gotFirst):
                             minimumLength = g.nodes[i].edges[j].length
                             minimumNodeIndex = i
                             minimumEdgeIndex = j
-                            gotFirst = 1
+                            gotFirst = True
 
                         if (g.nodes[i].edges[j].length < minimumLength):
                             minimumLength = g.nodes[i].edges[j].length
                             minimumNodeIndex = i
                             minimumEdgeIndex = j
 
-        if (gotFirst == 1):
+        if (gotFirst):
             print('Add edge length {:0.1f}'.format(minimumLength))
             g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1
             g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1
             setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex, 1)
         else:
-            keepgoing = 0
+            keepgoing = False
 
 def doReverseDeleteAlgorithm(g):
 
-    keepgoing = 1
+    keepgoing = True
 
-    while (keepgoing == 1):
-        gotFirst = 0
+    while (keepgoing):
+        gotFirst = False
         maximumLength = 0.0
         maximumNodeIndex = 0
         maximumEdgeIndex = 0
         for i in range(len(g.nodes)):
             for j in range(len(g.nodes[i].edges)):
                 if (g.nodes[i].edges[j].used == 1 and g.nodes[i].edges[j].flag == 0):
-                    if (gotFirst == 0):
+                    if (not gotFirst):
                         maximumLength = g.nodes[i].edges[j].length
                         maximumNodeIndex = i
                         maximumEdgeIndex = j
-                        gotFirst = 1
+                        gotFirst = True
 
                     if (g.nodes[i].edges[j].length > maximumLength):
                         maximumLength = g.nodes[i].edges[j].length
@@ -413,8 +413,8 @@ def doReverseDeleteAlgorithm(g):
             setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, 1)
             flagEdges(g.nodes, maximumNodeIndex, maximumEdgeIndex, 1)
 
-        if (isCyclic(g) == 0):
-            keepgoing = 0
+        if (not isCyclic(g)):
+            keepgoing = False
 
     for i in range(len(g.nodes)):
         for j in range(len(g.nodes[i].edges)):
