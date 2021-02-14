@@ -488,7 +488,7 @@ func doReverseDeleteAlgorithm(g graph){
         for i := 0; i < len(g.nodes); i++ {
             for j := 0; j < len(g.nodes[i].edges); j++{
                 if (g.nodes[i].edges[j].used == 1 && g.nodes[i].edges[j].flag == 0) {
-                    if gotFirst {
+                    if !gotFirst {
                         maximumLength = g.nodes[i].edges[j].length;
                         maximumNodeIndex = i;
                         maximumEdgeIndex = j;
