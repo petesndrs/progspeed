@@ -318,8 +318,8 @@ class mst
 		}
 
 		int currentSubtree = 0;
-		boolean finished = false;
-		while (!finished)
+		boolean keepgoing = true;
+		while (keepgoing)
 		{
 			currentSubtree++;
 			for (int i = 0; i < g.nodes.length; ++i)
@@ -331,7 +331,7 @@ class mst
 				}
 				if ( i == g.nodes.length-1)
 				{
-					finished = true;
+					keepgoing = false;
 				}
 			}
 			boolean newnode = true;

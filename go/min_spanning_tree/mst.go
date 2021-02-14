@@ -275,7 +275,7 @@ func joinShortestEdgePerSubTrees(g graph){
                 for j := 0; j < len(g.nodes[i].edges); j++ {
                     if (g.nodes[i].edges[j].used == 0) {
                         if (edgeConnectsDifferentSubtrees(g.nodes, g.nodes[i].edges[j])){
-                            if (gotFirst == false) {
+                            if (!gotFirst) {
                                 minimumLength = g.nodes[i].edges[j].length;
                                 minimumEdgeIndex = j;
                                 minimumNodeIndex = i;
@@ -344,7 +344,7 @@ func doPrimAlgorithm(g graph){
             if (g.nodes[i].used == 1){
                 for j := 0; j < len(g.nodes[i].edges); j++ {
                     if (g.nodes[i].edges[j].used == 0 && edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j])) {
-                        if (gotFirst == false) {
+                        if (!gotFirst) {
                             minimumLength = g.nodes[i].edges[j].length;
                             minimumNodeIndex = i;
                             minimumEdgeIndex = j;
@@ -375,13 +375,13 @@ func doPrimAlgorithm(g graph){
 
 func isCyclic(g graph) bool {
     var keepgoing bool = true;
-    var nodesLeft int = 0;
+    var nodesLeft bool = false;
     for keepgoing {
 		var removed bool = false;
-		nodesLeft = 0;
+		nodesLeft = false;
         for i := 0; i < len(g.nodes); i++ {
 			if (g.nodes[i].used == 1){
-				nodesLeft++;
+				nodesLeft = true;
 		        var numberEdgesInUse int = 0;
                 for j := 0; j < len(g.nodes[i].edges); j++ {
 				    if (g.nodes[i].edges[j].used == 1) {
@@ -419,7 +419,7 @@ func isCyclic(g graph) bool {
 		}
 	}
 
-    if (nodesLeft > 0) {
+    if (nodesLeft) {
 		return true
 	}
 	return false
