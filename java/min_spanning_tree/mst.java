@@ -2,17 +2,24 @@ import java.lang.Math.*;
 
 class mst
 {
+	enum usedReason {
+		NotUsed,
+		IsUsed,
+		IsUsedNotCyclic,
+		IsUsedSubTree
+	}
+
 	public class edge
 	{
 		public String origin;
 		public String destination;
 		public float length;
-		public int used;
+		public usedReason used;
 		public int flag;
 		public int originIndex;
 		public int destinationIndex;
 
-		public edge(String a_origin, String a_destination, float a_length, int a_used, int a_flag, int a_originIndex, int a_destinationIndex)
+		public edge(String a_origin, String a_destination, float a_length, usedReason a_used, int a_flag, int a_originIndex, int a_destinationIndex)
 		{
 			origin = a_origin;
 			destination = a_destination;
@@ -41,7 +48,7 @@ class mst
 		public int numEdges;
 		public edge[] edges;
 		public int subtree;
-		public int used;
+		public usedReason used;
 	}
 
 	public class graph
@@ -72,14 +79,14 @@ class mst
 			int usedEdgeCount = 0;
 			for (int j = 0; j < nodes[i].numEdges; ++j)
 			{
-				if (nodes[i].edges[j].used == 1)
+				if (nodes[i].edges[j].used == usedReason.IsUsed)
 				{
 					usedEdgeCount++;
 				}
 				if (nodes[i].name.equals(nodes[i].edges[j].origin))
 				{
 					String linestyle;
-					if (nodes[i].edges[j].used == 0)
+					if (nodes[i].edges[j].used == usedReason.NotUsed)
 					{
 						linestyle="dashed";
 					}
@@ -109,7 +116,7 @@ class mst
 			int usedEdgeCount = 0;
 			for (int j = 0; j < nodes[i].numEdges; ++j)
 			{
-				if (nodes[i].edges[j].used == 1)
+				if (nodes[i].edges[j].used == usedReason.IsUsed)
 				{
 					usedEdgeCount++;
 				}
@@ -164,7 +171,7 @@ class mst
 				nodes[numNodes].name = edges[i].origin;
 				nodes[numNodes].numEdges = 1;
 				nodes[numNodes].edges = null;
-				nodes[numNodes].used = 0;
+				nodes[numNodes].used = usedReason.NotUsed;
 				nodes[numNodes].subtree = 0;
 				numNodes++;
 			}
@@ -187,7 +194,7 @@ class mst
 				nodes[numNodes].name = edges[i].destination;
 				nodes[numNodes].numEdges = 1;
 				nodes[numNodes].edges = null;
-				nodes[numNodes].used = 0;
+				nodes[numNodes].used = usedReason.NotUsed;
 				nodes[numNodes].subtree = 0;
 				numNodes++;
 			}
@@ -232,7 +239,7 @@ class mst
 		return g;
 	}
 
-	private void setEdgeAndPartnerUsed(node[] nodes, int node, int edge, int used)
+	private void setEdgeAndPartnerUsed(node[] nodes, int node, int edge, usedReason used)
 	{
 
 		nodes[node].edges[edge].used = used;
@@ -305,7 +312,7 @@ class mst
 	                minimumIndex = j;
 	            }
 	        }
-	        setEdgeAndPartnerUsed(nodes,i,minimumIndex,1);
+	        setEdgeAndPartnerUsed(nodes,i,minimumIndex,usedReason.IsUsed);
 	        System.out.printf("Add node length %.1f\n", minimumLength);
 	    }
 	}
@@ -344,7 +351,7 @@ class mst
 					{
 						for (int j = 0; j < g.nodes[i].numEdges; ++j)
 						{
-							if (g.nodes[i].edges[j].used == 1)
+							if (g.nodes[i].edges[j].used == usedReason.IsUsed)
 							{
 								if (g.nodes[g.nodes[i].edges[j].destinationIndex].subtree == 0)
 								{
@@ -388,7 +395,7 @@ class mst
 				{
 					for (int j = 0; j < g.nodes[i].numEdges; ++j)
 					{
-						if (g.nodes[i].edges[j].used == 0)
+						if (g.nodes[i].edges[j].used == usedReason.NotUsed)
 						{
 							if (edgeConnectsDifferentSubtrees(g.nodes, g.nodes[i].edges[j]))
 							{
@@ -410,16 +417,16 @@ class mst
 					}
 				}
 			}
-			g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].used = 2;
+			g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].used = usedReason.IsUsedSubTree;
 		}
 
 		for (int i = 0; i < g.nodes.length; ++i)
 		{
 			for (int j = 0; j < g.nodes[i].numEdges; ++j)
 			{
-				if (g.nodes[i].edges[j].used == 2)
+				if (g.nodes[i].edges[j].used == usedReason.IsUsedSubTree)
 				{
-					setEdgeAndPartnerUsed(g.nodes,i,j,1);
+					setEdgeAndPartnerUsed(g.nodes,i,j,usedReason.IsUsed);
 					System.out.printf("Add node length %.1f\n", g.nodes[i].edges[j].length);
 				}
 			}
@@ -428,7 +435,7 @@ class mst
 
 	private boolean edgeConnectsUnusedNode(node[] nodes, edge e)
 	{
-		if (nodes[e.originIndex].used == 0 || nodes[e.destinationIndex].used == 0)
+		if (nodes[e.originIndex].used == usedReason.NotUsed || nodes[e.destinationIndex].used == usedReason.NotUsed)
 		{
 			return true;
 		}
@@ -458,7 +465,7 @@ class mst
 	private void doPrimAlgorithm(graph g)
 	{
 
-		g.nodes[0].used = 1;
+		g.nodes[0].used = usedReason.IsUsed;
 
 		boolean keepgoing = true;
 
@@ -471,11 +478,11 @@ class mst
 			int minimumEdgeIndex = 0;
 			for (int i = 0; i < g.nodes.length; ++i)
 			{
-				if (g.nodes[i].used == 1)
+				if (g.nodes[i].used == usedReason.IsUsed)
 				{
 					for (int j = 0; j < g.nodes[i].numEdges; ++j)
 					{
-						if (g.nodes[i].edges[j].used == 0 && edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j]))
+						if (g.nodes[i].edges[j].used == usedReason.NotUsed && edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j]))
 						{
 							if (!gotFirst)
 							{
@@ -498,9 +505,9 @@ class mst
 			if (gotFirst)
 			{
 				System.out.printf("Node \"%s\", Edge length %.1f\n", g.nodes[minimumNodeIndex].name, minimumLength);
-				g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1;
-				g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1;
-				setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex,1);
+				g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = usedReason.IsUsed;
+				g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = usedReason.IsUsed;
+				setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex,usedReason.IsUsed);
 			}
 			else
 			{
@@ -520,13 +527,13 @@ class mst
 			nodesLeft = false;
 			for (int i = 0; i < g.nodes.length; ++i)
 			{
-				if (g.nodes[i].used == 1)
+				if (g.nodes[i].used == usedReason.IsUsed)
 				{
 					nodesLeft = true;
 					int numberEdgesInUse = 0;
 					for (int j = 0; j < g.nodes[i].numEdges; ++j)
 					{
-						if (g.nodes[i].edges[j].used == 1)
+						if (g.nodes[i].edges[j].used == usedReason.IsUsed)
 						{
 							numberEdgesInUse++;
 						}
@@ -534,19 +541,19 @@ class mst
 					if (numberEdgesInUse == 1)
 					{
 						removed = true;
-						g.nodes[i].used = 2;
+						g.nodes[i].used = usedReason.IsUsedNotCyclic;
 						for (int j = 0; j < g.nodes[i].numEdges; ++j)
 						{
-							if (g.nodes[i].edges[j].used == 1)
+							if (g.nodes[i].edges[j].used == usedReason.IsUsed)
 							{
-								setEdgeAndPartnerUsed(g.nodes, i, j, 2);
+								setEdgeAndPartnerUsed(g.nodes, i, j, usedReason.IsUsedNotCyclic);
 							}
 						}
 					}
 					if (numberEdgesInUse == 0)
 					{
 						removed = true;
-						g.nodes[i].used = 2;
+						g.nodes[i].used = usedReason.IsUsedNotCyclic;
 					}
 				}
 			}
@@ -558,15 +565,15 @@ class mst
 
 		for (int i = 0; i < g.nodes.length; ++i)
 		{
-			if (g.nodes[i].used == 2)
+			if (g.nodes[i].used == usedReason.IsUsedNotCyclic)
 			{
-				g.nodes[i].used = 1;
+				g.nodes[i].used = usedReason.IsUsed;
 			}
 			for (int j = 0; j < g.nodes[i].numEdges; ++j)
 			{
-				if (g.nodes[i].edges[j].used == 2)
+				if (g.nodes[i].edges[j].used == usedReason.IsUsedNotCyclic)
 				{
-					g.nodes[i].edges[j].used = 1;
+					g.nodes[i].edges[j].used = usedReason.IsUsed;
 				}
 			}
 		}
@@ -593,7 +600,7 @@ class mst
 			{
 				for (int j = 0; j < g.nodes[i].numEdges; ++j)
 				{
-					if (g.nodes[i].edges[j].used == 0)
+					if (g.nodes[i].edges[j].used == usedReason.NotUsed)
 					{
 						boolean allowed = false;
 						if (edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j]))
@@ -602,12 +609,12 @@ class mst
 						}
 						else
 						{
-							setEdgeAndPartnerUsed(g.nodes, i, j, 1);
+							setEdgeAndPartnerUsed(g.nodes, i, j, usedReason.IsUsed);
 							if (!isCyclic(g))
 							{
 								allowed = true;
 							}
-							setEdgeAndPartnerUsed(g.nodes, i, j, 0);
+							setEdgeAndPartnerUsed(g.nodes, i, j, usedReason.NotUsed);
 						}
 						if (allowed)
 						{
@@ -632,9 +639,9 @@ class mst
 			if (gotFirst)
 			{
 				System.out.printf("Add edge length %.1f\n", minimumLength);
-				g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1;
-				g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1;
-				setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex, 1);
+				g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = usedReason.IsUsed;
+				g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = usedReason.IsUsed;
+				setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex, usedReason.IsUsed);
 			}
 			else
 			{
@@ -659,7 +666,7 @@ class mst
 			{
 				for (int j = 0; j < g.nodes[i].numEdges; ++j)
 				{
-					if (g.nodes[i].edges[j].used == 1 && g.nodes[i].edges[j].flag == 0)
+					if (g.nodes[i].edges[j].used == usedReason.IsUsed && g.nodes[i].edges[j].flag == 0)
 					{
 						if (!gotFirst)
 						{
@@ -677,7 +684,7 @@ class mst
 					}
 				}
 			}
-			setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, 0);
+			setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, usedReason.NotUsed);
 			assignSubTrees(g);
 			if (g.numSubTrees == 1)
 			{
@@ -685,23 +692,12 @@ class mst
 			}
 			else
 			{
-				setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, 1);
+				setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, usedReason.IsUsed);
 				flagEdges(g.nodes, maximumNodeIndex, maximumEdgeIndex, 1);
 			}
 			if (!isCyclic(g))
 			{
 				keepgoing = false;
-			}
-		}
-
-		for (int i = 0; i < g.nodes.length; ++i)
-		{
-			for (int j = 0; j < g.nodes[i].numEdges; ++j)
-			{
-				if (g.nodes[i].edges[j].used == 2)
-				{
-					g.nodes[i].edges[j].used = 1;
-				}
 			}
 		}
 	}
@@ -710,11 +706,11 @@ class mst
 	{
 		for (int i = 0; i < g.nodes.length; ++i)
 		{
-			g.nodes[i].used = 1;
+			g.nodes[i].used = usedReason.IsUsed;
 			g.nodes[i].subtree = 1;
 			for (int j = 0; j < g.nodes[i].numEdges; ++j)
 			{
-				g.nodes[i].edges[j].used = 1;
+				g.nodes[i].edges[j].used = usedReason.IsUsed;
 				g.nodes[i].edges[j].flag = 0;
 			}
 		}
@@ -724,11 +720,11 @@ class mst
 	{
 		for (int i = 0; i < g.nodes.length; ++i)
 		{
-			g.nodes[i].used = 0;
+			g.nodes[i].used = usedReason.NotUsed;
 			g.nodes[i].subtree = 0;
 			for (int j = 0; j < g.nodes[i].numEdges; ++j)
 			{
-				g.nodes[i].edges[j].used = 0;
+				g.nodes[i].edges[j].used = usedReason.NotUsed;
 				g.nodes[i].edges[j].flag = 0;
 			}
 		}
@@ -741,7 +737,7 @@ class mst
 		{
 			for (int j = 0; j < g.nodes[i].numEdges; ++j)
 			{
-				if (g.nodes[i].edges[j].used == 1)
+				if (g.nodes[i].edges[j].used == usedReason.IsUsed)
 				{
 					total += g.nodes[i].edges[j].length;
 				}
@@ -756,106 +752,106 @@ class mst
 		final int NUMBER_OF_EDGES = 200;
 		final edge[] allEdges = new edge[NUMBER_OF_EDGES];
 		int i = 0;
-		allEdges[i++] = new edge ("Bath","Bristol",12.9f,0,0,0,0);
-		allEdges[i++] = new edge ("Derby","Nottingham",14.9f,0,0,0,0);
-		allEdges[i++] = new edge ("Liverpool","Warrington",18.4f,0,0,0,0);
-		allEdges[i++] = new edge ("Chester","Liverpool",18.8f,0,0,0,0);
-		allEdges[i++] = new edge ("Portsmouth","Southampton",19.5f,0,0,0,0);
-		allEdges[i++] = new edge ("Manchester","Warrington",21.0f,0,0,0,0);
-		allEdges[i++] = new edge ("Chester","Warrington",22.6f,0,0,0,0);
-		allEdges[i++] = new edge ("Salisbury","Southampton",23.6f,0,0,0,0);
-		allEdges[i++] = new edge ("Leicester","Nottingham",27.9f,0,0,0,0);
-		allEdges[i++] = new edge ("Leeds","York",28.2f,0,0,0,0);
-		allEdges[i++] = new edge ("Preston","Warrington",30.5f,0,0,0,0);
-		allEdges[i++] = new edge ("Oxford","Swindon",30.6f,0,0,0,0);
-		allEdges[i++] = new edge ("Derby","Leicester",32.2f,0,0,0,0);
-		allEdges[i++] = new edge ("Leeds","Sheffield",35.5f,0,0,0,0);
-		allEdges[i++] = new edge ("Derby","Stoke",36.2f,0,0,0,0);
-		allEdges[i++] = new edge ("Hull","York",37.6f,0,0,0,0);
-		allEdges[i++] = new edge ("Chester","Stoke",37.7f,0,0,0,0);
-		allEdges[i++] = new edge ("Nottingham","Sheffield",37.8f,0,0,0,0);
-		allEdges[i++] = new edge ("Stoke","Warrington",39.1f,0,0,0,0);
-		allEdges[i++] = new edge ("Bath","Salisbury",39.4f,0,0,0,0);
-		allEdges[i++] = new edge ("Bristol","Gloucester",39.6f,0,0,0,0);
-		allEdges[i++] = new edge ("Bristol","Swindon",40.2f,0,0,0,0);
-		allEdges[i++] = new edge ("Manchester","Sheffield",40.9f,0,0,0,0);
-		allEdges[i++] = new edge ("Derby","Sheffield",41.5f,0,0,0,0);
-		allEdges[i++] = new edge ("Cardiff","Swansea",41.6f,0,0,0,0);
-		allEdges[i++] = new edge ("Birmingham","Derby",41.8f,0,0,0,0);
-		allEdges[i++] = new edge ("Leicester","Peterborough",42.1f,0,0,0,0);
-		allEdges[i++] = new edge ("Birmingham","Leicester",42.7f,0,0,0,0);
-		allEdges[i++] = new edge ("Cambridge","Peterborough",43.1f,0,0,0,0);
-		allEdges[i++] = new edge ("Bristol","Cardiff",44.1f,0,0,0,0);
-		allEdges[i++] = new edge ("Leeds","Manchester",44.7f,0,0,0,0);
-		allEdges[i++] = new edge ("Exeter","Plymouth",44.8f,0,0,0,0);
-		allEdges[i++] = new edge ("Birmingham","Stoke",44.9f,0,0,0,0);
-		allEdges[i++] = new edge ("Ipswich","Norwich",45.0f,0,0,0,0);
-		allEdges[i++] = new edge ("Edinburgh","Glasgow",47.5f,0,0,0,0);
-		allEdges[i++] = new edge ("Brighton","Portsmouth",50.0f,0,0,0,0);
-		allEdges[i++] = new edge ("Brighton","London",53.3f,0,0,0,0);
-		allEdges[i++] = new edge ("London","Oxford",55.9f,0,0,0,0);
-		allEdges[i++] = new edge ("Carlisle","Newcastle",59.1f,0,0,0,0);
-		allEdges[i++] = new edge ("Cambridge","Norwich",63.9f,0,0,0,0);
-		allEdges[i++] = new edge ("Cambridge","London",64.0f,0,0,0,0);
-		allEdges[i++] = new edge ("Hull","Leeds",64.4f,0,0,0,0);
-		allEdges[i++] = new edge ("London","Portsmouth",74.7f,0,0,0,0);
-		allEdges[i++] = new edge ("Birmingham","Oxford",78.5f,0,0,0,0);
-		allEdges[i++] = new edge ("London","Southampton",79.2f,0,0,0,0);
-		allEdges[i++] = new edge ("Bristol","Exeter",80.7f,0,0,0,0);
-		allEdges[i++] = new edge ("Ipswich","London",81.9f,0,0,0,0);
-		allEdges[i++] = new edge ("London","Peterborough",85.4f,0,0,0,0);
-		allEdges[i++] = new edge ("Carlisle","Preston",88.3f,0,0,0,0);
-		allEdges[i++] = new edge ("Exeter","Salisbury",91.6f,0,0,0,0);
-		allEdges[i++] = new edge ("Carlisle","Glasgow",96.8f,0,0,0,0);
-		allEdges[i++] = new edge ("Edinburgh","Newcastle",104.0f,0,0,0,0);
-		allEdges[i++] = new edge ("Canterbury","Dover",17.1f,0,0,0,0);
-		allEdges[i++] = new edge ("Canterbury","London",61.9f,0,0,0,0);
-		allEdges[i++] = new edge ("Hull","Lincoln",48.2f,0,0,0,0);
-		allEdges[i++] = new edge ("Lincoln","Nottingham",39.5f,0,0,0,0);
-		allEdges[i++] = new edge ("Lincoln","Sheffield",46.8f,0,0,0,0);
-		allEdges[i++] = new edge ("Lincoln","Peterborough",51.9f,0,0,0,0);
-		allEdges[i++] = new edge ("Bangor","Chester",60.9f,0,0,0,0);
-		allEdges[i++] = new edge ("Blackpool","Preston",16.0f,0,0,0,0);
-		allEdges[i++] = new edge ("Edinburgh","Perth",43.4f,0,0,0,0);
-		allEdges[i++] = new edge ("Dundee","Perth",22.4f,0,0,0,0);
-		allEdges[i++] = new edge ("Inverness","Perth",112.0f,0,0,0,0);
-		allEdges[i++] = new edge ("Aberdeen","Dundee",66.0f,0,0,0,0);
-		allEdges[i++] = new edge ("Aberdeen","Inverness",104.0f,0,0,0,0);
-		allEdges[i++] = new edge ("Chester","Wrexham",13.4f,0,0,0,0);
-		allEdges[i++] = new edge ("Birmingham","Shrewsbury",47.2f,0,0,0,0);
-		allEdges[i++] = new edge ("Shrewsbury","Wrexham",31.7f,0,0,0,0);
-		allEdges[i++] = new edge ("Birmingham","Worcester",40.6f,0,0,0,0);
-		allEdges[i++] = new edge ("Gloucester","Worcester",30.2f,0,0,0,0);
-		allEdges[i++] = new edge ("Bournemouth","Exeter",84.6f,0,0,0,0);
-		allEdges[i++] = new edge ("Bournemouth","Southampton",33.2f,0,0,0,0);
-		allEdges[i++] = new edge ("Darlington","Leeds",61.3f,0,0,0,0);
-		allEdges[i++] = new edge ("Darlington","Newcastle",37.3f,0,0,0,0);
-		allEdges[i++] = new edge ("Darlington","Middlesbrough",16.4f,0,0,0,0);
-		allEdges[i++] = new edge ("Burnley","Leeds",35.7f,0,0,0,0);
-		allEdges[i++] = new edge ("Burnley","Manchester",29.0f,0,0,0,0);
-		allEdges[i++] = new edge ("Burnley","Preston",21.5f,0,0,0,0);
-		allEdges[i++] = new edge ("Cambridge","Kings Lynn",45.1f,0,0,0,0);
-		allEdges[i++] = new edge ("Norwich","Kings Lynn",43.6f,0,0,0,0);
-		allEdges[i++] = new edge ("Peterborough","Kings Lynn",36.4f,0,0,0,0);
-		allEdges[i++] = new edge ("Scarborough","York",41.2f,0,0,0,0);
-		allEdges[i++] = new edge ("Middlesbrough","Scarborough",48.9f,0,0,0,0);
-		allEdges[i++] = new edge ("Hull","Scarborough",42.5f,0,0,0,0);
-		allEdges[i++] = new edge ("Aberystwyth","Shrewsbury",76.0f,0,0,0,0);
-		allEdges[i++] = new edge ("Aberystwyth","Cardigan",38.3f,0,0,0,0);
-		allEdges[i++] = new edge ("Cardigan","Carmarthen",26.1f,0,0,0,0);
-		allEdges[i++] = new edge ("Carmarthen","Swansea",28.0f,0,0,0,0);
-		allEdges[i++] = new edge ("Carlisle","Kendal",46.1f,0,0,0,0);
-		allEdges[i++] = new edge ("Kendal","Preston",42.7f,0,0,0,0);
-		allEdges[i++] = new edge ("Darlington","Kendal",63.3f,0,0,0,0);
-		allEdges[i++] = new edge ("Barrow","Kendal",34.7f,0,0,0,0);
-		allEdges[i++] = new edge ("Cambridge","Luton",41.0f,0,0,0,0);
-		allEdges[i++] = new edge ("Leicester","Luton",69.5f,0,0,0,0);
-		allEdges[i++] = new edge ("London","Luton",34.3f,0,0,0,0);
-		allEdges[i++] = new edge ("Luton","Oxford",43.5f,0,0,0,0);
-		allEdges[i++] = new edge ("London","Newbury",60.8f,0,0,0,0);
-		allEdges[i++] = new edge ("Newbury","Oxford",27.2f,0,0,0,0);
-		allEdges[i++] = new edge ("Newbury","Southampton",38.1f,0,0,0,0);
-		allEdges[i++] = new edge ("Swindon","Newbury",26.0f,0,0,0,0);
+		allEdges[i++] = new edge ("Bath","Bristol",12.9f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Derby","Nottingham",14.9f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Liverpool","Warrington",18.4f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Chester","Liverpool",18.8f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Portsmouth","Southampton",19.5f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Manchester","Warrington",21.0f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Chester","Warrington",22.6f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Salisbury","Southampton",23.6f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Leicester","Nottingham",27.9f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Leeds","York",28.2f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Preston","Warrington",30.5f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Oxford","Swindon",30.6f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Derby","Leicester",32.2f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Leeds","Sheffield",35.5f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Derby","Stoke",36.2f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Hull","York",37.6f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Chester","Stoke",37.7f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Nottingham","Sheffield",37.8f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Stoke","Warrington",39.1f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Bath","Salisbury",39.4f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Bristol","Gloucester",39.6f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Bristol","Swindon",40.2f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Manchester","Sheffield",40.9f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Derby","Sheffield",41.5f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Cardiff","Swansea",41.6f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Birmingham","Derby",41.8f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Leicester","Peterborough",42.1f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Birmingham","Leicester",42.7f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Cambridge","Peterborough",43.1f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Bristol","Cardiff",44.1f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Leeds","Manchester",44.7f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Exeter","Plymouth",44.8f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Birmingham","Stoke",44.9f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Ipswich","Norwich",45.0f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Edinburgh","Glasgow",47.5f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Brighton","Portsmouth",50.0f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Brighton","London",53.3f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("London","Oxford",55.9f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Carlisle","Newcastle",59.1f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Cambridge","Norwich",63.9f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Cambridge","London",64.0f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Hull","Leeds",64.4f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("London","Portsmouth",74.7f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Birmingham","Oxford",78.5f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("London","Southampton",79.2f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Bristol","Exeter",80.7f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Ipswich","London",81.9f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("London","Peterborough",85.4f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Carlisle","Preston",88.3f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Exeter","Salisbury",91.6f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Carlisle","Glasgow",96.8f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Edinburgh","Newcastle",104.0f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Canterbury","Dover",17.1f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Canterbury","London",61.9f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Hull","Lincoln",48.2f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Lincoln","Nottingham",39.5f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Lincoln","Sheffield",46.8f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Lincoln","Peterborough",51.9f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Bangor","Chester",60.9f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Blackpool","Preston",16.0f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Edinburgh","Perth",43.4f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Dundee","Perth",22.4f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Inverness","Perth",112.0f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Aberdeen","Dundee",66.0f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Aberdeen","Inverness",104.0f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Chester","Wrexham",13.4f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Birmingham","Shrewsbury",47.2f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Shrewsbury","Wrexham",31.7f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Birmingham","Worcester",40.6f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Gloucester","Worcester",30.2f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Bournemouth","Exeter",84.6f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Bournemouth","Southampton",33.2f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Darlington","Leeds",61.3f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Darlington","Newcastle",37.3f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Darlington","Middlesbrough",16.4f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Burnley","Leeds",35.7f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Burnley","Manchester",29.0f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Burnley","Preston",21.5f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Cambridge","Kings Lynn",45.1f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Norwich","Kings Lynn",43.6f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Peterborough","Kings Lynn",36.4f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Scarborough","York",41.2f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Middlesbrough","Scarborough",48.9f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Hull","Scarborough",42.5f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Aberystwyth","Shrewsbury",76.0f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Aberystwyth","Cardigan",38.3f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Cardigan","Carmarthen",26.1f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Carmarthen","Swansea",28.0f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Carlisle","Kendal",46.1f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Kendal","Preston",42.7f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Darlington","Kendal",63.3f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Barrow","Kendal",34.7f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Cambridge","Luton",41.0f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Leicester","Luton",69.5f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("London","Luton",34.3f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Luton","Oxford",43.5f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("London","Newbury",60.8f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Newbury","Oxford",27.2f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Newbury","Southampton",38.1f,usedReason.NotUsed,0,0,0);
+		allEdges[i++] = new edge ("Swindon","Newbury",26.0f,usedReason.NotUsed,0,0,0);
 
 		final graph g = createNodes(allEdges, i);
 		dumpDotGraph(g.nodes, 0);
