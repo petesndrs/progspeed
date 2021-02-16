@@ -4,11 +4,18 @@
 #include <stddef.h>
 #include <math.h>
 
+enum usedReason {
+    NotUsed,
+    IsUsed,
+    IsUsedNotCyclic,                                 
+    IsUsedSubTree
+};
+
 struct edge {
     char* origin;
     char* destination;
     float length;
-    int used;
+    enum usedReason used;
     int flag;
     int originIndex;
     int destinationIndex;
@@ -19,7 +26,7 @@ struct node {
     int numEdges;
     struct edge* edges;
     int subtree;
-    int used;
+    enum usedReason used;
 };
 
 struct graph {
@@ -44,12 +51,12 @@ void dumpDotGraph(struct node* nodes, int numNodes, int withSubTree){
     for (int i = 0; i < numNodes; ++i){
         int usedEdgeCount = 0;
         for (int j = 0; j < nodes[i].numEdges; ++j){
-            if (nodes[i].edges[j].used == 1){
+            if (nodes[i].edges[j].used == IsUsed){
                 usedEdgeCount++;
             }
             if (strcmp(nodes[i].name, nodes[i].edges[j].origin) == 0){
                 char* linestyle;
-                if (nodes[i].edges[j].used == 0){
+                if (nodes[i].edges[j].used == NotUsed){
                     linestyle="dashed";
                 } else {
                     linestyle="bold";
@@ -70,7 +77,7 @@ void dumpDotGraph(struct node* nodes, int numNodes, int withSubTree){
     for (int i = 0; i < numNodes; ++i){
         int usedEdgeCount = 0;
         for (int j = 0; j < nodes[i].numEdges; ++j){
-            if (nodes[i].edges[j].used == 1){
+            if (nodes[i].edges[j].used == IsUsed){
                 usedEdgeCount++;
             }
         }
@@ -113,7 +120,7 @@ struct graph createNodes(struct edge* edges, int numberOfEdges){
             nodes[numNodes].name = edges[i].origin;
             nodes[numNodes].numEdges = 1;
             nodes[numNodes].edges = NULL;
-            nodes[numNodes].used = 0;
+            nodes[numNodes].used = NotUsed;
             nodes[numNodes].subtree = 0;
             numNodes++;
         } else {
@@ -129,7 +136,7 @@ struct graph createNodes(struct edge* edges, int numberOfEdges){
             nodes[numNodes].name = edges[i].destination;
             nodes[numNodes].numEdges = 1;
             nodes[numNodes].edges = NULL;
-            nodes[numNodes].used = 0;
+            nodes[numNodes].used = NotUsed;
             nodes[numNodes].subtree = 0;
             numNodes++;
         } else {
@@ -165,7 +172,7 @@ struct graph createNodes(struct edge* edges, int numberOfEdges){
     return g;
 }
 
-void setEdgeAndPartnerUsed(struct node* nodes, int node, int edge, int used){
+void setEdgeAndPartnerUsed(struct node* nodes, int node, int edge, enum usedReason used){
 
     nodes[node].edges[edge].used = used;
 
@@ -219,7 +226,7 @@ void joinShortestEdgePerNode(struct node* nodes, int numNodes){
                 minimumIndex = j;
             }
         }
-        setEdgeAndPartnerUsed(nodes,i,minimumIndex,1);
+        setEdgeAndPartnerUsed(nodes,i,minimumIndex,IsUsed);
         printf("Add node length %0.1f\n", minimumLength);
     }
 }
@@ -249,7 +256,7 @@ void assignSubTrees(struct graph* g){
             for (int i = 0; i < g->numNodes; ++i){
                 if (g->nodes[i].subtree == currentSubtree){
                     for (int j = 0; j < g->nodes[i].numEdges; ++j){
-                        if (g->nodes[i].edges[j].used == 1) {
+                        if (g->nodes[i].edges[j].used == IsUsed) {
                             if (g->nodes[g->nodes[i].edges[j].destinationIndex].subtree == 0){
                                 g->nodes[g->nodes[i].edges[j].destinationIndex].subtree = currentSubtree;
                                 newnode = 1;
@@ -284,7 +291,7 @@ void joinShortestEdgePerSubTrees(struct graph g){
         for (int i = 0; i < g.numNodes; ++i){
             if (g.nodes[i].subtree == tree){
                 for (int j = 0; j < g.nodes[i].numEdges; ++j){
-                    if (g.nodes[i].edges[j].used == 0) {
+                    if (g.nodes[i].edges[j].used == NotUsed) {
                         if (edgeConnectsDifferentSubtrees(g.nodes, g.nodes[i].edges[j])){
                             if (gotFirst == 0) {
                                 minimumLength = g.nodes[i].edges[j].length;
@@ -302,13 +309,13 @@ void joinShortestEdgePerSubTrees(struct graph g){
                 }
             }
         }
-        g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].used = 2;
+        g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].used = IsUsedSubTree;
     }
 
     for (int i = 0; i < g.numNodes; ++i){
         for (int j = 0; j < g.nodes[i].numEdges; ++j){
-            if (g.nodes[i].edges[j].used == 2){
-                setEdgeAndPartnerUsed(g.nodes,i,j,1);
+            if (g.nodes[i].edges[j].used == IsUsedSubTree){
+                setEdgeAndPartnerUsed(g.nodes,i,j,IsUsed);
                 printf("Add node length %0.1f\n", g.nodes[i].edges[j].length);
             }
         }
@@ -316,7 +323,7 @@ void joinShortestEdgePerSubTrees(struct graph g){
 }
 
 int edgeConnectsUnusedNode(struct node* nodes, struct edge e){
-    if (nodes[e.originIndex].used == 0 || nodes[e.destinationIndex].used == 0){
+    if (nodes[e.originIndex].used == NotUsed || nodes[e.destinationIndex].used == NotUsed){
         return 1;
     }
     return 0;
@@ -341,7 +348,7 @@ void doBoruvkaAlgorithm(struct graph g){
 
 void doPrimAlgorithm(struct graph g){
 
-    g.nodes[0].used = 1;
+    g.nodes[0].used = IsUsed;
 
     int keepgoing = 1;
 
@@ -352,9 +359,9 @@ void doPrimAlgorithm(struct graph g){
         int minimumNodeIndex;
         int minimumEdgeIndex;
         for (int i = 0; i < g.numNodes; ++i){
-            if (g.nodes[i].used == 1){
+            if (g.nodes[i].used == IsUsed){
                 for (int j = 0; j < g.nodes[i].numEdges; ++j){
-                    if (g.nodes[i].edges[j].used == 0 && edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j])) {
+                    if (g.nodes[i].edges[j].used == NotUsed && edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j])) {
                         if (gotFirst == 0) {
                             minimumLength = g.nodes[i].edges[j].length;
                             minimumNodeIndex = i;
@@ -373,9 +380,9 @@ void doPrimAlgorithm(struct graph g){
 
         if (gotFirst == 1) {
             printf("Node \"%s\", Edge length %0.1f\n", g.nodes[minimumNodeIndex].name, minimumLength);
-            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1;
-            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1;
-            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex,1);
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = IsUsed;
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = IsUsed;
+            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex,IsUsed);
 
         } else {
             keepgoing = 0;
@@ -391,26 +398,26 @@ int isCyclic(struct graph g){
 		int removed = 0;
 		nodesLeft = 0;
         for (int i = 0; i < g.numNodes; ++i){
-			if (g.nodes[i].used == 1){
+			if (g.nodes[i].used == IsUsed){
 				nodesLeft++;
 		        int numberEdgesInUse = 0;
                 for (int j = 0; j < g.nodes[i].numEdges; ++j){
-				    if (g.nodes[i].edges[j].used == 1) {
+				    if (g.nodes[i].edges[j].used == IsUsed) {
 						numberEdgesInUse++;
 					}
 				}
 				if (numberEdgesInUse == 1) {
 					removed = 1;
-					g.nodes[i].used = 2;
+					g.nodes[i].used = IsUsedNotCyclic;
 					for (int j = 0; j < g.nodes[i].numEdges; ++j){
-						if (g.nodes[i].edges[j].used == 1) {
-							setEdgeAndPartnerUsed(g.nodes, i, j, 2);
+						if (g.nodes[i].edges[j].used == IsUsed) {
+							setEdgeAndPartnerUsed(g.nodes, i, j, IsUsedNotCyclic);
 						}
 					}
 				}
 				if (numberEdgesInUse == 0) {
 					removed = 1;
-					g.nodes[i].used = 2;
+					g.nodes[i].used = IsUsedNotCyclic;
 				}
 			}
 		}
@@ -420,12 +427,12 @@ int isCyclic(struct graph g){
     }
 
 	for (int i = 0; i < g.numNodes; ++i){
-		if (g.nodes[i].used == 2){
-			g.nodes[i].used = 1;
+		if (g.nodes[i].used == IsUsedNotCyclic){
+			g.nodes[i].used = IsUsed;
 		}
 		for (int j = 0; j < g.nodes[i].numEdges; ++j){
-			if (g.nodes[i].edges[j].used == 2) {
-				g.nodes[i].edges[j].used = 1;
+			if (g.nodes[i].edges[j].used == IsUsedNotCyclic) {
+				g.nodes[i].edges[j].used = IsUsed;
 			}
 		}
 	}
@@ -447,16 +454,16 @@ void doKruskalAlgorithm(struct graph g){
         int minimumEdgeIndex;
         for (int i = 0; i < g.numNodes; ++i){
             for (int j = 0; j < g.nodes[i].numEdges; ++j){
-				if (g.nodes[i].edges[j].used == 0) {
+				if (g.nodes[i].edges[j].used == NotUsed) {
 					int allowed = 0;
 					if (edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j])) {
 						allowed = 1;
 					} else {
-						setEdgeAndPartnerUsed(g.nodes, i, j, 1);
+						setEdgeAndPartnerUsed(g.nodes, i, j, IsUsed);
 						if (isCyclic(g) == 0){
 							allowed = 1;
 						}
-						setEdgeAndPartnerUsed(g.nodes, i, j, 0);
+						setEdgeAndPartnerUsed(g.nodes, i, j, NotUsed);
 					}
 					if (allowed == 1) {
                         if (gotFirst == 0) {
@@ -477,9 +484,9 @@ void doKruskalAlgorithm(struct graph g){
 
         if (gotFirst == 1) {
             printf("Add edge length %0.1f\n", minimumLength);
-            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1;
-            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1;
-            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex, 1);
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = IsUsed;
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = IsUsed;
+            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex, IsUsed);
         } else {
             keepgoing = 0;
         }
@@ -498,7 +505,7 @@ void doReverseDeleteAlgorithm(struct graph g){
         int maximumEdgeIndex;
         for (int i = 0; i < g.numNodes; ++i){
             for (int j = 0; j < g.nodes[i].numEdges; ++j){
-                if (g.nodes[i].edges[j].used == 1 && g.nodes[i].edges[j].flag == 0) {
+                if (g.nodes[i].edges[j].used == IsUsed && g.nodes[i].edges[j].flag == 0) {
                     if (gotFirst == 0) {
                         maximumLength = g.nodes[i].edges[j].length;
                         maximumNodeIndex = i;
@@ -513,35 +520,26 @@ void doReverseDeleteAlgorithm(struct graph g){
                 }
             }
         }
-        setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, 0);
+        setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, NotUsed);
         assignSubTrees(&g);
         if (g.numSubTrees == 1) {
             printf("Removed edge length %0.1f\n", maximumLength);
         } else {
-            setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, 1);
+            setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, IsUsed);
             flagEdges(g.nodes, maximumNodeIndex, maximumEdgeIndex, 1);
         }
         if (isCyclic(g) == 0){
             keepgoing = 0;
         }
     }
-
-    for (int i = 0; i < g.numNodes; ++i){
-        for (int j = 0; j < g.nodes[i].numEdges; ++j){
-            if (g.nodes[i].edges[j].used == 2) {
-                g.nodes[i].edges[j].used = 1;
-			}
-        }
-    }
-
 }
 
 void connectGraph(struct graph g){
     for (int i = 0; i < g.numNodes; ++i){
-        g.nodes[i].used = 1;
+        g.nodes[i].used = IsUsed;
         g.nodes[i].subtree = 1;
         for (int j = 0; j < g.nodes[i].numEdges; ++j){
-            g.nodes[i].edges[j].used = 1;
+            g.nodes[i].edges[j].used = IsUsed;
             g.nodes[i].edges[j].flag = 0;
         }
     }
@@ -549,10 +547,10 @@ void connectGraph(struct graph g){
 
 void disconnectGraph(struct graph g){
     for (int i = 0; i < g.numNodes; ++i){
-        g.nodes[i].used = 0;
+        g.nodes[i].used = NotUsed;
         g.nodes[i].subtree = 0;
         for (int j = 0; j < g.nodes[i].numEdges; ++j){
-            g.nodes[i].edges[j].used = 0;
+            g.nodes[i].edges[j].used = NotUsed;
             g.nodes[i].edges[j].flag = 0;
         }
     }
@@ -562,7 +560,7 @@ float CalculateTotalEdgeLength(struct graph g){
     float total = 0.0;
     for (int i = 0; i < g.numNodes; ++i){
         for (int j = 0; j < g.nodes[i].numEdges; ++j){
-            if (g.nodes[i].edges[j].used == 1) {
+            if (g.nodes[i].edges[j].used == IsUsed) {
                 total += g.nodes[i].edges[j].length;
             }
         }
