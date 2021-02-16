@@ -3,11 +3,19 @@ package main
 import "fmt"
 import "math"
 
+type usedReason int
+const (
+    NotUsed usedReason = iota
+    IsUsed
+    IsUsedNotCyclic
+    IsUsedSubTree
+)
+
 type edge struct{
     origin string
     destination string
     length float32
-    used int
+    used usedReason
     flag int
     originIndex int
     destinationIndex int
@@ -18,7 +26,7 @@ type node struct{
     numEdges int
     edges []edge
     subtree int
-    used int
+    used usedReason
 }
 
 type graph struct{
@@ -42,12 +50,12 @@ func dumpDotGraph(nodes []node, withSubTree int){
     for i := 0; i < len(nodes); i++{
         usedEdgeCount := 0;
         for j := 0; j < len(nodes[i].edges); j++{
-            if (nodes[i].edges[j].used == 1){
+            if (nodes[i].edges[j].used == IsUsed){
                 usedEdgeCount++;
             }
             if (nodes[i].name == nodes[i].edges[j].origin){
                 var linestyle string;
-                if (nodes[i].edges[j].used == 0){
+                if (nodes[i].edges[j].used == NotUsed){
                     linestyle="dashed";
                 } else {
                     linestyle="bold";
@@ -68,7 +76,7 @@ func dumpDotGraph(nodes []node, withSubTree int){
     for i := 0; i < len(nodes); i++ {
         usedEdgeCount := 0;
         for j := 0; j < len(nodes[i].edges); j++{
-            if (nodes[i].edges[j].used == 1){
+            if (nodes[i].edges[j].used == IsUsed){
                 usedEdgeCount++;
             }
         }
@@ -106,7 +114,7 @@ func createNodes(edges []edge, numberOfEdges int) graph {
             newnode.name = edges[i].origin;
             newnode.numEdges = 1;
             //newnode.edges = NULL;
-            newnode.used = 0;
+            newnode.used = NotUsed;
             newnode.subtree = 0;
             numNodes++;
 			nodes = append(nodes, newnode)
@@ -120,7 +128,7 @@ func createNodes(edges []edge, numberOfEdges int) graph {
             newnode.name = edges[i].destination;
             newnode.numEdges = 1;
             //nodes[numNodes].edges = NULL;
-            newnode.used = 0;
+            newnode.used = NotUsed;
             newnode.subtree = 0;
             numNodes++;
 			nodes = append(nodes, newnode)
@@ -154,7 +162,7 @@ func createNodes(edges []edge, numberOfEdges int) graph {
     return g;
 }
 
-func setEdgeAndPartnerUsed(nodes []node, node int, edge int, used int){
+func setEdgeAndPartnerUsed(nodes []node, node int, edge int, used usedReason){
 
     nodes[node].edges[edge].used = used;
 
@@ -208,7 +216,7 @@ func joinShortestEdgePerNode(nodes []node){
                 minimumIndex = j;
             }
         }
-        setEdgeAndPartnerUsed(nodes,i,minimumIndex,1);
+        setEdgeAndPartnerUsed(nodes,i,minimumIndex,IsUsed);
         fmt.Printf("Add node length %0.1f\n", minimumLength);
     }
 }
@@ -238,7 +246,7 @@ func assignSubTrees(g *graph){
             for i := 0; i < len(g.nodes); i++{
                 if (g.nodes[i].subtree == currentSubtree){
                     for j := 0; j < len(g.nodes[i].edges); j++{
-                        if (g.nodes[i].edges[j].used == 1) {
+                        if (g.nodes[i].edges[j].used == IsUsed) {
                             if (g.nodes[g.nodes[i].edges[j].destinationIndex].subtree == 0){
                                 g.nodes[g.nodes[i].edges[j].destinationIndex].subtree = currentSubtree;
                                 newnode = true;
@@ -273,7 +281,7 @@ func joinShortestEdgePerSubTrees(g graph){
         for i := 0; i < len(g.nodes); i++{
             if (g.nodes[i].subtree == tree){
                 for j := 0; j < len(g.nodes[i].edges); j++ {
-                    if (g.nodes[i].edges[j].used == 0) {
+                    if (g.nodes[i].edges[j].used == NotUsed) {
                         if (edgeConnectsDifferentSubtrees(g.nodes, g.nodes[i].edges[j])){
                             if (!gotFirst) {
                                 minimumLength = g.nodes[i].edges[j].length;
@@ -291,13 +299,13 @@ func joinShortestEdgePerSubTrees(g graph){
                 }
             }
         }
-        g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].used = 2;
+        g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].used = IsUsedSubTree;
     }
 
     for i := 0; i < len(g.nodes); i++ {
         for j := 0; j < len(g.nodes[i].edges); j++ {
-            if (g.nodes[i].edges[j].used == 2){
-                setEdgeAndPartnerUsed(g.nodes,i,j,1);
+            if (g.nodes[i].edges[j].used == IsUsedSubTree){
+                setEdgeAndPartnerUsed(g.nodes,i,j,IsUsed);
                 fmt.Printf("Add node length %0.1f\n", g.nodes[i].edges[j].length);
             }
         }
@@ -305,7 +313,7 @@ func joinShortestEdgePerSubTrees(g graph){
 }
 
 func edgeConnectsUnusedNode(nodes []node, e edge) bool {
-    if (nodes[e.originIndex].used == 0 || nodes[e.destinationIndex].used == 0){
+    if (nodes[e.originIndex].used == NotUsed || nodes[e.destinationIndex].used == NotUsed){
         return true;
     }
     return false;
@@ -330,7 +338,7 @@ func doBoruvkaAlgorithm(g graph){
 
 func doPrimAlgorithm(g graph){
 
-    g.nodes[0].used = 1
+    g.nodes[0].used = IsUsed
 
     keepgoing := true
 
@@ -341,9 +349,9 @@ func doPrimAlgorithm(g graph){
         var minimumNodeIndex int
         var minimumEdgeIndex int
         for i := 0; i < len(g.nodes); i++ {
-            if (g.nodes[i].used == 1){
+            if (g.nodes[i].used == IsUsed){
                 for j := 0; j < len(g.nodes[i].edges); j++ {
-                    if (g.nodes[i].edges[j].used == 0 && edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j])) {
+                    if (g.nodes[i].edges[j].used == NotUsed && edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j])) {
                         if (!gotFirst) {
                             minimumLength = g.nodes[i].edges[j].length;
                             minimumNodeIndex = i;
@@ -362,9 +370,9 @@ func doPrimAlgorithm(g graph){
 
         if gotFirst {
             fmt.Printf("Node \"%s\", Edge length %0.1f\n", g.nodes[minimumNodeIndex].name, minimumLength);
-            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1;
-            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1;
-            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex,1);
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = IsUsed;
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = IsUsed;
+            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex,IsUsed);
 
         } else {
             keepgoing = false
@@ -380,26 +388,26 @@ func isCyclic(g graph) bool {
 		var removed bool = false;
 		nodesLeft = false;
         for i := 0; i < len(g.nodes); i++ {
-			if (g.nodes[i].used == 1){
+			if (g.nodes[i].used == IsUsed){
 				nodesLeft = true;
 		        var numberEdgesInUse int = 0;
                 for j := 0; j < len(g.nodes[i].edges); j++ {
-				    if (g.nodes[i].edges[j].used == 1) {
+				    if (g.nodes[i].edges[j].used == IsUsed) {
 						numberEdgesInUse++;
 					}
 				}
 				if (numberEdgesInUse == 1) {
 					removed = true;
-					g.nodes[i].used = 2;
+					g.nodes[i].used = IsUsedNotCyclic;
 					for j := 0; j < len(g.nodes[i].edges); j++ {
-						if (g.nodes[i].edges[j].used == 1) {
-							setEdgeAndPartnerUsed(g.nodes, i, j, 2);
+						if (g.nodes[i].edges[j].used == IsUsed) {
+							setEdgeAndPartnerUsed(g.nodes, i, j, IsUsedNotCyclic);
 						}
 					}
 				}
 				if (numberEdgesInUse == 0) {
 					removed = true;
-					g.nodes[i].used = 2;
+					g.nodes[i].used = IsUsedNotCyclic;
 				}
 			}
 		}
@@ -409,12 +417,12 @@ func isCyclic(g graph) bool {
     }
 
 	for i := 0; i < len(g.nodes); i++ {
-		if (g.nodes[i].used == 2){
-			g.nodes[i].used = 1;
+		if (g.nodes[i].used == IsUsedNotCyclic){
+			g.nodes[i].used = IsUsed;
 		}
 		for j := 0; j < len(g.nodes[i].edges); j++ {
-			if (g.nodes[i].edges[j].used == 2) {
-				g.nodes[i].edges[j].used = 1;
+			if (g.nodes[i].edges[j].used == IsUsedNotCyclic) {
+				g.nodes[i].edges[j].used = IsUsed;
 			}
 		}
 	}
@@ -436,16 +444,16 @@ func doKruskalAlgorithm(g graph){
         var minimumEdgeIndex int
         for i := 0; i < len(g.nodes); i++ {
             for j := 0; j < g.nodes[i].numEdges; j++ {
-				if (g.nodes[i].edges[j].used == 0) {
+				if (g.nodes[i].edges[j].used == NotUsed) {
 					var allowed bool = false;
 					if (edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j])) {
 						allowed = true;
 					} else {
-						setEdgeAndPartnerUsed(g.nodes, i, j, 1);
+						setEdgeAndPartnerUsed(g.nodes, i, j, IsUsed);
 						if !isCyclic(g) {
 							allowed = true;
 						}
-						setEdgeAndPartnerUsed(g.nodes, i, j, 0);
+						setEdgeAndPartnerUsed(g.nodes, i, j, NotUsed);
 					}
 					if allowed {
                         if !gotFirst {
@@ -466,9 +474,9 @@ func doKruskalAlgorithm(g graph){
 
         if gotFirst {
             fmt.Printf("Add edge length %0.1f\n", minimumLength);
-            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1;
-            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1;
-            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex, 1);
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = IsUsed;
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = IsUsed;
+            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex, IsUsed);
         } else {
             keepgoing = false;
         }
@@ -487,7 +495,7 @@ func doReverseDeleteAlgorithm(g graph){
         var maximumEdgeIndex int
         for i := 0; i < len(g.nodes); i++ {
             for j := 0; j < len(g.nodes[i].edges); j++{
-                if (g.nodes[i].edges[j].used == 1 && g.nodes[i].edges[j].flag == 0) {
+                if (g.nodes[i].edges[j].used == IsUsed && g.nodes[i].edges[j].flag == 0) {
                     if !gotFirst {
                         maximumLength = g.nodes[i].edges[j].length;
                         maximumNodeIndex = i;
@@ -502,35 +510,26 @@ func doReverseDeleteAlgorithm(g graph){
                 }
             }
         }
-        setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, 0);
+        setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, NotUsed);
         assignSubTrees(&g);
         if (g.numSubTrees == 1) {
             fmt.Printf("Removed edge length %0.1f\n", maximumLength);
         } else {
-            setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, 1);
+            setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, IsUsed);
             flagEdges(g.nodes, maximumNodeIndex, maximumEdgeIndex, 1);
         }
         if !isCyclic(g) {
             keepgoing = false;
         }
     }
-
-    for i := 0; i < len(g.nodes); i++ {
-        for j := 0; j < len(g.nodes[i].edges); j++ {
-            if (g.nodes[i].edges[j].used == 2) {
-                g.nodes[i].edges[j].used = 1;
-			}
-        }
-    }
-
 }
 
 func connectGraph(g graph){
     for i := 0; i < len(g.nodes); i++ {
-        g.nodes[i].used = 1
+        g.nodes[i].used = IsUsed
         g.nodes[i].subtree = 1
         for j := 0; j < len(g.nodes[i].edges); j++ {
-            g.nodes[i].edges[j].used = 1
+            g.nodes[i].edges[j].used = IsUsed
             g.nodes[i].edges[j].flag = 0
         }
     }
@@ -538,10 +537,10 @@ func connectGraph(g graph){
 
 func disconnectGraph(g graph){
     for i := 0; i < len(g.nodes); i++ {
-        g.nodes[i].used = 0
+        g.nodes[i].used = NotUsed
         g.nodes[i].subtree = 0
         for j := 0; j < len(g.nodes[i].edges); j++ {
-            g.nodes[i].edges[j].used = 0
+            g.nodes[i].edges[j].used = NotUsed
             g.nodes[i].edges[j].flag = 0
         }
     }
