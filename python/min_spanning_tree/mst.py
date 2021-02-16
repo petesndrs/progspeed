@@ -1,6 +1,13 @@
 
 import copy
 import math
+import enum
+
+class usedReason(enum.Enum):
+    NotUsed = enum.auto()
+    IsUsed = enum.auto()
+    IsUsedNotCyclic = enum.auto()
+    IsUsedSubTree = enum.auto()
 
 class edge:
     def __init__(self, origin, destination, length, used, flag, originIndex, destinationIndex):
@@ -40,12 +47,12 @@ def dumpDotGraph(nodes, numNodes, withSubTree):
     for i in range(len(nodes)):
         usedEdgeCount = 0
         for j in range(len(nodes[i].edges)):
-            if (nodes[i].edges[j].used == 1):
+            if (nodes[i].edges[j].used == usedReason.IsUsed):
                 usedEdgeCount+=1
 
             if (nodes[i].name == nodes[i].edges[j].origin):
                 linestyle=""
-                if (nodes[i].edges[j].used == 0):
+                if (nodes[i].edges[j].used == usedReason.NotUsed):
                     linestyle="dashed"
                 else:
                     linestyle="bold"
@@ -63,7 +70,7 @@ def dumpDotGraph(nodes, numNodes, withSubTree):
     for i in range(len(nodes)):
         usedEdgeCount = 0
         for j in range(len(nodes[i].edges)):
-            if (nodes[i].edges[j].used == 1):
+            if (nodes[i].edges[j].used == usedReason.IsUsed):
                 usedEdgeCount+=1
 
 
@@ -93,7 +100,7 @@ def createNodes(edges):
     for i in range(len(edges)):
         ni = findNodeIndexByName(nodes, numNodes, edges[i].origin)
         if (ni == -1):
-            newnode = node(edges[i].origin, 1, [], 0, 0)
+            newnode = node(edges[i].origin, 1, [], 0, usedReason.NotUsed)
             numNodes+=1
             nodes.append(newnode)
         else:
@@ -101,7 +108,7 @@ def createNodes(edges):
 
         ni = findNodeIndexByName(nodes, numNodes, edges[i].destination)
         if (ni == -1):
-            newnode = node(edges[i].destination, 1, [], 0, 0)
+            newnode = node(edges[i].destination, 1, [], 0, usedReason.NotUsed)
             numNodes+=1
             nodes.append(newnode)
         else:
@@ -170,7 +177,7 @@ def joinShortestEdgePerNode(nodes):
                 minimumLength = nodes[i].edges[j].length
                 minimumIndex = j
 
-        setEdgeAndPartnerUsed(nodes,i,minimumIndex,1)
+        setEdgeAndPartnerUsed(nodes,i,minimumIndex,usedReason.IsUsed)
         print('Add node length {:0.1f}'.format(minimumLength))
 
 
@@ -197,7 +204,7 @@ def assignSubTrees(g):
             for i in range(len(g.nodes)):
                 if (g.nodes[i].subtree == currentSubtree):
                     for j in range(len(g.nodes[i].edges)):
-                        if (g.nodes[i].edges[j].used == 1):
+                        if (g.nodes[i].edges[j].used == usedReason.IsUsed):
                             if (g.nodes[g.nodes[i].edges[j].destinationIndex].subtree == 0):
                                 g.nodes[g.nodes[i].edges[j].destinationIndex].subtree = currentSubtree
                                 newnode = True
@@ -224,7 +231,7 @@ def joinShortestEdgePerSubTrees(g):
         for i in range(len(g.nodes)):
             if (g.nodes[i].subtree == tree):
                 for j in range(len(g.nodes[i].edges)):
-                    if (g.nodes[i].edges[j].used == 0):
+                    if (g.nodes[i].edges[j].used == usedReason.NotUsed):
                         if (edgeConnectsDifferentSubtrees(g.nodes, g.nodes[i].edges[j])):
                             if (not gotFirst):
                                 minimumLength = g.nodes[i].edges[j].length
@@ -237,16 +244,16 @@ def joinShortestEdgePerSubTrees(g):
                                 minimumEdgeIndex = j
                                 minimumNodeIndex = i
 
-        g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].used = 2
+        g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].used = usedReason.IsUsedSubTree
 
     for i in range(len(g.nodes)):
         for j in range(len(g.nodes[i].edges)):
-            if (g.nodes[i].edges[j].used == 2):
-                setEdgeAndPartnerUsed(g.nodes,i,j,1)
+            if (g.nodes[i].edges[j].used == usedReason.IsUsedSubTree):
+                setEdgeAndPartnerUsed(g.nodes,i,j,usedReason.IsUsed)
                 print('Add node length {:0.1f}'.format(g.nodes[i].edges[j].length))
 
 def edgeConnectsUnusedNode(nodes, e):
-    if (nodes[e.originIndex].used == 0 or nodes[e.destinationIndex].used == 0):
+    if (nodes[e.originIndex].used == usedReason.NotUsed or nodes[e.destinationIndex].used == usedReason.NotUsed):
         return True
 
     return False
@@ -267,7 +274,7 @@ def doBoruvkaAlgorithm(g):
 
 def doPrimAlgorithm(g):
 
-    g.nodes[0].used = 1
+    g.nodes[0].used = usedReason.IsUsed
 
     keepgoing = True
 
@@ -278,9 +285,9 @@ def doPrimAlgorithm(g):
         minimumNodeIndex = 0
         minimumEdgeIndex = 0
         for i in range(len(g.nodes)):
-            if (g.nodes[i].used == 1):
+            if (g.nodes[i].used == usedReason.IsUsed):
                 for j in range(len(g.nodes[i].edges)):
-                    if (g.nodes[i].edges[j].used == 0 and edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j])):
+                    if (g.nodes[i].edges[j].used == usedReason.NotUsed and edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j])):
                         if (not gotFirst):
                             minimumLength = g.nodes[i].edges[j].length
                             minimumNodeIndex = i
@@ -294,9 +301,9 @@ def doPrimAlgorithm(g):
 
         if (gotFirst):
             print('Node \"{}\", Edge length {:0.1f}'.format(g.nodes[minimumNodeIndex].name, minimumLength))
-            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1
-            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1
-            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex,1)
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = usedReason.IsUsed
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = usedReason.IsUsed
+            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex,usedReason.IsUsed)
         else:
             keepgoing = False
 
@@ -307,34 +314,34 @@ def isCyclic(g):
         removed = False
         nodesLeft = False
         for i in range(len(g.nodes)):
-            if (g.nodes[i].used == 1):
+            if (g.nodes[i].used == usedReason.IsUsed):
                 nodesLeft = True
                 numberEdgesInUse = 0
                 for j in range(len(g.nodes[i].edges)):
-                    if (g.nodes[i].edges[j].used == 1):
+                    if (g.nodes[i].edges[j].used == usedReason.IsUsed):
                         numberEdgesInUse+=1
 
                 if (numberEdgesInUse == 1):
                     removed = True
-                    g.nodes[i].used = 2
+                    g.nodes[i].used = usedReason.IsUsedNotCyclic
                     for j in range(len(g.nodes[i].edges)):
-                        if (g.nodes[i].edges[j].used == 1):
-                            setEdgeAndPartnerUsed(g.nodes, i, j, 2)
+                        if (g.nodes[i].edges[j].used == usedReason.IsUsed):
+                            setEdgeAndPartnerUsed(g.nodes, i, j, usedReason.IsUsedNotCyclic)
 
                 if (numberEdgesInUse == 0):
                     removed = True
-                    g.nodes[i].used = 2
+                    g.nodes[i].used = usedReason.IsUsedNotCyclic
 
         if (not removed):
             keepgoing = False
 
     for i in range(len(g.nodes)):
-        if (g.nodes[i].used == 2):
-            g.nodes[i].used = 1
+        if (g.nodes[i].used == usedReason.IsUsedNotCyclic):
+            g.nodes[i].used = usedReason.IsUsed
 
         for j in range(len(g.nodes[i].edges)):
-            if (g.nodes[i].edges[j].used == 2):
-                g.nodes[i].edges[j].used = 1
+            if (g.nodes[i].edges[j].used == usedReason.IsUsedNotCyclic):
+                g.nodes[i].edges[j].used = usedReason.IsUsed
 
     if (nodesLeft):
         return True
@@ -352,15 +359,15 @@ def doKruskalAlgorithm(g):
         minimumEdgeIndex = 0
         for i in range(len(g.nodes)):
             for j in range(len(g.nodes[i].edges)):
-                if (g.nodes[i].edges[j].used == 0):
+                if (g.nodes[i].edges[j].used == usedReason.NotUsed):
                     allowed = False
                     if (edgeConnectsUnusedNode(g.nodes, g.nodes[i].edges[j])):
                         allowed = True
                     else:
-                        setEdgeAndPartnerUsed(g.nodes, i, j, 1)
+                        setEdgeAndPartnerUsed(g.nodes, i, j, usedReason.IsUsed)
                         if (not isCyclic(g)):
                             allowed = True
-                        setEdgeAndPartnerUsed(g.nodes, i, j, 0)
+                        setEdgeAndPartnerUsed(g.nodes, i, j, usedReason.NotUsed)
 
                     if (allowed):
                         if (not gotFirst):
@@ -376,9 +383,9 @@ def doKruskalAlgorithm(g):
 
         if (gotFirst):
             print('Add edge length {:0.1f}'.format(minimumLength))
-            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = 1
-            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = 1
-            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex, 1)
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].originIndex].used = usedReason.IsUsed
+            g.nodes[g.nodes[minimumNodeIndex].edges[minimumEdgeIndex].destinationIndex].used = usedReason.IsUsed
+            setEdgeAndPartnerUsed(g.nodes, minimumNodeIndex, minimumEdgeIndex, usedReason.IsUsed)
         else:
             keepgoing = False
 
@@ -393,7 +400,7 @@ def doReverseDeleteAlgorithm(g):
         maximumEdgeIndex = 0
         for i in range(len(g.nodes)):
             for j in range(len(g.nodes[i].edges)):
-                if (g.nodes[i].edges[j].used == 1 and g.nodes[i].edges[j].flag == 0):
+                if (g.nodes[i].edges[j].used == usedReason.IsUsed and g.nodes[i].edges[j].flag == 0):
                     if (not gotFirst):
                         maximumLength = g.nodes[i].edges[j].length
                         maximumNodeIndex = i
@@ -405,44 +412,39 @@ def doReverseDeleteAlgorithm(g):
                         maximumNodeIndex = i
                         maximumEdgeIndex = j
 
-        setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, 0)
+        setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, usedReason.NotUsed)
         assignSubTrees(g)
         if (g.numSubTrees == 1):
             print('Removed edge length {:0.1f}'.format(maximumLength))
         else:
-            setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, 1)
+            setEdgeAndPartnerUsed(g.nodes, maximumNodeIndex, maximumEdgeIndex, usedReason.IsUsed)
             flagEdges(g.nodes, maximumNodeIndex, maximumEdgeIndex, 1)
 
         if (not isCyclic(g)):
             keepgoing = False
 
-    for i in range(len(g.nodes)):
-        for j in range(len(g.nodes[i].edges)):
-            if (g.nodes[i].edges[j].used == 2):
-                g.nodes[i].edges[j].used = 1
-
 
 def connectGraph(g):
     for i in range(len(g.nodes)):
-        g.nodes[i].used = 1
+        g.nodes[i].used = usedReason.IsUsed
         g.nodes[i].subtree = 1
         for j in range(len(g.nodes[i].edges)):
-            g.nodes[i].edges[j].used = 1
+            g.nodes[i].edges[j].used = usedReason.IsUsed
             g.nodes[i].edges[j].flag = 0
 
 def disconnectGraph(g):
     for i in range(len(g.nodes)):
-        g.nodes[i].used = 0
+        g.nodes[i].used = usedReason.NotUsed
         g.nodes[i].subtree = 0
         for j in range(len(g.nodes[i].edges)):
-            g.nodes[i].edges[j].used = 0
+            g.nodes[i].edges[j].used = usedReason.NotUsed
             g.nodes[i].edges[j].flag = 0
 
 def CalculateTotalEdgeLength(g):
     total = 0.0
     for i in range(len(g.nodes)):
         for j in range(len(g.nodes[i].edges)):
-            if (g.nodes[i].edges[j].used == 1):
+            if (g.nodes[i].edges[j].used == usedReason.IsUsed):
                 total += g.nodes[i].edges[j].length
 
     print("Total length = {:0.1f}".format(total/2.0))
@@ -451,106 +453,106 @@ def CalculateTotalEdgeLength(g):
 def main():
 
     allEdges = [
-        edge("Bath","Bristol",12.9,0,0,0,0),
-        edge("Derby","Nottingham",14.9,0,0,0,0),
-        edge("Liverpool","Warrington",18.4,0,0,0,0),
-        edge("Chester","Liverpool",18.8,0,0,0,0),
-        edge("Portsmouth","Southampton",19.5,0,0,0,0),
-        edge("Manchester","Warrington",21.0,0,0,0,0),
-        edge("Chester","Warrington",22.6,0,0,0,0),
-        edge("Salisbury","Southampton",23.6,0,0,0,0),
-        edge("Leicester","Nottingham",27.9,0,0,0,0),
-        edge("Leeds","York",28.2,0,0,0,0),
-        edge("Preston","Warrington",30.5,0,0,0,0),
-        edge("Oxford","Swindon",30.6,0,0,0,0),
-        edge("Derby","Leicester",32.2,0,0,0,0),
-        edge("Leeds","Sheffield",35.5,0,0,0,0),
-        edge("Derby","Stoke",36.2,0,0,0,0),
-        edge("Hull","York",37.6,0,0,0,0),
-        edge("Chester","Stoke",37.7,0,0,0,0),
-        edge("Nottingham","Sheffield",37.8,0,0,0,0),
-        edge("Stoke","Warrington",39.1,0,0,0,0),
-        edge("Bath","Salisbury",39.4,0,0,0,0),
-        edge("Bristol","Gloucester",39.6,0,0,0,0),
-        edge("Bristol","Swindon",40.2,0,0,0,0),
-        edge("Manchester","Sheffield",40.9,0,0,0,0),
-        edge("Derby","Sheffield",41.5,0,0,0,0),
-        edge("Cardiff","Swansea",41.6,0,0,0,0),
-        edge("Birmingham","Derby",41.8,0,0,0,0),
-        edge("Leicester","Peterborough",42.1,0,0,0,0),
-        edge("Birmingham","Leicester",42.7,0,0,0,0),
-        edge("Cambridge","Peterborough",43.1,0,0,0,0),
-        edge("Bristol","Cardiff",44.1,0,0,0,0),
-        edge("Leeds","Manchester",44.7,0,0,0,0),
-        edge("Exeter","Plymouth",44.8,0,0,0,0),
-        edge("Birmingham","Stoke",44.9,0,0,0,0),
-        edge("Ipswich","Norwich",45.0,0,0,0,0),
-        edge("Edinburgh","Glasgow",47.5,0,0,0,0),
-        edge("Brighton","Portsmouth",50.0,0,0,0,0),
-        edge("Brighton","London",53.3,0,0,0,0),
-        edge("London","Oxford",55.9,0,0,0,0),
-        edge("Carlisle","Newcastle",59.1,0,0,0,0),
-        edge("Cambridge","Norwich",63.9,0,0,0,0),
-        edge("Cambridge","London",64.0,0,0,0,0),
-        edge("Hull","Leeds",64.4,0,0,0,0),
-        edge("London","Portsmouth",74.7,0,0,0,0),
-        edge("Birmingham","Oxford",78.5,0,0,0,0),
-        edge("London","Southampton",79.2,0,0,0,0),
-        edge("Bristol","Exeter",80.7,0,0,0,0),
-        edge("Ipswich","London",81.9,0,0,0,0),
-        edge("London","Peterborough",85.4,0,0,0,0),
-        edge("Carlisle","Preston",88.3,0,0,0,0),
-        edge("Exeter","Salisbury",91.6,0,0,0,0),
-        edge("Carlisle","Glasgow",96.8,0,0,0,0),
-        edge("Edinburgh","Newcastle",104.0,0,0,0,0),
-        edge("Canterbury","Dover",17.1,0,0,0,0),
-        edge("Canterbury","London",61.9,0,0,0,0),
-        edge("Hull","Lincoln",48.2,0,0,0,0),
-        edge("Lincoln","Nottingham",39.5,0,0,0,0),
-        edge("Lincoln","Sheffield",46.8,0,0,0,0),
-        edge("Lincoln","Peterborough",51.9,0,0,0,0),
-        edge("Bangor","Chester",60.9,0,0,0,0),
-        edge("Blackpool","Preston",16.0,0,0,0,0),
-        edge("Edinburgh","Perth",43.4,0,0,0,0),
-        edge("Dundee","Perth",22.4,0,0,0,0),
-        edge("Inverness","Perth",112.0,0,0,0,0),
-        edge("Aberdeen","Dundee",66.0,0,0,0,0),
-        edge("Aberdeen","Inverness",104.0,0,0,0,0),
-        edge("Chester","Wrexham",13.4,0,0,0,0),
-        edge("Birmingham","Shrewsbury",47.2,0,0,0,0),
-        edge("Shrewsbury","Wrexham",31.7,0,0,0,0),
-        edge("Birmingham","Worcester",40.6,0,0,0,0),
-        edge("Gloucester","Worcester",30.2,0,0,0,0),
-        edge("Bournemouth","Exeter",84.6,0,0,0,0),
-        edge("Bournemouth","Southampton",33.2,0,0,0,0),
-        edge("Darlington","Leeds",61.3,0,0,0,0),
-        edge("Darlington","Newcastle",37.3,0,0,0,0),
-        edge("Darlington","Middlesbrough",16.4,0,0,0,0),
-        edge("Burnley","Leeds",35.7,0,0,0,0),
-        edge("Burnley","Manchester",29.0,0,0,0,0),
-        edge("Burnley","Preston",21.5,0,0,0,0),
-        edge("Cambridge","Kings Lynn",45.1,0,0,0,0),
-        edge("Norwich","Kings Lynn",43.6,0,0,0,0),
-        edge("Peterborough","Kings Lynn",36.4,0,0,0,0),
-        edge("Scarborough","York",41.2,0,0,0,0),
-        edge("Middlesbrough","Scarborough",48.9,0,0,0,0),
-        edge("Hull","Scarborough",42.5,0,0,0,0),
-        edge("Aberystwyth","Shrewsbury",76.0,0,0,0,0),
-        edge("Aberystwyth","Cardigan",38.3,0,0,0,0),
-        edge("Cardigan","Carmarthen",26.1,0,0,0,0),
-        edge("Carmarthen","Swansea",28.0,0,0,0,0),
-        edge("Carlisle","Kendal",46.1,0,0,0,0),
-        edge("Kendal","Preston",42.7,0,0,0,0),
-        edge("Darlington","Kendal",63.3,0,0,0,0),
-        edge("Barrow","Kendal",34.7,0,0,0,0),
-        edge("Cambridge","Luton",41.0,0,0,0,0),
-        edge("Leicester","Luton",69.5,0,0,0,0),
-        edge("London","Luton",34.3,0,0,0,0),
-        edge("Luton","Oxford",43.5,0,0,0,0),
-        edge("London","Newbury",60.8,0,0,0,0),
-        edge("Newbury","Oxford",27.2,0,0,0,0),
-        edge("Newbury","Southampton",38.1,0,0,0,0),
-        edge("Swindon","Newbury",26.0,0,0,0,0),
+        edge("Bath","Bristol",12.9,usedReason.NotUsed,0,0,0),
+        edge("Derby","Nottingham",14.9,usedReason.NotUsed,0,0,0),
+        edge("Liverpool","Warrington",18.4,usedReason.NotUsed,0,0,0),
+        edge("Chester","Liverpool",18.8,usedReason.NotUsed,0,0,0),
+        edge("Portsmouth","Southampton",19.5,usedReason.NotUsed,0,0,0),
+        edge("Manchester","Warrington",21.0,usedReason.NotUsed,0,0,0),
+        edge("Chester","Warrington",22.6,usedReason.NotUsed,0,0,0),
+        edge("Salisbury","Southampton",23.6,usedReason.NotUsed,0,0,0),
+        edge("Leicester","Nottingham",27.9,usedReason.NotUsed,0,0,0),
+        edge("Leeds","York",28.2,usedReason.NotUsed,0,0,0),
+        edge("Preston","Warrington",30.5,usedReason.NotUsed,0,0,0),
+        edge("Oxford","Swindon",30.6,usedReason.NotUsed,0,0,0),
+        edge("Derby","Leicester",32.2,usedReason.NotUsed,0,0,0),
+        edge("Leeds","Sheffield",35.5,usedReason.NotUsed,0,0,0),
+        edge("Derby","Stoke",36.2,usedReason.NotUsed,0,0,0),
+        edge("Hull","York",37.6,usedReason.NotUsed,0,0,0),
+        edge("Chester","Stoke",37.7,usedReason.NotUsed,0,0,0),
+        edge("Nottingham","Sheffield",37.8,usedReason.NotUsed,0,0,0),
+        edge("Stoke","Warrington",39.1,usedReason.NotUsed,0,0,0),
+        edge("Bath","Salisbury",39.4,usedReason.NotUsed,0,0,0),
+        edge("Bristol","Gloucester",39.6,usedReason.NotUsed,0,0,0),
+        edge("Bristol","Swindon",40.2,usedReason.NotUsed,0,0,0),
+        edge("Manchester","Sheffield",40.9,usedReason.NotUsed,0,0,0),
+        edge("Derby","Sheffield",41.5,usedReason.NotUsed,0,0,0),
+        edge("Cardiff","Swansea",41.6,usedReason.NotUsed,0,0,0),
+        edge("Birmingham","Derby",41.8,usedReason.NotUsed,0,0,0),
+        edge("Leicester","Peterborough",42.1,usedReason.NotUsed,0,0,0),
+        edge("Birmingham","Leicester",42.7,usedReason.NotUsed,0,0,0),
+        edge("Cambridge","Peterborough",43.1,usedReason.NotUsed,0,0,0),
+        edge("Bristol","Cardiff",44.1,usedReason.NotUsed,0,0,0),
+        edge("Leeds","Manchester",44.7,usedReason.NotUsed,0,0,0),
+        edge("Exeter","Plymouth",44.8,usedReason.NotUsed,0,0,0),
+        edge("Birmingham","Stoke",44.9,usedReason.NotUsed,0,0,0),
+        edge("Ipswich","Norwich",45.0,usedReason.NotUsed,0,0,0),
+        edge("Edinburgh","Glasgow",47.5,usedReason.NotUsed,0,0,0),
+        edge("Brighton","Portsmouth",50.0,usedReason.NotUsed,0,0,0),
+        edge("Brighton","London",53.3,usedReason.NotUsed,0,0,0),
+        edge("London","Oxford",55.9,usedReason.NotUsed,0,0,0),
+        edge("Carlisle","Newcastle",59.1,usedReason.NotUsed,0,0,0),
+        edge("Cambridge","Norwich",63.9,usedReason.NotUsed,0,0,0),
+        edge("Cambridge","London",64.0,usedReason.NotUsed,0,0,0),
+        edge("Hull","Leeds",64.4,usedReason.NotUsed,0,0,0),
+        edge("London","Portsmouth",74.7,usedReason.NotUsed,0,0,0),
+        edge("Birmingham","Oxford",78.5,usedReason.NotUsed,0,0,0),
+        edge("London","Southampton",79.2,usedReason.NotUsed,0,0,0),
+        edge("Bristol","Exeter",80.7,usedReason.NotUsed,0,0,0),
+        edge("Ipswich","London",81.9,usedReason.NotUsed,0,0,0),
+        edge("London","Peterborough",85.4,usedReason.NotUsed,0,0,0),
+        edge("Carlisle","Preston",88.3,usedReason.NotUsed,0,0,0),
+        edge("Exeter","Salisbury",91.6,usedReason.NotUsed,0,0,0),
+        edge("Carlisle","Glasgow",96.8,usedReason.NotUsed,0,0,0),
+        edge("Edinburgh","Newcastle",104.0,usedReason.NotUsed,0,0,0),
+        edge("Canterbury","Dover",17.1,usedReason.NotUsed,0,0,0),
+        edge("Canterbury","London",61.9,usedReason.NotUsed,0,0,0),
+        edge("Hull","Lincoln",48.2,usedReason.NotUsed,0,0,0),
+        edge("Lincoln","Nottingham",39.5,usedReason.NotUsed,0,0,0),
+        edge("Lincoln","Sheffield",46.8,usedReason.NotUsed,0,0,0),
+        edge("Lincoln","Peterborough",51.9,usedReason.NotUsed,0,0,0),
+        edge("Bangor","Chester",60.9,usedReason.NotUsed,0,0,0),
+        edge("Blackpool","Preston",16.0,usedReason.NotUsed,0,0,0),
+        edge("Edinburgh","Perth",43.4,usedReason.NotUsed,0,0,0),
+        edge("Dundee","Perth",22.4,usedReason.NotUsed,0,0,0),
+        edge("Inverness","Perth",112.0,usedReason.NotUsed,0,0,0),
+        edge("Aberdeen","Dundee",66.0,usedReason.NotUsed,0,0,0),
+        edge("Aberdeen","Inverness",104.0,usedReason.NotUsed,0,0,0),
+        edge("Chester","Wrexham",13.4,usedReason.NotUsed,0,0,0),
+        edge("Birmingham","Shrewsbury",47.2,usedReason.NotUsed,0,0,0),
+        edge("Shrewsbury","Wrexham",31.7,usedReason.NotUsed,0,0,0),
+        edge("Birmingham","Worcester",40.6,usedReason.NotUsed,0,0,0),
+        edge("Gloucester","Worcester",30.2,usedReason.NotUsed,0,0,0),
+        edge("Bournemouth","Exeter",84.6,usedReason.NotUsed,0,0,0),
+        edge("Bournemouth","Southampton",33.2,usedReason.NotUsed,0,0,0),
+        edge("Darlington","Leeds",61.3,usedReason.NotUsed,0,0,0),
+        edge("Darlington","Newcastle",37.3,usedReason.NotUsed,0,0,0),
+        edge("Darlington","Middlesbrough",16.4,usedReason.NotUsed,0,0,0),
+        edge("Burnley","Leeds",35.7,usedReason.NotUsed,0,0,0),
+        edge("Burnley","Manchester",29.0,usedReason.NotUsed,0,0,0),
+        edge("Burnley","Preston",21.5,usedReason.NotUsed,0,0,0),
+        edge("Cambridge","Kings Lynn",45.1,usedReason.NotUsed,0,0,0),
+        edge("Norwich","Kings Lynn",43.6,usedReason.NotUsed,0,0,0),
+        edge("Peterborough","Kings Lynn",36.4,usedReason.NotUsed,0,0,0),
+        edge("Scarborough","York",41.2,usedReason.NotUsed,0,0,0),
+        edge("Middlesbrough","Scarborough",48.9,usedReason.NotUsed,0,0,0),
+        edge("Hull","Scarborough",42.5,usedReason.NotUsed,0,0,0),
+        edge("Aberystwyth","Shrewsbury",76.0,usedReason.NotUsed,0,0,0),
+        edge("Aberystwyth","Cardigan",38.3,usedReason.NotUsed,0,0,0),
+        edge("Cardigan","Carmarthen",26.1,usedReason.NotUsed,0,0,0),
+        edge("Carmarthen","Swansea",28.0,usedReason.NotUsed,0,0,0),
+        edge("Carlisle","Kendal",46.1,usedReason.NotUsed,0,0,0),
+        edge("Kendal","Preston",42.7,usedReason.NotUsed,0,0,0),
+        edge("Darlington","Kendal",63.3,usedReason.NotUsed,0,0,0),
+        edge("Barrow","Kendal",34.7,usedReason.NotUsed,0,0,0),
+        edge("Cambridge","Luton",41.0,usedReason.NotUsed,0,0,0),
+        edge("Leicester","Luton",69.5,usedReason.NotUsed,0,0,0),
+        edge("London","Luton",34.3,usedReason.NotUsed,0,0,0),
+        edge("Luton","Oxford",43.5,usedReason.NotUsed,0,0,0),
+        edge("London","Newbury",60.8,usedReason.NotUsed,0,0,0),
+        edge("Newbury","Oxford",27.2,usedReason.NotUsed,0,0,0),
+        edge("Newbury","Southampton",38.1,usedReason.NotUsed,0,0,0),
+        edge("Swindon","Newbury",26.0,usedReason.NotUsed,0,0,0),
     ]
 
     g = createNodes(allEdges)
