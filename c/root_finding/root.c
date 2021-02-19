@@ -185,6 +185,61 @@ void falsePositionQuadraticSteepest(int count, double lowX, double highX, double
     return;
 }
 
+void falsePositionTangents(int count, double lowX, double highX, double (*function)(double), double (*derivative)(double)){
+
+	double lowY = function(lowX);
+	double highY = function(highX);
+
+	double lowM = derivative(lowX);
+	double lowC = lowY - (lowM * lowX);
+	double highM = derivative(highX);
+	double highC = highY - (highM * highX);
+
+	double crossY = ((lowC * highM) - (highC * lowM))/(highM - lowM);
+	double crossX = (highC - lowC)/(lowM - highM);
+
+	double newX;
+	if (crossX > lowX && crossX < highX){
+        // tangents cross inside limits, decide on which tangent
+	    if ( (crossY > 0 && lowY > 0) || (crossY < 0 && lowY < 0) ){
+	        newX = -1.0 * (highC/highM);
+	    }
+	    if ( (crossY > 0 && highY > 0) || (crossY < 0 && highY < 0) ){
+	        newX = -1.0 * (lowC/lowM);
+	    }
+
+    } else {
+		// tangents cross outside limits so use line
+		newX = (lowX * highY - lowY * highX) /  (highY - lowY);
+
+    }
+
+	double newY = function(newX);
+	if (fabs(newY) < THRESHOLD){
+	    printf("FPTAN: Iterations %d, X=%g Y=%g\n", count, newX, newY);
+		return;
+	}
+
+	if ( (newY > 0 && lowY > 0) || (newY < 0 && lowY < 0) ){
+	    lowX = newX;
+	}
+	if ( (newY > 0 && highY > 0) || (newY < 0 && highY < 0) ){
+	    highX = newX;
+	}
+
+	falsePositionTangents(++count, lowX, highX, function, derivative);
+
+    return;
+}
+
+double f5(double x){
+	return exp(x) + x;
+}
+
+double d5(double x){
+	return exp(x) + 1.0;
+}
+
 double f4(double x){
 	return exp(x) - x*x;
 }
@@ -224,6 +279,7 @@ int main() {
 		{"Neg exponential: exp(-x)-0.5", 0.0, 4.0, f2, d2},
 		{"Polynomial: x^3-3x-8", 2.0, 5.0, f3, d3},
 		{"Exponential: exp(x) - x*x", -2.0, 2.0, f4, d4},
+		{"Exponential: exp(x) + x", -4.0, 0.0, f5, d5},
 	};
 	
 	int numberOfProblems = sizeof(problems)/sizeof(struct problem);
@@ -238,5 +294,6 @@ int main() {
 	    secant(1, problems[i].highX, problems[i].lowX, problems[i].function);
 	    falsePositionQuadraticClosest(1, problems[i].lowX, problems[i].highX, problems[i].function, problems[i].derivative);
 	    falsePositionQuadraticSteepest(1, problems[i].lowX, problems[i].highX, problems[i].function, problems[i].derivative);
+		falsePositionTangents(1, problems[i].lowX, problems[i].highX, problems[i].function, problems[i].derivative);
 	}
 }
