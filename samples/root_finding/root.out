@@ -1,0 +1,60 @@
+x^4 + x - 1 in range (0:4)
+BISEC: First X=2.000000, Iterations=33, X=0.724492
+FPLIN: First X=0.015385, Iterations=679, X=0.724492
+NRAPH: First X=1.000000, Iterations=6, X=0.724492
+NRAPH: First X=2.992218, Iterations=9, X=0.724492
+SECNT: First X=0.015385, Iterations=10, X=0.724492
+SECNT: First X=0.015385, Iterations=9, X=0.724492
+FPQDC: First X=0.220696, Iterations=9, X=0.724492
+FPQDS: First X=2.653684, Iterations=7, X=0.724492
+FPTAN: First X=1.000000, Iterations=6, X=0.724492
+exp(-x) - 0.5 in range (0:4)
+BISEC: First X=2.000000, Iterations=23, X=0.693147
+FPLIN: First X=2.037315, Iterations=19, X=0.693147
+NRAPH: First X=0.500000, Iterations=5, X=0.693147
+NRAPH: First X=-22.299075, Iterations=28, X=0.693147
+SECNT: First X=2.037315, Iterations=13, X=0.693147
+SECNT: First X=2.037315, Iterations=9, X=0.693147
+FPQDC: First X=1.244122, Iterations=5, X=0.693147
+FPQDS: First X=0.558934, Iterations=4, X=0.693147
+FPTAN: First X=0.500000, Iterations=5, X=0.693147
+x^3 - 3x - 8 in range (2:5)
+BISEC: First X=3.500000, Iterations=35, X=2.492033
+FPLIN: First X=2.166667, Iterations=48, X=2.492033
+NRAPH: First X=2.666667, Iterations=5, X=2.492033
+NRAPH: First X=3.583333, Iterations=6, X=2.492033
+SECNT: First X=2.166667, Iterations=7, X=2.492033
+SECNT: First X=2.166667, Iterations=7, X=2.492033
+FPQDC: First X=2.457427, Iterations=4, X=2.492033
+FPQDS: First X=2.707107, Iterations=4, X=2.492033
+FPTAN: First X=2.666667, Iterations=5, X=2.492033
+exp(x) - x^2 in range (-2:2)
+BISEC: First X=0.000000, Iterations=32, X=-0.703467
+FPLIN: First X=0.131135, Iterations=23, X=-0.703467
+NRAPH: First X=-1.065453, Iterations=5, X=-0.703467
+NRAPH: First X=1.000000, Iterations=6, X=-0.703467
+SECNT: First X=0.131135, Iterations=7, X=-0.703467
+SECNT: First X=0.131135, Iterations=8, X=-0.703467
+FPQDC: First X=0.844928, Iterations=5, X=-0.703467
+FPQDS: First X=-0.893634, Iterations=5, X=-0.703467
+FPTAN: First X=0.131135, Iterations=6, X=-0.703467
+exp(x) + x in range (-4:0)
+BISEC: First X=-2.000000, Iterations=32, X=-0.567143
+FPLIN: First X=-0.802941, Iterations=10, X=-0.567143
+NRAPH: First X=-0.089931, Iterations=5, X=-0.567143
+NRAPH: First X=-0.500000, Iterations=4, X=-0.567143
+SECNT: First X=-0.802941, Iterations=6, X=-0.567143
+SECNT: First X=-0.802941, Iterations=6, X=-0.567143
+FPQDC: First X=-0.526107, Iterations=4, X=-0.567143
+FPQDS: First X=-0.526107, Iterations=4, X=-0.567143
+FPTAN: First X=-0.500000, Iterations=4, X=-0.567143
+cos(x) - x in range (0:3)
+BISEC: First X=1.500000, Iterations=30, X=0.739085
+FPLIN: First X=0.601203, Iterations=8, X=0.739085
+NRAPH: First X=1.000000, Iterations=4, X=0.739085
+NRAPH: First X=-0.496558, Iterations=6, X=0.739085
+SECNT: First X=0.601203, Iterations=5, X=0.739085
+SECNT: First X=0.601203, Iterations=6, X=0.739085
+FPQDC: First X=0.842904, Iterations=4, X=0.739085
+FPQDS: First X=0.475565, Iterations=4, X=0.739085
+FPTAN: First X=0.601203, Iterations=8, X=0.739085

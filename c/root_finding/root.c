@@ -16,7 +16,7 @@ void bisection(int count, double lowX, double highX, double (*function)(double))
     double newX = (highX + lowX) / 2.0;
 	double newY = function(newX);
 	if (fabs(newY) < THRESHOLD){
-	    printf("BISECT: Iterations %d, X=%g Y=%g\n", count, newX, newY);
+	    printf("Iterations=%d, X=%f\n", count, newX);
 		return;
 	}
 
@@ -30,46 +30,55 @@ void bisection(int count, double lowX, double highX, double (*function)(double))
 	    highX = newX;
 	}
 
+  if (count == 1){
+		printf("BISEC: First X=%f, ", newX);
+	}
 	bisection(++count, lowX, highX, function);
 
     return;
 }
 
 void falsePosition(int count, double lowX, double highX, double (*function)(double)){
-	
+
 	double lowY = function(lowX);
 	double highY = function(highX);
-	
-	double newX = (lowX * highY - lowY * highX) /  (highY - lowY); 
-	
+
+	double newX = (lowX * highY - lowY * highX) /  (highY - lowY);
+
 	double newY = function(newX);
 	if (fabs(newY) < THRESHOLD){
-	    printf("FPLINR: Iterations %d, X=%g Y=%g\n", count, newX, newY);
+	    printf("Iterations=%d, X=%f\n", count, newX);
 		return;
 	}
 
 	if ( (newY > 0 && lowY > 0) || (newY < 0 && lowY < 0) ){
 	    lowX = newX;
-	}	
+	}
 	if ( (newY > 0 && highY > 0) || (newY < 0 && highY < 0) ){
 	    highX = newX;
 	}
 
+	if (count == 1){
+		printf("FPLIN: First X=%f, ", newX);
+	}
 	falsePosition(++count, lowX, highX, function);
 
     return;
 }
 
 void newtonRaphson(int count, double X, double (*function)(double), double (*derivative)(double)){
-	
+
 	double newX = X - (function(X)/derivative(X));
-	
+
 	double newY = function(newX);
 	if (fabs(newY) < THRESHOLD){
-	    printf("NRAPH: Iterations %d, X=%g Y=%g\n", count, newX, newY);
+	    printf("Iterations=%d, X=%f\n", count, newX);
 		return;
 	}
 
+	if (count == 1){
+		printf("NRAPH: First X=%f, ", newX);
+	}
 	newtonRaphson(++count, newX, function, derivative);
 
     return;
@@ -78,37 +87,40 @@ void newtonRaphson(int count, double X, double (*function)(double), double (*der
 void secant(int count, double x0, double x1, double (*function)(double)){
 	double fx0 = function(x0);
 	double fx1 = function(x1);
-    double newX = (x0 * fx1 - x1 * fx0) / (fx1 - fx0); 	
+    double newX = (x0 * fx1 - x1 * fx0) / (fx1 - fx0);
 
     double newY = function(newX);
 	if (fabs(newY) < THRESHOLD){
-	    printf("SCANT: Iterations %d, X=%g Y=%g\n", count, newX, newY);
+	    printf("Iterations=%d, X=%f\n", count, newX);
 		return;
 	}
 
+	if (count == 1){
+		printf("SECNT: First X=%f, ", newX);
+	}
 	secant(++count, x1, newX, function);
 
     return;
 }
 
 double quadraticRoot(double a, double b, double c, double lowX, double highX){
-	
+
 	double x1 = ((-1.0 * b) + sqrt(b*b - 4.0*a*c)) / (2.0*a);
 	double x2 = ((-1.0 * b) - sqrt(b*b - 4.0*a*c)) / (2.0*a);
-	
+
 	if (x1 >= lowX && x1 <= highX){
 		return x1;
 	}
 	if (x2 >= lowX && x2 <= highX) {
 		return x2;
 	}
-	
+
 	printf("Divergent: Roots %g %g\n", x1, x2);
 	return 0.0;
 }
 
 void falsePositionQuadraticClosest(int count, double lowX, double highX, double (*function)(double), double (*derivative)(double)){
-	
+
 	double lowY = function(lowX);
 	double highY = function(highX);
 
@@ -118,36 +130,39 @@ void falsePositionQuadraticClosest(int count, double lowX, double highX, double 
 		deriv = derivative(lowX);
 	    a = (lowY - highY + (deriv * (highX - lowX))) / ((lowX - highX) * (highX - lowX));
 		b = deriv - (2 * a * lowX);
-		c = lowY - (deriv * lowX) + (a * lowX * lowX); 
+		c = lowY - (deriv * lowX) + (a * lowX * lowX);
 	} else {
 		deriv = derivative(highX);
 	    a = (highY - lowY + (deriv * (lowX - highX))) / ((highX - lowX) * (lowX - highX));
 		b = deriv - (2 * a * highX);
 		c = highY - (deriv * highX) + (a * highX * highX);
     }
-	
+
 	double newX = quadraticRoot(a, b, c, lowX, highX);
-	
+
 	double newY = function(newX);
 	if (fabs(newY) < THRESHOLD){
-	    printf("FPQDC: Iterations %d, X=%g Y=%g\n", count, newX, newY);
+	    printf("Iterations=%d, X=%f\n", count, newX);
 		return;
 	}
 
 	if ( (newY > 0 && lowY > 0) || (newY < 0 && lowY < 0) ){
 	    lowX = newX;
-	}	
+	}
 	if ( (newY > 0 && highY > 0) || (newY < 0 && highY < 0) ){
 	    highX = newX;
 	}
 
+	if (count == 1){
+		printf("FPQDC: First X=%f, ", newX);
+	}
 	falsePositionQuadraticClosest(++count, lowX, highX, function, derivative);
 
     return;
 }
 
 void falsePositionQuadraticSteepest(int count, double lowX, double highX, double (*function)(double), double (*derivative)(double)){
-	
+
 	double lowY = function(lowX);
 	double highY = function(highX);
 
@@ -157,29 +172,32 @@ void falsePositionQuadraticSteepest(int count, double lowX, double highX, double
 		deriv = derivative(lowX);
 	    a = (lowY - highY + (deriv * (highX - lowX))) / ((lowX - highX) * (highX - lowX));
 		b = deriv - (2 * a * lowX);
-		c = lowY - (deriv * lowX) + (a * lowX * lowX); 
+		c = lowY - (deriv * lowX) + (a * lowX * lowX);
 	} else {
 		deriv = derivative(highX);
 	    a = (highY - lowY + (deriv * (lowX - highX))) / ((highX - lowX) * (lowX - highX));
 		b = deriv - (2 * a * highX);
 		c = highY - (deriv * highX) + (a * highX * highX);
     }
-	
+
 	double newX = quadraticRoot(a, b, c, lowX, highX);
-	
+
 	double newY = function(newX);
 	if (fabs(newY) < THRESHOLD){
-	    printf("FPQDD: Iterations %d, X=%g Y=%g\n", count, newX, newY);
+	    printf("Iterations=%d, X=%f\n", count, newX);
 		return;
 	}
 
 	if ( (newY > 0 && lowY > 0) || (newY < 0 && lowY < 0) ){
 	    lowX = newX;
-	}	
+	}
 	if ( (newY > 0 && highY > 0) || (newY < 0 && highY < 0) ){
 	    highX = newX;
 	}
 
+	if (count == 1){
+		printf("FPQDS: First X=%f, ", newX);
+	}
 	falsePositionQuadraticSteepest(++count, lowX, highX, function, derivative);
 
     return;
@@ -216,7 +234,7 @@ void falsePositionTangents(int count, double lowX, double highX, double (*functi
 
 	double newY = function(newX);
 	if (fabs(newY) < THRESHOLD){
-	    printf("FPTAN: Iterations %d, X=%g Y=%g\n", count, newX, newY);
+	    printf("Iterations=%d, X=%f\n", count, newX);
 		return;
 	}
 
@@ -227,9 +245,20 @@ void falsePositionTangents(int count, double lowX, double highX, double (*functi
 	    highX = newX;
 	}
 
+	if (count == 1){
+		printf("FPTAN: First X=%f, ", newX);
+	}
 	falsePositionTangents(++count, lowX, highX, function, derivative);
 
     return;
+}
+
+double f6(double x){
+	return cos(x) - x;
+}
+
+double d6(double x){
+	return (-1.0 * sin(x)) - 1.0;
 }
 
 double f5(double x){
@@ -265,7 +294,7 @@ double d2(double x){
 }
 
 double f1(double x){
-    return pow(x,4) + x - 1; 
+    return pow(x,4) + x - 1;
 }
 
 double d1(double x){
@@ -275,17 +304,18 @@ double d1(double x){
 int main() {
 
     struct problem problems[] = {
-		{"Polynomial: x^4+x-1", 0.0, 4.0, f1, d1},
-		{"Neg exponential: exp(-x)-0.5", 0.0, 4.0, f2, d2},
-		{"Polynomial: x^3-3x-8", 2.0, 5.0, f3, d3},
-		{"Exponential: exp(x) - x*x", -2.0, 2.0, f4, d4},
-		{"Exponential: exp(x) + x", -4.0, 0.0, f5, d5},
+		{"x^4 + x - 1", 0.0, 4.0, f1, d1},
+		{"exp(-x) - 0.5", 0.0, 4.0, f2, d2},
+		{"x^3 - 3x - 8", 2.0, 5.0, f3, d3},
+		{"exp(x) - x^2", -2.0, 2.0, f4, d4},
+		{"exp(x) + x", -4.0, 0.0, f5, d5},
+		{"cos(x) - x", 0.0, 3.0, f6, d6}
 	};
-	
+
 	int numberOfProblems = sizeof(problems)/sizeof(struct problem);
-	
+
 	for (int i = 0; i < numberOfProblems; ++i){
-        printf("%s\n",problems[i].name);
+        printf("%s in range (%g:%g)\n",problems[i].name, problems[i].lowX, problems[i].highX);
         bisection(1, problems[i].lowX, problems[i].highX, problems[i].function);
         falsePosition(1, problems[i].lowX, problems[i].highX, problems[i].function);
 	    newtonRaphson(1, problems[i].lowX, problems[i].function, problems[i].derivative);
